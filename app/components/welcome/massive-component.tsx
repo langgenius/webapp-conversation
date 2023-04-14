@@ -7,10 +7,10 @@ import {
   PencilIcon,
 } from '@heroicons/react/24/solid'
 import s from './style.module.css'
-import type { SiteInfo } from '@/types/app'
+import type { AppInfo } from '@/types/app'
 import Button from '@/app/components/base/button'
 
-export const AppInfo: FC<{ siteInfo: SiteInfo }> = ({ siteInfo }) => {
+export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
   const { t } = useTranslation()
   return (
     <div>

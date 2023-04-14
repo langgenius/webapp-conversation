@@ -9,26 +9,18 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppInfo, fetchAppParams, fetchChatList, fetchConversations, sendChatMessage, updateFeedback } from '@/service'
-import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, SiteInfo } from '@/types/app'
+import { fetchAppParams, fetchChatList, fetchConversations, sendChatMessage, updateFeedback } from '@/service'
+import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, AppInfo } from '@/types/app'
 import Chat from '@/app/components/chat'
 import { setLocaleOnClient } from '@/i18n/client'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import Loading from '@/app/components/base/loading'
 import { replaceVarWithValues } from '@/utils/prompt'
 import AppUnavailable from '@/app/components/app-unavailable'
-import { APP_ID, API_KEY } from '@/config'
+import { APP_ID, API_KEY, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
 
-export type IMainProps = {
-  params: {
-    locale: string
-    appId: string
-    conversationId: string
-    token: string
-  }
-}
 
-const Main: FC<IMainProps> = () => {
+const Main: FC = () => {
   const { t } = useTranslation()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
@@ -39,23 +31,16 @@ const Main: FC<IMainProps> = () => {
   */
   const [appUnavailable, setAppUnavailable] = useState<boolean>(false)
   const [isUnknwonReason, setIsUnknwonReason] = useState<boolean>(false)
-  const [appId, setAppId] = useState<string>('')
-  const [isPublicVersion, setIsPublicVersion] = useState<boolean>(true)
-  const [siteInfo, setSiteInfo] = useState<SiteInfo | null>()
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
-  const [plan, setPlan] = useState<string>('basic') // basic/plus/pro
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
 
   useEffect(() => {
-    if (siteInfo?.title) {
-      if (plan !== 'basic')
-        document.title = `${siteInfo.title}`
-      else
-        document.title = `${siteInfo.title} - Powered by LangGenius`
+    if (APP_INFO?.title) {
+      document.title = `${APP_INFO.title} - Powered by LangGenius`
     }
-  }, [siteInfo?.title, plan])
+  }, [APP_INFO?.title])
 
   /*
   * conversation info
@@ -97,11 +82,6 @@ const Main: FC<IMainProps> = () => {
   const handleConversationSwitch = () => {
     if (!inited)
       return
-    if (!appId) {
-      // wait for appId
-      setTimeout(handleConversationSwitch, 100)
-      return
-    }
 
     // update inputs of current conversation
     let notSyncToStateIntroduction = ''
@@ -160,7 +140,7 @@ const Main: FC<IMainProps> = () => {
       setConversationIdChangeBecauseOfNew(false)
     }
     // trigger handleConversationSwitch
-    setCurrConversationId(id, appId)
+    setCurrConversationId(id, APP_ID)
     hideSidebar()
   }
 
@@ -203,7 +183,7 @@ const Main: FC<IMainProps> = () => {
       content: caculatedIntroduction,
       isAnswer: true,
       feedbackDisabled: true,
-      isOpeningStatement: isPublicVersion,
+      isOpeningStatement: isShowPrompt,
     }
     if (caculatedIntroduction)
       return [openstatement]
@@ -219,37 +199,30 @@ const Main: FC<IMainProps> = () => {
     }
     (async () => {
       try {
-        const [appData, conversationData, appParams] = await Promise.all([fetchAppInfo(), fetchConversations(), fetchAppParams()])
-        const { app_id: appId, site: siteInfo, prompt_config, plan }: any = appData
-        setAppId(appId)
-        setPlan(plan)
-        const tempIsPublicVersion = !!prompt_config
-        setIsPublicVersion(tempIsPublicVersion)
-        const prompt_template = tempIsPublicVersion ? prompt_config.prompt_template : ''
+        const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
 
         // handle current conversation id
         const { data: conversations } = conversationData as { data: ConversationItem[] }
-        const _conversationId = getConversationIdFromStorage(appId)
+        const _conversationId = getConversationIdFromStorage(APP_ID)
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
         const { variables: prompt_variables, introduction }: any = appParams
 
-        setLocaleOnClient(siteInfo.default_language, true)
+        setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
           introduction,
         })
-        setSiteInfo(siteInfo as SiteInfo)
         setPromptConfig({
-          prompt_template,
+          prompt_template: promptTemplate,
           prompt_variables,
         } as PromptConfig)
 
         setConversationList(conversations as ConversationItem[])
 
         if (isNotNewConversation)
-          setCurrConversationId(_conversationId, appId, false)
+          setCurrConversationId(_conversationId, APP_ID, false)
 
         setInited(true)
       }
@@ -355,7 +328,7 @@ const Main: FC<IMainProps> = () => {
         setConversationIdChangeBecauseOfNew(false)
         resetNewConversationInputs()
         setChatNotStarted()
-        setCurrConversationId(tempNewConversationId, appId, true)
+        setCurrConversationId(tempNewConversationId, APP_ID, true)
       },
       onError() {
         setResponsingFalse()
@@ -383,28 +356,28 @@ const Main: FC<IMainProps> = () => {
   }
 
   const renderSidebar = () => {
-    if (!appId || !siteInfo || !promptConfig)
+    if (!APP_ID || !APP_INFO || !promptConfig)
       return null
     return (
       <Sidebar
         list={conversationList}
         onCurrentIdChange={handleConversationIdChange}
         currentId={currConversationId}
-        copyRight={siteInfo.copyright || siteInfo.title}
+        copyRight={APP_INFO.copyright || APP_INFO.title}
       />
     )
   }
 
   if (appUnavailable)
-    return <AppUnavailable isUnknwonReason={isUnknwonReason} errMessage={!hasSetAppConfig && 'Please set APP_ID and API_KEY in config/index.tsx'} />
+    return <AppUnavailable isUnknwonReason={isUnknwonReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
 
-  if (!appId || !siteInfo || !promptConfig)
+  if (!APP_ID || !APP_INFO || !promptConfig)
     return <Loading type='app' />
 
   return (
     <div className='bg-gray-100'>
       <Header
-        title={siteInfo.title}
+        title={APP_INFO.title}
         isMobile={isMobile}
         onShowSideBar={showSidebar}
         onCreateNewChat={() => handleConversationIdChange('-1')}
@@ -427,14 +400,13 @@ const Main: FC<IMainProps> = () => {
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
-            isPublicVersion={isPublicVersion}
-            siteInfo={siteInfo}
+            isPublicVersion={isShowPrompt}
+            siteInfo={APP_INFO}
             promptConfig={promptConfig}
             onStartChat={handleStartChat}
             canEidtInpus={canEditInpus}
             savedInputs={currInputs as Record<string, any>}
             onInputsChange={setCurrInputs}
-            plan={plan}
           ></ConfigSence>
 
           {

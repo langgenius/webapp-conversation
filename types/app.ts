@@ -66,7 +66,7 @@ export type ConversationItem = {
   introduction: string,
 }
 
-export type SiteInfo = {
+export type AppInfo = {
   title: string
   description: string
   default_language: Locale

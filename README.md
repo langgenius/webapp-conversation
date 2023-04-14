@@ -1,11 +1,24 @@
 # Conversion Web App Template
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Set App Info
-Set app info in `config/index.ts`. Includes:
+## Config App
+Config app in `config/index.ts`.Please config:
 - APP_ID
 - API_KEY
-- APP_INFO
+
+More config:
+```js
+export const APP_INFO: AppInfo = {
+  "title": 'Chat APP',
+  "description": '',
+  "copyright": '',
+  "privacy_policy": '',
+  "default_language": 'zh-Hans'
+}
+
+export const isShowPrompt = true
+export const promptTemplate = ''
+```
 
 ## Getting Started
 First, install dependencies:

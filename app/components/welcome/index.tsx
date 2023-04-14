@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TemplateVarPanel, { PanelTitle, VarOpBtnGroup } from '../value-panel'
 import s from './style.module.css'
-import { AppInfo, ChatBtn, EditBtn, FootLogo, PromptTemplate } from './massive-component'
-import type { PromptConfig, SiteInfo } from '@/types/app'
+import { AppInfoComp, ChatBtn, EditBtn, FootLogo, PromptTemplate } from './massive-component'
+import type { PromptConfig, AppInfo } from '@/types/app'
 import Toast from '@/app/components/base/toast'
 import Select from '@/app/components/base/select'
 import { DEFAULT_VALUE_MAX_LEN } from '@/config'
@@ -17,13 +17,12 @@ export type IWelcomeProps = {
   conversationName: string
   hasSetInputs: boolean
   isPublicVersion: boolean
-  siteInfo: SiteInfo
+  siteInfo: AppInfo
   promptConfig: PromptConfig
   onStartChat: (inputs: Record<string, any>) => void
   canEidtInpus: boolean
   savedInputs: Record<string, any>
   onInputsChange: (inputs: Record<string, any>) => void
-  plan: string
 }
 
 const Welcome: FC<IWelcomeProps> = ({
@@ -31,7 +30,6 @@ const Welcome: FC<IWelcomeProps> = ({
   hasSetInputs,
   isPublicVersion,
   siteInfo,
-  plan,
   promptConfig,
   onStartChat,
   canEidtInpus,
@@ -144,7 +142,7 @@ const Welcome: FC<IWelcomeProps> = ({
     if (isPublicVersion) {
       return (
         <div>
-          <AppInfo siteInfo={siteInfo} />
+          <AppInfoComp siteInfo={siteInfo} />
           <TemplateVarPanel
             isFold={false}
             header={
@@ -167,7 +165,7 @@ const Welcome: FC<IWelcomeProps> = ({
       <TemplateVarPanel
         isFold={false}
         header={
-          <AppInfo siteInfo={siteInfo} />
+          <AppInfoComp siteInfo={siteInfo} />
         }
       >
         <ChatBtn onClick={handleChat} />
@@ -180,7 +178,7 @@ const Welcome: FC<IWelcomeProps> = ({
       <TemplateVarPanel
         isFold={false}
         header={
-          <AppInfo siteInfo={siteInfo} />
+          <AppInfoComp siteInfo={siteInfo} />
         }
       >
         {renderInputs()}
@@ -325,10 +323,10 @@ const Welcome: FC<IWelcomeProps> = ({
               </div>
               : <div>
               </div>}
-            {plan === 'basic' && <a className='flex items-center pr-3 space-x-3' href="https://langgenius.ai/" target="_blank">
+            <a className='flex items-center pr-3 space-x-3' href="https://langgenius.ai/" target="_blank">
               <span className='uppercase'>{t('app.chat.powerBy')}</span>
               <FootLogo />
-            </a>}
+            </a>
           </div>
         )}
       </div>
