@@ -1,5 +1,5 @@
 {
-  "name": "langgenius-gateway-app",
+  "name": "webapp-conversation",
   "version": "0.1.0",
   "private": true,
   "scripts": {
