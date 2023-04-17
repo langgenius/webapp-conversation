@@ -15,10 +15,6 @@ export const sendChatMessage = async (body: Record<string, any>, { onData, onCom
   }, { onData, onCompleted, onError })
 }
 
-export const fetchAppInfo = async () => {
-  return get('site')
-}
-
 export const fetchConversations = async () => {
   return get('conversations', { params: { limit: 20, first_id: '' } })
 }
