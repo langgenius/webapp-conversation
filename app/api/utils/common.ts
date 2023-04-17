@@ -4,7 +4,6 @@ import { ChatClient } from 'langgenius-client'
 import uuid from 'uuid'
 
 const userPrefix = `user_${APP_ID}:`;
-// const uuid = require('uuid')
 
 export const getInfo = (request: NextRequest) => {
   const sessionId = request.cookies.get('session_id')?.value || uuid.v4();
