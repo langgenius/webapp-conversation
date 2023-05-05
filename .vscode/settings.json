@@ -23,5 +23,10 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "i18n-ally.localesPaths": [
+    "i18n",
+    "i18n/lang",
+    "app/api/messages"
+  ]
 }
