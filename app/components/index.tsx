@@ -18,7 +18,7 @@ import Loading from '@/app/components/base/loading'
 import { replaceVarWithValues } from '@/utils/prompt'
 import AppUnavailable from '@/app/components/app-unavailable'
 import { APP_ID, API_KEY, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
-
+import { userInputsFormToPromptVariables } from '@/utils/prompt'
 
 const Main: FC = () => {
   const { t } = useTranslation()
@@ -207,13 +207,13 @@ const Main: FC = () => {
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
-        const { variables: prompt_variables, introduction }: any = appParams
-
+        const { user_input_form, opening_statement: introduction }: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
           introduction,
         })
+        const prompt_variables = userInputsFormToPromptVariables(user_input_form)
         setPromptConfig({
           prompt_template: promptTemplate,
           prompt_variables,
