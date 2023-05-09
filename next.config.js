@@ -15,7 +15,11 @@ const nextConfig = {
   typescript: {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors
     ignoreBuildErrors: true,
-  }
+  },
+  env: {
+    APP_ID: process.env.APP_ID,
+    API_KEY: process.env.API_KEY,
+  },
 }
 
 module.exports = nextConfig
