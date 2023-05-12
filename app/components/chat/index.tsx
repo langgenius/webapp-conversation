@@ -11,6 +11,7 @@ import Tooltip from '@/app/components/base/tooltip'
 import Toast from '@/app/components/base/toast'
 import AutoHeightTextarea from '@/app/components/base/auto-height-textarea'
 import { Markdown } from '@/app/components/base/markdown'
+import LoadingAnim from './loading-anim'
 
 export type FeedbackFunc = (messageId: string, feedback: Feedbacktype) => Promise<any>
 
@@ -166,7 +167,13 @@ const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, 
   return (
     <div key={id}>
       <div className='flex items-start'>
-        <div className={`${s.answerIcon} ${isResponsing ? s.typeingIcon : ''} w-10 h-10 shrink-0`}></div>
+        <div className={`${s.answerIcon} w-10 h-10 shrink-0`}>
+          {isResponsing &&
+            <div className={s.typeingIcon}>
+              <LoadingAnim type='avatar' />
+            </div>
+          }
+        </div>
         <div className={`${s.answerWrap}`}>
           <div className={`${s.answer} relative text-sm text-gray-900`}>
             <div className={'ml-2 py-3 px-4 bg-gray-100 rounded-tr-2xl rounded-b-2xl'}>
@@ -176,7 +183,13 @@ const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, 
                   <div className='text-xs text-gray-500'>{t('app.chat.openingStatementTitle')}</div>
                 </div>
               )}
-              <Markdown content={content} />
+              {(isResponsing && !content) ? (
+                <div className='flex items-center justify-center w-6 h-5'>
+                  <LoadingAnim type='text' />
+                </div>
+              ) : (
+                <Markdown content={content} />
+              )}
             </div>
             <div className='absolute top-[-14px] right-[-14px] flex flex-row justify-end gap-1'>
               {!feedbackDisabled && !item.feedbackDisabled && renderItemOperation()}

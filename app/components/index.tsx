@@ -282,7 +282,7 @@ const Main: FC = () => {
     const placeholderAnswerId = `answer-placeholder-${Date.now()}`
     const placeholderAnswerItem = {
       id: placeholderAnswerId,
-      content: '...',
+      content: '',
       isAnswer: true,
     }
 
