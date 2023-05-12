@@ -1,6 +1,6 @@
 'use client'
-import type { FC } from 'react'
-import React, { useEffect } from 'react'
+import type { FC, } from 'react'
+import React, { useEffect, useRef } from 'react'
 import cn from 'classnames'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
@@ -232,6 +232,7 @@ const Chat: FC<IChatProps> = ({
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
+  const isUseInputMethod = useRef(false)
 
   const [query, setQuery] = React.useState('')
   const handleContentChange = (e: any) => {
@@ -267,12 +268,15 @@ const Chat: FC<IChatProps> = ({
   const handleKeyUp = (e: any) => {
     if (e.code === 'Enter') {
       e.preventDefault()
-      if (!e.shiftKey)
+      // prevent send message when using input method enter
+      if (!e.shiftKey && !isUseInputMethod.current) {
         handleSend()
+      }
     }
   }
 
   const haneleKeyDown = (e: any) => {
+    isUseInputMethod.current = e.nativeEvent.isComposing
     if (e.code === 'Enter' && !e.shiftKey) {
       setQuery(query.replace(/\n$/, ''))
       e.preventDefault()

@@ -3,7 +3,7 @@ export const APP_ID = ''
 export const API_KEY = ''
 
 export const APP_INFO: AppInfo = {
-  "title": 'Chat APP',
+  "title": 'Chat APP11',
   "description": '',
   "copyright": '',
   "privacy_policy": '',
