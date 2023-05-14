@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server'
 import { APP_ID, API_KEY } from '@/config'
-import { ChatClient } from 'langgenius-client'
+import { ChatClient } from 'dify-client'
 import { v4 } from 'uuid'
 
 const userPrefix = `user_${APP_ID}:`;
