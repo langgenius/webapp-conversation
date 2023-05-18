@@ -18,4 +18,4 @@ export const setSession = (sessionId: string) => {
   return { 'Set-Cookie': `session_id=${sessionId}` }
 }
 
-export const client = new ChatClient(API_KEY, API_URL)
+export const client = new ChatClient(API_KEY, API_URL ? API_URL : undefined)
