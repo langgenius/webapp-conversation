@@ -5,7 +5,7 @@ import commonEn from './lang/common.en'
 import commonZh from './lang/common.zh'
 import appEn from './lang/app.en'
 import appZh from './lang/app.zh'
-import { Locale } from '.'
+import type { Locale } from '.'
 
 const resources = {
   'en': {

@@ -16,7 +16,7 @@ const translation = {
     lineBreak: 'Line break',
     like: 'like',
     dislike: 'dislike',
-  }
+  },
 }
 
 export default translation

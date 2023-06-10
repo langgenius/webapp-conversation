@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import type { ConversationItem } from '@/types/app'
 import produce from 'immer'
+import type { ConversationItem } from '@/types/app'
 
 const storageConversationIdKey = 'conversationIdInfo'
 
@@ -29,9 +29,10 @@ function useConversation() {
   // input can be updated by user
   const [newConversationInputs, setNewConversationInputs] = useState<Record<string, any> | null>(null)
   const resetNewConversationInputs = () => {
-    if (!newConversationInputs) return
-    setNewConversationInputs(produce(newConversationInputs, draft => {
-      Object.keys(draft).forEach(key => {
+    if (!newConversationInputs)
+      return
+    setNewConversationInputs(produce(newConversationInputs, (draft) => {
+      Object.keys(draft).forEach((key) => {
         draft[key] = ''
       })
     }))
@@ -59,8 +60,8 @@ function useConversation() {
     setCurrInputs,
     currConversationInfo,
     setNewConversationInfo,
-    setExistConversationInfo
+    setExistConversationInfo,
   }
 }
 
-export default useConversation;
+export default useConversation

@@ -19,6 +19,7 @@ const AutoHeightTextarea = forwardRef(
     { value, onChange, placeholder, className, minHeight = 36, maxHeight = 96, autoFocus, controlFocus, onKeyDown, onKeyUp }: IProps,
     outerRef: any,
   ) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const ref = outerRef || useRef<HTMLTextAreaElement>(null)
 
     const doFocus = () => {

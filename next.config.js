@@ -15,7 +15,7 @@ const nextConfig = {
   typescript: {
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors
     ignoreBuildErrors: true,
-  }
+  },
 }
 
 module.exports = nextConfig

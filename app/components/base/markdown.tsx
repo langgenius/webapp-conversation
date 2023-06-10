@@ -18,7 +18,7 @@ export function Markdown(props: { content: string }) {
         components={{
           code({ node, inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '')
-            return !inline && match
+            return (!inline && match)
               ? (
                 <SyntaxHighlighter
                   {...props}
