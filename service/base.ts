@@ -64,7 +64,7 @@ const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted
         lines.forEach((message) => {
           if (!message)
             return
-          bufferObj = JSON.parse(message) // remove data: and parse as json
+          bufferObj = JSON.parse(message.substring(6)) // remove data: and parse as json
           onData(unicodeToChar(bufferObj.answer), isFirstMessage, {
             conversationId: bufferObj.conversation_id,
             messageId: bufferObj.id,
