@@ -244,6 +244,9 @@ const Main: FC = () => {
   }
 
   const checkCanSend = () => {
+    if (currConversationId !== '-1')
+      return true
+
     if (!currInputs || !promptConfig?.prompt_variables)
       return true
 
