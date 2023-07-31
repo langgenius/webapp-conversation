@@ -4,8 +4,12 @@ import { client, getInfo, setSession } from '@/app/api/utils/common'
 
 export async function GET(request: NextRequest) {
   const { sessionId, user } = getInfo(request)
-  const { data }: any = await client.getConversations(user)
-  return NextResponse.json(data, {
-    headers: setSession(sessionId),
-  })
+  try {
+    const { data }: any = await client.getConversations(user)
+    return NextResponse.json(data, {
+      headers: setSession(sessionId),
+    })
+  } catch (error) {
+    return NextResponse.json([]);
+  }
 }
