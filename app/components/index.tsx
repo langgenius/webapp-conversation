@@ -19,6 +19,7 @@ import Loading from '@/app/components/base/loading'
 import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/prompt'
 import AppUnavailable from '@/app/components/app-unavailable'
 import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
+import { checkOrSetAccessToken } from '@/utils/access-token'
 
 const Main: FC = () => {
   const { t } = useTranslation()
@@ -197,6 +198,8 @@ const Main: FC = () => {
       return
     }
     (async () => {
+      await checkOrSetAccessToken()
+
       try {
         const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
 

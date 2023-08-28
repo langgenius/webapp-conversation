@@ -31,3 +31,7 @@ export const fetchAppParams = async () => {
 export const updateFeedback = async ({ url, body }: { url: string; body: Feedbacktype }) => {
   return post(url, { body })
 }
+
+export const fetchAccessToken = async (appId: string) => {
+  return get('/passport') as Promise<{ access_token: string }>
+}

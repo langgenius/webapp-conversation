@@ -1,4 +1,4 @@
-import { API_PREFIX } from '@/config'
+import { API_PREFIX, APP_ID } from '@/config'
 import Toast from '@/app/components/base/toast'
 
 const TIME_OUT = 100000
@@ -102,7 +102,16 @@ const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted
 
 const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: IOtherOptions) => {
   const options = Object.assign({}, baseOptions, fetchOptions)
+  const sharedToken = APP_ID
+  const accessToken = localStorage.getItem('token') || JSON.stringify({ [sharedToken]: '' })
+  let accessTokenJson = { [sharedToken]: '' }
+  try {
+    accessTokenJson = JSON.parse(accessToken)
+  }
+  catch (e) {
 
+  }
+  options.headers.set('Authorization', `Bearer ${accessTokenJson[sharedToken]}`)
   const urlPrefix = API_PREFIX
 
   let urlWithPrefix = `${urlPrefix}${url.startsWith('/') ? url : `/${url}`}`

@@ -1,5 +1,5 @@
 import { type NextRequest } from 'next/server'
-import { ChatClient } from 'dify-client'
+import { ChatClient, DifyClient } from 'dify-client'
 import { v4 } from 'uuid'
 import { API_KEY, API_URL, APP_ID } from '@/config'
 
@@ -19,3 +19,4 @@ export const setSession = (sessionId: string) => {
 }
 
 export const client = new ChatClient(API_KEY, API_URL || undefined)
+export const commonClient = new ChatClient(API_KEY, API_URL || undefined)
