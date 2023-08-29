@@ -63,6 +63,8 @@ const Main: FC = () => {
   const [conversationIdChangeBecauseOfNew, setConversationIdChangeBecauseOfNew, getConversationIdChangeBecauseOfNew] = useGetState(false)
   const [isChatStarted, { setTrue: setChatStarted, setFalse: setChatNotStarted }] = useBoolean(false)
   const handleStartChat = (inputs: Record<string, any>) => {
+    createNewChat()
+    setConversationIdChangeBecauseOfNew(true)
     setCurrInputs(inputs)
     setChatStarted()
     // parse variables in introduction
