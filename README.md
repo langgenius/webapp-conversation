@@ -2,18 +2,22 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Config App
-Config app in `config/index.ts`.Please config:
-- APP_ID
-- API_KEY
+Create a file named `.env.local` in the current directory and copy the contents from `.env.example`. Setting the following content:
+```
+# APP ID
+NEXT_PUBLIC_APP_ID=
+# APP API key
+NEXT_PUBLIC_APP_KEY=
+```
 
-More config:
+Config more in `config/index.ts` file:   
 ```js
 export const APP_INFO: AppInfo = {
-  "title": 'Chat APP',
-  "description": '',
-  "copyright": '',
-  "privacy_policy": '',
-  "default_language": 'zh-Hans'
+  title: 'Chat APP',
+  description: '',
+  copyright: '',
+  privacy_policy: '',
+  default_language: 'zh-Hans'
 }
 
 export const isShowPrompt = true
