@@ -16,14 +16,22 @@ export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] |
     return []
   const promptVariables: PromptVariable[] = []
   useInputs.forEach((item: any) => {
-    const type = item['text-input'] ? 'string' : 'select'
-    const content = type === 'string' ? item['text-input'] : item.select
-    if (type === 'string') {
+    const isParagraph = !!item.paragraph
+    const [type, content] = (() => {
+      if (isParagraph)
+        return ['paragraph', item.paragraph]
+
+      if (item['text-input'])
+        return ['string', item['text-input']]
+
+      return ['select', item.select]
+    })()
+    if (type === 'string' || type === 'paragraph') {
       promptVariables.push({
         key: content.variable,
         name: content.label,
         required: content.required,
-        type: 'string',
+        type,
         max_length: content.max_length,
         options: [],
       })

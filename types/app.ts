@@ -3,7 +3,7 @@ import type { Locale } from '@/i18n'
 export type PromptVariable = {
   key: string
   name: string
-  type: 'string' | 'number' | 'select'
+  type: string
   default?: string | number
   options?: string[]
   max_length?: number
