@@ -8,6 +8,8 @@ Create a file named `.env.local` in the current directory and copy the contents 
 NEXT_PUBLIC_APP_ID=
 # APP API key
 NEXT_PUBLIC_APP_KEY=
+# APP URL
+NEXT_PUBLIC_API_URL=
 ```
 
 Config more in `config/index.ts` file:   
