@@ -11,7 +11,8 @@ import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
 import { fetchAppParams, fetchChatList, fetchConversations, sendChatMessage, updateFeedback } from '@/service'
-import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig } from '@/types/app'
+import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
+import { TransferMethod } from '@/types/app'
 import Chat from '@/app/components/chat'
 import { setLocaleOnClient } from '@/i18n/client'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
@@ -35,6 +36,7 @@ const Main: FC = () => {
   const [inited, setInited] = useState<boolean>(false)
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
+  const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>(undefined)
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -113,6 +115,7 @@ const Main: FC = () => {
             id: `question-${item.id}`,
             content: item.query,
             isAnswer: false,
+            message_files: item.message_files,
           })
           newChatList.push({
             id: item.id,
@@ -127,8 +130,6 @@ const Main: FC = () => {
 
     if (isNewConversation && isChatStarted)
       setChatList(generateNewChatListWithOpenstatement())
-
-    setControlFocus(Date.now())
   }
   useEffect(handleConversationSwitch, [currConversationId, inited])
 
@@ -208,7 +209,7 @@ const Main: FC = () => {
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
-        const { user_input_form, opening_statement: introduction }: any = appParams
+        const { user_input_form, opening_statement: introduction, file_upload, system_parameters }: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
@@ -219,7 +220,10 @@ const Main: FC = () => {
           prompt_template: promptTemplate,
           prompt_variables,
         } as PromptConfig)
-
+        setVisionConfig({
+          ...file_upload?.image,
+          image_file_size_limit: system_parameters?.system_parameters || 0,
+        })
         setConversationList(conversations as ConversationItem[])
 
         if (isNotNewConversation)
@@ -263,16 +267,27 @@ const Main: FC = () => {
     return true
   }
 
-  const [controlFocus, setControlFocus] = useState(0)
-  const handleSend = async (message: string) => {
+  const handleSend = async (message: string, files?: VisionFile[]) => {
     if (isResponsing) {
       notify({ type: 'info', message: t('app.errorMessage.waitForResponse') })
       return
     }
-    const data = {
+    const data: Record<string, any> = {
       inputs: currInputs,
       query: message,
       conversation_id: isNewConversation ? null : currConversationId,
+    }
+
+    if (visionConfig?.enabled && files && files?.length > 0) {
+      data.files = files.map((item) => {
+        if (item.transfer_method === TransferMethod.local_file) {
+          return {
+            ...item,
+            url: '',
+          }
+        }
+        return item
+      })
     }
 
     // qustion
@@ -281,6 +296,7 @@ const Main: FC = () => {
       id: questionId,
       content: message,
       isAnswer: false,
+      message_files: files,
     }
 
     const placeholderAnswerId = `answer-placeholder-${Date.now()}`
@@ -423,7 +439,7 @@ const Main: FC = () => {
                     onFeedback={handleFeedback}
                     isResponsing={isResponsing}
                     checkCanSend={checkCanSend}
-                    controlFocus={controlFocus}
+                    visionConfig={visionConfig}
                   />
                 </div>
               </div>)
