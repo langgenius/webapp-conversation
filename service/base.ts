@@ -66,7 +66,8 @@ const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted
             return
           try {
             bufferObj = JSON.parse(message.substring(6)) // remove data: and parse as json
-          } catch (e) {
+          }
+          catch (e) {
             // mute handle message cut off
             onData('', isFirstMessage, {
               conversationId: bufferObj?.conversation_id,
@@ -179,6 +180,38 @@ const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: I
         })
     }),
   ])
+}
+
+export const upload = (fetchOptions: any): Promise<any> => {
+  const urlPrefix = API_PREFIX
+  const urlWithPrefix = `${urlPrefix}/file-upload`
+  const defaultOptions = {
+    method: 'POST',
+    url: `${urlWithPrefix}`,
+    data: {},
+  }
+  const options = {
+    ...defaultOptions,
+    ...fetchOptions,
+  }
+  return new Promise((resolve, reject) => {
+    const xhr = options.xhr
+    xhr.open(options.method, options.url)
+    for (const key in options.headers)
+      xhr.setRequestHeader(key, options.headers[key])
+
+    xhr.withCredentials = true
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200)
+          resolve({ id: xhr.response })
+        else
+          reject(xhr)
+      }
+    }
+    xhr.upload.onprogress = options.onprogress
+    xhr.send(options.data)
+  })
 }
 
 export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, onError }: IOtherOptions) => {

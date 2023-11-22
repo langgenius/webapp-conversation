@@ -9,7 +9,7 @@ import {
   InformationCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/20/solid'
-import { createContext } from 'use-context-selector'
+import { createContext, useContext } from 'use-context-selector'
 
 export type IToastProps = {
   type?: 'success' | 'error' | 'warning' | 'info'
@@ -24,6 +24,8 @@ type IToastContext = {
 const defaultDuring = 3000
 
 export const ToastContext = createContext<IToastContext>({} as IToastContext)
+export const useToastContext = () => useContext(ToastContext)
+
 const Toast = ({
   type = 'info',
   duration,

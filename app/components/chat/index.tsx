@@ -4,14 +4,19 @@ import React, { useEffect, useRef } from 'react'
 import cn from 'classnames'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
+import Textarea from 'rc-textarea'
 import s from './style.module.css'
 import LoadingAnim from './loading-anim'
 import { randomString } from '@/utils/string'
-import type { Feedbacktype, MessageRating } from '@/types/app'
+import type { Feedbacktype, MessageRating, VisionFile, VisionSettings } from '@/types/app'
+import { TransferMethod } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
 import Toast from '@/app/components/base/toast'
-import AutoHeightTextarea from '@/app/components/base/auto-height-textarea'
 import { Markdown } from '@/app/components/base/markdown'
+import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
+import ImageList from '@/app/components/base/image-uploader/image-list'
+import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
+import ImageGallery from '@/app/components/base/image-gallery'
 
 export type FeedbackFunc = (messageId: string, feedback: Feedbacktype) => Promise<any>
 
@@ -27,11 +32,11 @@ export type IChatProps = {
   isHideSendInput?: boolean
   onFeedback?: FeedbackFunc
   checkCanSend?: () => boolean
-  onSend?: (message: string) => void
+  onSend?: (message: string, files: VisionFile[]) => void
   useCurrentUserAvatar?: boolean
   isResponsing?: boolean
   controlClearQuery?: number
-  controlFocus?: number
+  visionConfig?: VisionSettings
 }
 
 export type IChatItem = {
@@ -52,6 +57,7 @@ export type IChatItem = {
   isIntroduction?: boolean
   useCurrentUserAvatar?: boolean
   isOpeningStatement?: boolean
+  message_files?: VisionFile[]
 }
 
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
@@ -205,9 +211,11 @@ const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, 
   )
 }
 
-type IQuestionProps = Pick<IChatItem, 'id' | 'content' | 'useCurrentUserAvatar'>
+type IQuestionProps = Pick<IChatItem, 'id' | 'content' | 'useCurrentUserAvatar'> & {
+  imgSrcs?: string[]
+}
 
-const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar }) => {
+const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar, imgSrcs }) => {
   const userName = ''
   return (
     <div className='flex items-start justify-end' key={id}>
@@ -216,6 +224,9 @@ const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar }) => 
           <div
             className={'mr-2 py-3 px-4 bg-blue-500 rounded-tl-2xl rounded-b-2xl'}
           >
+            {imgSrcs && imgSrcs.length > 0 && (
+              <ImageGallery srcs={imgSrcs} />
+            )}
             <Markdown content={content} />
           </div>
         </div>
@@ -243,7 +254,7 @@ const Chat: FC<IChatProps> = ({
   useCurrentUserAvatar,
   isResponsing,
   controlClearQuery,
-  controlFocus,
+  visionConfig,
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
@@ -271,13 +282,31 @@ const Chat: FC<IChatProps> = ({
     if (controlClearQuery)
       setQuery('')
   }, [controlClearQuery])
+  const {
+    files,
+    onUpload,
+    onRemove,
+    onReUpload,
+    onImageLinkLoadError,
+    onImageLinkLoadSuccess,
+    onClear,
+  } = useImageFiles()
 
   const handleSend = () => {
     if (!valid() || (checkCanSend && !checkCanSend()))
       return
-    onSend(query)
-    if (!isResponsing)
-      setQuery('')
+    onSend(query, files.filter(file => file.progress !== -1).map(fileItem => ({
+      type: 'image',
+      transfer_method: fileItem.type,
+      url: fileItem.url,
+      upload_file_id: fileItem.fileId,
+    })))
+    if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
+      if (files.length)
+        onClear()
+      if (!isResponsing)
+        setQuery('')
+    }
   }
 
   const handleKeyUp = (e: any) => {
@@ -289,7 +318,7 @@ const Chat: FC<IChatProps> = ({
     }
   }
 
-  const haneleKeyDown = (e: any) => {
+  const handleKeyDown = (e: any) => {
     isUseInputMethod.current = e.nativeEvent.isComposing
     if (e.code === 'Enter' && !e.shiftKey) {
       setQuery(query.replace(/\n$/, ''))
@@ -312,24 +341,56 @@ const Chat: FC<IChatProps> = ({
               isResponsing={isResponsing && isLast}
             />
           }
-          return <Question key={item.id} id={item.id} content={item.content} useCurrentUserAvatar={useCurrentUserAvatar} />
+          return (
+            <Question
+              key={item.id}
+              id={item.id}
+              content={item.content}
+              useCurrentUserAvatar={useCurrentUserAvatar}
+              imgSrcs={(item.message_files && item.message_files?.length > 0) ? item.message_files.map(item => item.url) : []}
+            />
+          )
         })}
       </div>
       {
         !isHideSendInput && (
           <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0')}>
-            <div className="positive">
-              <AutoHeightTextarea
+            <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
+              {
+                visionConfig?.enabled && (
+                  <>
+                    <div className='absolute bottom-2 left-2 flex items-center'>
+                      <ChatImageUploader
+                        settings={visionConfig}
+                        onUpload={onUpload}
+                        disabled={files.length >= visionConfig.number_limits}
+                      />
+                      <div className='mx-1 w-[1px] h-4 bg-black/5' />
+                    </div>
+                    <div className='pl-[52px]'>
+                      <ImageList
+                        list={files}
+                        onRemove={onRemove}
+                        onReUpload={onReUpload}
+                        onImageLinkLoadSuccess={onImageLinkLoadSuccess}
+                        onImageLinkLoadError={onImageLinkLoadError}
+                      />
+                    </div>
+                  </>
+                )
+              }
+              <Textarea
+                className={`
+                  block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-sm text-gray-700 outline-none appearance-none resize-none
+                  ${visionConfig?.enabled && 'pl-12'}
+                `}
                 value={query}
                 onChange={handleContentChange}
                 onKeyUp={handleKeyUp}
-                onKeyDown={haneleKeyDown}
-                minHeight={48}
-                autoFocus
-                controlFocus={controlFocus}
-                className={`${cn(s.textArea)} resize-none block w-full pl-3 bg-gray-50 border border-gray-200 rounded-md  focus:outline-none sm:text-sm text-gray-700`}
+                onKeyDown={handleKeyDown}
+                autoSize
               />
-              <div className="absolute top-0 right-2 flex items-center h-[48px]">
+              <div className="absolute bottom-2 right-2 flex items-center h-8">
                 <div className={`${s.count} mr-4 h-5 leading-5 text-sm bg-gray-50 text-gray-500`}>{query.trim().length}</div>
                 <Tooltip
                   selector='send-tip'
