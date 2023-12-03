@@ -10,7 +10,7 @@ export const APP_INFO: AppInfo = {
   default_language: 'zh-Hans',
 }
 
-export const isShowPrompt = false
+export const isShowPrompt = true
 export const promptTemplate = 'I want you to act as a javascript console.'
 
 export const API_PREFIX = '/api'
