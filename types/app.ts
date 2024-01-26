@@ -133,4 +133,5 @@ export type VisionFile = {
   transfer_method: TransferMethod
   url: string
   upload_file_id: string
+  belongs_to?: string
 }

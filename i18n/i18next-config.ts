@@ -5,6 +5,8 @@ import commonEn from './lang/common.en'
 import commonZh from './lang/common.zh'
 import appEn from './lang/app.en'
 import appZh from './lang/app.zh'
+import toolsEn from './lang/tools.en'
+import toolsZh from './lang/tools.zh'
 import type { Locale } from '.'
 
 const resources = {
@@ -12,12 +14,16 @@ const resources = {
     translation: {
       common: commonEn,
       app: appEn,
+      // tools
+      tools: toolsEn,
     },
   },
   'zh-Hans': {
     translation: {
       common: commonZh,
       app: appZh,
+      // tools
+      tools: toolsZh,
     },
   },
 }

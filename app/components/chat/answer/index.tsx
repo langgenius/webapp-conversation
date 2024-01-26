@@ -6,10 +6,13 @@ import { useTranslation } from 'react-i18next'
 import LoadingAnim from '../loading-anim'
 import type { FeedbackFunc, IChatItem } from '../type'
 import s from '../style.module.css'
+import ImageGallery from '../../base/image-gallery'
+import Thought from '../thought'
 import { randomString } from '@/utils/string'
-import type { MessageRating } from '@/types/app'
+import type { MessageRating, VisionFile } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
 import { Markdown } from '@/app/components/base/markdown'
+import type { Emoji } from '@/types/tools'
 
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
   <div
@@ -55,11 +58,20 @@ type IAnswerProps = {
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
   isResponsing?: boolean
+  allToolIcons?: Record<string, string | Emoji>
 }
 
 // The component needs to maintain its own state to control whether to display input component
-const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, isResponsing }) => {
-  const { id, content, feedback } = item
+const Answer: FC<IAnswerProps> = ({
+  item,
+  feedbackDisabled = false,
+  onFeedback,
+  isResponsing,
+  allToolIcons,
+}) => {
+  const { id, content, feedback, agent_thoughts } = item
+  const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0
+
   const { t } = useTranslation()
 
   /**
@@ -121,6 +133,37 @@ const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, 
     )
   }
 
+  const getImgs = (list?: VisionFile[]) => {
+    if (!list)
+      return []
+    return list.filter(file => file.type === 'image' && file.belongs_to === 'assistant')
+  }
+
+  const agentModeAnswer = (
+    <div>
+      {agent_thoughts?.map((item, index) => (
+        <div key={index}>
+          {item.thought && (
+            <Markdown content={item.thought} />
+          )}
+          {/* {item.tool} */}
+          {/* perhaps not use tool */}
+          {!!item.tool && (
+            <Thought
+              thought={item}
+              allToolIcons={allToolIcons || {}}
+              isFinished={!!item.observation || !isResponsing}
+            />
+          )}
+
+          {getImgs(item.message_files).length > 0 && (
+            <ImageGallery srcs={getImgs(item.message_files).map(item => item.url)} />
+          )}
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <div key={id}>
       <div className='flex items-start'>
@@ -134,21 +177,17 @@ const Answer: FC<IAnswerProps> = ({ item, feedbackDisabled = false, onFeedback, 
         <div className={`${s.answerWrap}`}>
           <div className={`${s.answer} relative text-sm text-gray-900`}>
             <div className={'ml-2 py-3 px-4 bg-gray-100 rounded-tr-2xl rounded-b-2xl'}>
-              {item.isOpeningStatement && (
-                <div className='flex items-center mb-1 gap-1'>
-                  <OpeningStatementIcon />
-                  <div className='text-xs text-gray-500'>{t('app.chat.openingStatementTitle')}</div>
-                </div>
-              )}
-              {(isResponsing && !content)
+              {(isResponsing && (isAgentMode ? (!content && (agent_thoughts || []).filter(item => !!item.thought || !!item.tool).length === 0) : !content))
                 ? (
                   <div className='flex items-center justify-center w-6 h-5'>
                     <LoadingAnim type='text' />
                   </div>
                 )
-                : (
-                  <Markdown content={content} />
-                )}
+                : (isAgentMode
+                  ? agentModeAnswer
+                  : (
+                    <Markdown content={content} />
+                  ))}
             </div>
             <div className='absolute top-[-14px] right-[-14px] flex flex-row justify-end gap-1'>
               {!feedbackDisabled && !item.feedbackDisabled && renderItemOperation()}
