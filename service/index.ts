@@ -1,18 +1,23 @@
-import type { IOnCompleted, IOnData, IOnError } from './base'
+import type { IOnCompleted, IOnData, IOnError, IOnFile, IOnMessageEnd, IOnMessageReplace, IOnThought } from './base'
 import { get, post, ssePost } from './base'
 import type { Feedbacktype } from '@/types/app'
 
-export const sendChatMessage = async (body: Record<string, any>, { onData, onCompleted, onError }: {
+export const sendChatMessage = async (body: Record<string, any>, { onData, onCompleted, onThought, onFile, onError, getAbortController, onMessageEnd, onMessageReplace }: {
   onData: IOnData
   onCompleted: IOnCompleted
+  onFile: IOnFile
+  onThought: IOnThought
+  onMessageEnd: IOnMessageEnd
+  onMessageReplace: IOnMessageReplace
   onError: IOnError
+  getAbortController?: (abortController: AbortController) => void
 }) => {
   return ssePost('chat-messages', {
     body: {
       ...body,
       response_mode: 'streaming',
     },
-  }, { onData, onCompleted, onError })
+  }, { onData, onCompleted, onThought, onFile, onError, getAbortController, onMessageEnd, onMessageReplace })
 }
 
 export const fetchConversations = async () => {
