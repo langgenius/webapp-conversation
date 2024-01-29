@@ -258,7 +258,7 @@ export const upload = (fetchOptions: any): Promise<any> => {
   })
 }
 
-export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, onError }: IOtherOptions) => {
+export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, onThought, onFile, onMessageEnd, onMessageReplace, onError }: IOtherOptions) => {
   const options = Object.assign({}, baseOptions, {
     method: 'POST',
   }, fetchOptions)
@@ -290,7 +290,7 @@ export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, o
         onData?.(str, isFirstMessage, moreInfo)
       }, () => {
         onCompleted?.()
-      })
+      }, onThought, onMessageEnd, onMessageReplace, onFile)
     }).catch((e) => {
       Toast.notify({ type: 'error', message: e })
       onError?.(e)
