@@ -1,4 +1,6 @@
+import type { Annotation } from './log'
 import type { Locale } from '@/i18n'
+import type { ThoughtItem } from '@/app/components/chat/type'
 
 export type PromptVariable = {
   key: string
@@ -74,9 +76,12 @@ export type IChatItem = {
    * More information about this message
    */
   more?: MessageMore
-  isIntroduction?: boolean
+  annotation?: Annotation
   useCurrentUserAvatar?: boolean
   isOpeningStatement?: boolean
+  suggestedQuestions?: string[]
+  log?: { role: string; text: string }[]
+  agent_thoughts?: ThoughtItem[]
   message_files?: VisionFile[]
 }
 
@@ -133,4 +138,5 @@ export type VisionFile = {
   transfer_method: TransferMethod
   url: string
   upload_file_id: string
+  belongs_to?: string
 }

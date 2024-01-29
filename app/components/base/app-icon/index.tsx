@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import style from './style.module.css'
 
 export type AppIconProps = {
-  size?: 'tiny' | 'small' | 'medium' | 'large'
+  size?: 'xs' | 'tiny' | 'small' | 'medium' | 'large'
   rounded?: boolean
   icon?: string
   background?: string

@@ -1,5 +1,7 @@
 import { API_PREFIX } from '@/config'
 import Toast from '@/app/components/base/toast'
+import type { AnnotationReply, MessageEnd, MessageReplace, ThoughtItem } from '@/app/components/chat/type'
+import type { VisionFile } from '@/types/app'
 
 const TIME_OUT = 100000
 
@@ -21,20 +23,35 @@ const baseOptions = {
 }
 
 export type IOnDataMoreInfo = {
-  conversationId: string | undefined
+  conversationId?: string
+  taskId?: string
   messageId: string
   errorMessage?: string
+  errorCode?: string
 }
 
 export type IOnData = (message: string, isFirstMessage: boolean, moreInfo: IOnDataMoreInfo) => void
-export type IOnCompleted = () => void
-export type IOnError = (msg: string) => void
+export type IOnThought = (though: ThoughtItem) => void
+export type IOnFile = (file: VisionFile) => void
+export type IOnMessageEnd = (messageEnd: MessageEnd) => void
+export type IOnMessageReplace = (messageReplace: MessageReplace) => void
+export type IOnAnnotationReply = (messageReplace: AnnotationReply) => void
+export type IOnCompleted = (hasError?: boolean) => void
+export type IOnError = (msg: string, code?: string) => void
 
 type IOtherOptions = {
+  isPublicAPI?: boolean
+  bodyStringify?: boolean
   needAllResponseContent?: boolean
+  deleteContentType?: boolean
   onData?: IOnData // for stream
+  onThought?: IOnThought
+  onFile?: IOnFile
+  onMessageEnd?: IOnMessageEnd
+  onMessageReplace?: IOnMessageReplace
   onError?: IOnError
   onCompleted?: IOnCompleted // for stream
+  getAbortController?: (abortController: AbortController) => void
 }
 
 function unicodeToChar(text: string) {
@@ -43,17 +60,18 @@ function unicodeToChar(text: string) {
   })
 }
 
-const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted) => {
+const handleStream = (response: Response, onData: IOnData, onCompleted?: IOnCompleted, onThought?: IOnThought, onMessageEnd?: IOnMessageEnd, onMessageReplace?: IOnMessageReplace, onFile?: IOnFile) => {
   if (!response.ok)
     throw new Error('Network response was not ok')
 
-  const reader = response.body.getReader()
+  const reader = response.body?.getReader()
   const decoder = new TextDecoder('utf-8')
   let buffer = ''
-  let bufferObj: any
+  let bufferObj: Record<string, any>
   let isFirstMessage = true
   function read() {
-    reader.read().then((result: any) => {
+    let hasError = false
+    reader?.read().then((result: any) => {
       if (result.done) {
         onCompleted && onCompleted()
         return
@@ -62,27 +80,51 @@ const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted
       const lines = buffer.split('\n')
       try {
         lines.forEach((message) => {
-          if (!message || !message.startsWith('data: '))
-            return
-          try {
-            bufferObj = JSON.parse(message.substring(6)) // remove data: and parse as json
+          if (message.startsWith('data: ')) { // check if it starts with data:
+            try {
+              bufferObj = JSON.parse(message.substring(6)) as Record<string, any>// remove data: and parse as json
+            }
+            catch (e) {
+              // mute handle message cut off
+              onData('', isFirstMessage, {
+                conversationId: bufferObj?.conversation_id,
+                messageId: bufferObj?.message_id,
+              })
+              return
+            }
+            if (bufferObj.status === 400 || !bufferObj.event) {
+              onData('', false, {
+                conversationId: undefined,
+                messageId: '',
+                errorMessage: bufferObj?.message,
+                errorCode: bufferObj?.code,
+              })
+              hasError = true
+              onCompleted?.(true)
+              return
+            }
+            if (bufferObj.event === 'message' || bufferObj.event === 'agent_message') {
+              // can not use format here. Because message is splited.
+              onData(unicodeToChar(bufferObj.answer), isFirstMessage, {
+                conversationId: bufferObj.conversation_id,
+                taskId: bufferObj.task_id,
+                messageId: bufferObj.id,
+              })
+              isFirstMessage = false
+            }
+            else if (bufferObj.event === 'agent_thought') {
+              onThought?.(bufferObj as ThoughtItem)
+            }
+            else if (bufferObj.event === 'message_file') {
+              onFile?.(bufferObj as VisionFile)
+            }
+            else if (bufferObj.event === 'message_end') {
+              onMessageEnd?.(bufferObj as MessageEnd)
+            }
+            else if (bufferObj.event === 'message_replace') {
+              onMessageReplace?.(bufferObj as MessageReplace)
+            }
           }
-          catch (e) {
-            // mute handle message cut off
-            onData('', isFirstMessage, {
-              conversationId: bufferObj?.conversation_id,
-              messageId: bufferObj?.id,
-            })
-            return
-          }
-          if (bufferObj.event !== 'message')
-            return
-
-          onData(unicodeToChar(bufferObj.answer), isFirstMessage, {
-            conversationId: bufferObj.conversation_id,
-            messageId: bufferObj.id,
-          })
-          isFirstMessage = false
         })
         buffer = lines[lines.length - 1]
       }
@@ -92,10 +134,12 @@ const handleStream = (response: any, onData: IOnData, onCompleted?: IOnCompleted
           messageId: '',
           errorMessage: `${e}`,
         })
+        hasError = true
+        onCompleted?.(true)
         return
       }
-
-      read()
+      if (!hasError)
+        read()
     })
   }
   read()
@@ -214,7 +258,7 @@ export const upload = (fetchOptions: any): Promise<any> => {
   })
 }
 
-export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, onError }: IOtherOptions) => {
+export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, onThought, onFile, onMessageEnd, onMessageReplace, onError }: IOtherOptions) => {
   const options = Object.assign({}, baseOptions, {
     method: 'POST',
   }, fetchOptions)
@@ -246,7 +290,7 @@ export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, o
         onData?.(str, isFirstMessage, moreInfo)
       }, () => {
         onCompleted?.()
-      })
+      }, onThought, onMessageEnd, onMessageReplace, onFile)
     }).catch((e) => {
       Toast.notify({ type: 'error', message: e })
       onError?.(e)

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import produce from 'immer'
+import { useGetState } from 'ahooks'
 import type { ConversationItem } from '@/types/app'
 
 const storageConversationIdKey = 'conversationIdInfo'
@@ -7,7 +8,7 @@ const storageConversationIdKey = 'conversationIdInfo'
 type ConversationInfoType = Omit<ConversationItem, 'inputs' | 'id'>
 function useConversation() {
   const [conversationList, setConversationList] = useState<ConversationItem[]>([])
-  const [currConversationId, doSetCurrConversationId] = useState<string>('-1')
+  const [currConversationId, doSetCurrConversationId, getCurrConversationId] = useGetState<string>('-1')
   // when set conversation id, we do not have set appId
   const setCurrConversationId = (id: string, appId: string, isSetToLocalStroge = true, newConversationName = '') => {
     doSetCurrConversationId(id)
@@ -50,6 +51,7 @@ function useConversation() {
     conversationList,
     setConversationList,
     currConversationId,
+    getCurrConversationId,
     setCurrConversationId,
     getConversationIdFromStorage,
     isNewConversation,
