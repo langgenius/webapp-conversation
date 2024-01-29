@@ -21,7 +21,7 @@ export const sendChatMessage = async (body: Record<string, any>, { onData, onCom
 }
 
 export const fetchConversations = async () => {
-  return get('conversations', { params: { limit: 20, first_id: '' } })
+  return get('conversations', { params: { limit: 100, first_id: '' } })
 }
 
 export const fetchChatList = async (conversationId: string) => {
@@ -35,4 +35,8 @@ export const fetchAppParams = async () => {
 
 export const updateFeedback = async ({ url, body }: { url: string; body: Feedbacktype }) => {
   return post(url, { body })
+}
+
+export const generationConversationName = async (id: string) => {
+  return post(`conversations/${id}/name`, { body: { auto_generate: true } })
 }
