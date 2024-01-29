@@ -21,6 +21,7 @@ import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/p
 import AppUnavailable from '@/app/components/app-unavailable'
 import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
 import type { Annotation as AnnotationType } from '@/types/log'
+import { addFileInfos, sortAgentSorts } from '@/utils/tools'
 
 const Main: FC = () => {
   const { t } = useTranslation()
@@ -130,13 +131,16 @@ const Main: FC = () => {
             id: `question-${item.id}`,
             content: item.query,
             isAnswer: false,
-            message_files: item.message_files,
+            message_files: item.message_files?.filter((file: any) => file.belongs_to === 'user') || [],
+
           })
           newChatList.push({
             id: item.id,
             content: item.answer,
+            agent_thoughts: addFileInfos(item.agent_thoughts ? sortAgentSorts(item.agent_thoughts) : item.agent_thoughts, item.message_files),
             feedback: item.feedback,
             isAnswer: true,
+            message_files: item.message_files?.filter((file: any) => file.belongs_to === 'assistant') || [],
           })
         })
         setChatList(newChatList)
