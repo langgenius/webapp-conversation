@@ -565,13 +565,8 @@ const Main: FC = () => {
 
   return (
     <div className='bg-gray-100'>
-      <Header
-        title={APP_INFO.title}
-        isMobile={isMobile}
-        onShowSideBar={showSidebar}
-        onCreateNewChat={() => handleConversationIdChange('-1')}
-      />
-      <div className="flex rounded-t-2xl bg-white overflow-hidden">
+
+      <div className="flex bg-white overflow-hidden]">
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
@@ -585,7 +580,13 @@ const Main: FC = () => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto'>
+        <div className='flex-grow flex flex-col h-[100vh] overflow-y-auto'>
+          <Header
+            title={APP_INFO.title}
+            isMobile={isMobile}
+            onShowSideBar={showSidebar}
+            onCreateNewChat={() => handleConversationIdChange('-1')}
+          />
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
