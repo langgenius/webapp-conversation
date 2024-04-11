@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "output": "cross-env OUTPUT=true next build",
     "start": "next start",
     "lint": "next lint",
     "fix": "next lint --fix",
@@ -67,6 +68,7 @@
     "@types/js-cookie": "^3.0.3",
     "@types/negotiator": "^0.6.1",
     "autoprefixer": "^10.4.14",
+    "cross-env": "^7.0.3",
     "eslint-plugin-react-hooks": "^4.6.0",
     "lint-staged": "^13.2.2",
     "postcss": "^8.4.21",

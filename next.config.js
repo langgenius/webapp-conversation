@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const IS_OUTPUT = process.env.OUTPUT || false;
+
 const nextConfig = {
   productionBrowserSourceMaps: false, // enable browser source map generation during the production build
   // Configure pageExtensions to include md and mdx
@@ -17,5 +19,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 }
-
-module.exports = nextConfig
+if (IS_OUTPUT) {
+  module.exports = {
+    ...nextConfig,
+    output: 'standalone',
+  }
+} else {
+  module.exports = nextConfig
+}

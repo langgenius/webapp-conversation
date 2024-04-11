@@ -1,0 +1,11 @@
+version: '3'
+services:
+  api:
+    image: mmhk/dify-chatbot-web
+    restart: always
+    environment:
+      NEXT_PUBLIC_APP_ID: "${NEXT_PUBLIC_APP_ID}"
+      NEXT_PUBLIC_APP_KEY: "${NEXT_PUBLIC_APP_KEY}"
+      NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL}"
+    ports:
+      - "3000:3000"
