@@ -1,6 +1,8 @@
 import type { FC } from 'react'
 import classNames from 'classnames'
 import style from './style.module.css'
+import LogoImage from "./logo.svg";
+import Image from "next/image";
 
 export type AppIconProps = {
   size?: 'xs' | 'tiny' | 'small' | 'medium' | 'large'
@@ -24,11 +26,8 @@ const AppIcon: FC<AppIconProps> = ({
         rounded && style.rounded,
         className ?? '',
       )}
-      style={{
-        background,
-      }}
     >
-      🤖
+      <Image src={LogoImage} alt="logo" />
     </span>
   )
 }

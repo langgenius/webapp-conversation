@@ -3,10 +3,13 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import commonEn from './lang/common.en'
 import commonZh from './lang/common.zh'
+import commonZhHant from './lang/common.zh-hant'
 import appEn from './lang/app.en'
 import appZh from './lang/app.zh'
+import appZhHant from './lang/app.zh-hant'
 import toolsEn from './lang/tools.en'
 import toolsZh from './lang/tools.zh'
+import toolsZhHant from './lang/tools.zh-hant'
 import type { Locale } from '.'
 
 const resources = {
@@ -24,6 +27,14 @@ const resources = {
       app: appZh,
       // tools
       tools: toolsZh,
+    },
+  },
+  'zh-Hant': {
+    translation: {
+      common: commonZhHant,
+      app: appZhHant,
+      // tools
+      tools: toolsZhHant,
     },
   },
 }

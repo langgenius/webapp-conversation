@@ -49,3 +49,4 @@ yarn.lock
 
 # pmpm
 pnpm-lock.yaml
+/.idea

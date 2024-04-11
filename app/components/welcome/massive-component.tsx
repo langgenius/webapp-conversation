@@ -9,12 +9,14 @@ import {
 import s from './style.module.css'
 import type { AppInfo } from '@/types/app'
 import Button from '@/app/components/base/button'
+import Image from "next/image";
+import LogoImage from "./icons/logo.svg"
 
 export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
   const { t } = useTranslation()
   return (
     <div>
-      <div className='flex items-center py-2 text-xl font-medium text-gray-700 rounded-md'>👏 {t('app.common.welcome')} {siteInfo.title}</div>
+      <div className='flex items-center py-2 text-xl font-medium text-gray-700 rounded-md'><Image className={s.logo} src={LogoImage} alt="logo" /> {t('app.common.welcome')} {siteInfo.title}</div>
       <p className='text-sm text-gray-500'>{siteInfo.description}</p>
     </div>
   )
@@ -70,5 +72,5 @@ export const EditBtn = ({ className, onClick }: { className?: string; onClick: (
 }
 
 export const FootLogo = () => (
-  <div className={s.logo} />
+  <Image className={s.logo} src={LogoImage} alt="logo"/>
 )

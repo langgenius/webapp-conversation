@@ -126,3 +126,23 @@ a {
   background-clip: text;
   text-fill-color: transparent;
 }
+
+@font-face {
+    font-family: 'FrutigerLTStd-Bold';
+    src: url('/fonts/FrutigerLTStd.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-frutiger {
+    font-family: 'FrutigerLTStd-Bold', sans-serif;
+    color: #ffffff;
+    font-style: 1.5em;
+}
+.chat-header-bg {
+    background: #006;
+}
+html,
+.font-sans {
+    font-family: Helvetica, Arial, Helvetica Neue, MHeiHK-Medium, PingFang HK, SourceHanSansTWHK-Light, Microsoft JhengHei, sans-serif;
+}

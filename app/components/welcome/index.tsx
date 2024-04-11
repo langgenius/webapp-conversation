@@ -302,7 +302,7 @@ const Welcome: FC<IWelcomeProps> = ({
         {/*  Has't set inputs  */}
         {
           !hasSetInputs && (
-            <div className='mobile:pt-[72px] tablet:pt-[128px] pc:pt-[200px]'>
+            <div className='mobile:pt-[72px] tablet:pt-[128px] pc:pt-[200px] h-screen'>
               {hasVar
                 ? (
                   renderVarPanel()
@@ -331,7 +331,7 @@ const Welcome: FC<IWelcomeProps> = ({
               </div>
               : <div>
               </div>}
-            <a className='flex items-center pr-3 space-x-3' href="https://dify.ai/" target="_blank">
+            <a className='flex items-center pr-3 space-x-3' href="#">
               <span className='uppercase'>{t('app.chat.powerBy')}</span>
               <FootLogo />
             </a>

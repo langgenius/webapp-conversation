@@ -36,6 +36,7 @@ const Main: FC = () => {
   const [isUnknwonReason, setIsUnknwonReason] = useState<boolean>(false)
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
+  const [isMaxToken, setIsMaxToken] = useState<boolean>(false)
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
   const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>({
@@ -47,7 +48,7 @@ const Main: FC = () => {
 
   useEffect(() => {
     if (APP_INFO?.title)
-      document.title = `${APP_INFO.title} - Powered by Dify`
+      document.title = `${APP_INFO.title}`
   }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
@@ -519,7 +520,10 @@ const Main: FC = () => {
           },
         ))
       },
-      onError() {
+      onError(msg, code) {
+        if (code == '413') {
+          setIsMaxToken(true);
+        }
         setResponsingFalse()
         // role back placeholder answer
         setChatList(produce(getChatList(), (draft) => {
@@ -585,7 +589,7 @@ const Main: FC = () => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto'>
+        <div className='flex-grow flex-col flex h-[calc(100vh_-_3rem)] overflow-y-auto'>
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
@@ -609,6 +613,7 @@ const Main: FC = () => {
                     isResponsing={isResponsing}
                     checkCanSend={checkCanSend}
                     visionConfig={visionConfig}
+                    isHideSendInput={isMaxToken}
                   />
                 </div>
               </div>)

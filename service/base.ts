@@ -284,6 +284,11 @@ export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, o
       }
       return handleStream(res, (str: string, isFirstMessage: boolean, moreInfo: IOnDataMoreInfo) => {
         if (moreInfo.errorMessage) {
+          if (/(context_length_exceeded)/i.test(`${moreInfo.errorMessage}`)) {
+            onError?.('context_length_exceeded', '413');
+            Toast.notify({ type: 'info', message: '這個對話已經很長了，請新開對話繼續吧' })
+            return
+          }
           Toast.notify({ type: 'error', message: moreInfo.errorMessage })
           return
         }
