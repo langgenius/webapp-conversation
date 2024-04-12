@@ -22,6 +22,7 @@ import AppUnavailable from '@/app/components/app-unavailable'
 import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
+import useConversationMaxToken from "@/hooks/use-conversation-maxtoken";
 
 const Main: FC = () => {
   const { t } = useTranslation()
@@ -36,7 +37,7 @@ const Main: FC = () => {
   const [isUnknwonReason, setIsUnknwonReason] = useState<boolean>(false)
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
-  const [isMaxToken, setIsMaxToken] = useState<boolean>(false)
+  const [isMaxToken, setMaxTokenCurrID, addMaxTokenConversation] = useConversationMaxToken()
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
   const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>({
@@ -58,6 +59,7 @@ const Main: FC = () => {
       setAutoFreeze(true)
     }
   }, [])
+
 
   /*
   * conversation info
@@ -152,6 +154,11 @@ const Main: FC = () => {
       setChatList(generateNewChatListWithOpenstatement())
   }
   useEffect(handleConversationSwitch, [currConversationId, inited])
+  useEffect(() => {
+    if (currConversationId) {
+      setMaxTokenCurrID(currConversationId);
+    }
+  }, [currConversationId])
 
   const handleConversationIdChange = (id: string) => {
     if (id === '-1') {
@@ -163,6 +170,7 @@ const Main: FC = () => {
     }
     // trigger handleConversationSwitch
     setCurrConversationId(id, APP_ID)
+    setMaxTokenCurrID(id);
     hideSidebar()
   }
 
@@ -522,7 +530,7 @@ const Main: FC = () => {
       },
       onError(msg, code) {
         if (code == '413') {
-          setIsMaxToken(true);
+          addMaxTokenConversation(currConversationId);
         }
         setResponsingFalse()
         // role back placeholder answer
