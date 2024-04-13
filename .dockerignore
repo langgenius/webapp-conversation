@@ -4,3 +4,5 @@
 .git
 .idea
 .yarn
+.husky
+node_modules

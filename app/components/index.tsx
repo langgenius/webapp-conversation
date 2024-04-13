@@ -19,15 +19,15 @@ import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import Loading from '@/app/components/base/loading'
 import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/prompt'
 import AppUnavailable from '@/app/components/app-unavailable'
-import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
 import useConversationMaxToken from "@/hooks/use-conversation-maxtoken";
 
-const Main: FC = () => {
+const Main: FC = ({params}: any) => {
   const { t } = useTranslation()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
+  const {APP_INFO, isShowPrompt, promptTemplate, APP_ID, API_KEY} = params;
   const hasSetAppConfig = APP_ID && API_KEY
 
   /*

@@ -4,8 +4,9 @@ services:
     image: mmhk/dify-chatbot-web
     restart: always
     environment:
-      NEXT_PUBLIC_APP_ID: "${NEXT_PUBLIC_APP_ID}"
-      NEXT_PUBLIC_APP_KEY: "${NEXT_PUBLIC_APP_KEY}"
-      NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL}"
+      APP_ID: "${APP_ID}"
+      APP_KEY: "${APP_KEY}"
+      API_URL: "${API_URL}"
+      NODE_ENV: development
     ports:
       - "3000:3000"

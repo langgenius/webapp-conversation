@@ -1,8 +1,10 @@
+import { draftMode } from 'next/headers'
 import { type NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { client, getInfo, setSession } from '@/app/api/utils/common'
 
 export async function GET(request: NextRequest) {
+  draftMode().enable();
   const { sessionId, user } = getInfo(request)
   try {
     const { data } = await client.getApplicationParameters(user)
