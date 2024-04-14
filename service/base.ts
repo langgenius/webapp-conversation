@@ -171,6 +171,7 @@ const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: I
   if (body)
     options.body = JSON.stringify(body)
 
+  options.cache = 'no-store';
   // Handle timeout
   return Promise.race([
     new Promise((resolve, reject) => {

@@ -15,7 +15,6 @@ const App: FC<IMainProps> = ({
       promptTemplate,
       APP_ID,
       API_KEY,
-      TEST_FLAG: "Hello",
     }} />
   )
 }

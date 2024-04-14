@@ -1,0 +1,155 @@
+@use "sass:math";
+
+$desktop_layout_width: 1440;
+$mobile_layout_width: 640;
+$base_rem: 24px;
+
+//桌面版相对单位
+@function d-vw($target) {
+  $vw-context: ($desktop_layout_width*.01) * 1px;
+  @return math.div($target, $vw-context) * 1vw;
+}
+
+//移动版相对单位
+@function m-vw($target) {
+  $vw-context: ($mobile_layout_width*.01) * 1px;
+  @return math.div($target, $vw-context) * 1vw;
+}
+//全局相对单位
+@function rem($target) {
+  @return math.div($target, $base_rem) * 1rem;
+}
+
+html {
+  font-size: d-vw($base_rem);
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: m-vw($base_rem);
+  }
+}
+
+.auth-mask {
+  background: rgba(0, 0, 0, .9);;
+}
+
+@keyframes shake1 {
+  0% { margin-left: 0em; }
+  25% { margin-left: 0.5em; }
+  75% { margin-left: -0.5em; }
+  100% { margin-left: 0em; }
+}
+
+.login_box {
+  width: rem(500px);
+  background-color: #E6E9E8;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 0 1em 0;
+
+  .conter_title {
+    text-align: center;
+    font-family: sans-serif;
+    color: #000066;
+    line-height: 1.5;
+    padding: 0.5em 0;
+  }
+
+  .login_top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    line-height: 1.5;
+    padding: 0.5em 0;
+    box-sizing: border-box;
+
+    .font-frutiger {
+      color: #006;
+      margin-left: 0.5em;
+      font-size: 1.5em;
+    }
+
+    .logo_box:before {
+      font-size: rem(61px);
+      vertical-align: middle;
+    }
+
+    .logo_box {
+      font-style: normal;
+      vertical-align: middle;
+      margin: 0 rem(10px) 0 0;
+
+      &:before {
+        content: "\24";
+        font-size: rem(62px);
+        color: #009fe3;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .input_box {
+    margin: 1em auto;
+  }
+
+  .login_conter {
+    input {
+      border: 1px solid #8A8A8A;
+      width: rem(385px);
+      padding: 0.25em 0.5em;
+      margin: 0 auto;
+      float: none;
+      display: block;
+      background-color: white;
+      font-size: rem(24px);
+      text-align: center;
+    }
+    input:disabled {
+      background-color: #8A8A8A;
+    }
+    input:focus:not([readonly]) {
+      border: 1px solid black;
+      box-shadow: none;
+    }
+    input:focus-visible {
+      outline: none;
+    }
+
+    .error {
+      text-align: center;
+      margin: 0.5em auto;
+      font-size: 0.8em;
+      color: darkred;
+    }
+
+    .has-error {
+      animation: shake1 0.1s ease-in 0s 2;
+
+      input {
+        border: 1px solid darkred;
+        color: darkred;
+      }
+    }
+  }
+
+  .conter_submit {
+    width: rem(167px);
+    height: rem(50px);
+    background-color: #389FDD;
+    color: white;
+    display: block;
+    text-align: center;
+    line-height: rem(50px);
+    font-size: rem(24px);
+    margin: 0 auto;
+    border: 0;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #8A8A8A;
+    }
+  }
+}

@@ -45,3 +45,6 @@ export const fetchSuggestedQuestions = (messageId: string) => {
   return get(`/messages/${messageId}/suggested`)
 }
 
+export const auth = async (mobile: string) => {
+  return post(`/auth`, { body: { mobile, } })
+}
