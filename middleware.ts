@@ -36,6 +36,19 @@ export async function middleware(request: NextRequest) {
             });
         }
 
+        if (request.nextUrl.pathname.startsWith('/api')) {
+            return NextResponse.json({
+                status: false,
+                error: {
+                    msg: "Auth Error",
+                    code: 406,
+                }
+            }, {
+                headers: setSession(sessionId),
+                status: 406,
+            });
+        }
+
         const url = request.nextUrl.clone()
         url.pathname = '/auth';
 

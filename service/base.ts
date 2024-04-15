@@ -200,6 +200,16 @@ const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: I
                     })
                   })
               }
+
+              /**
+               * auth error
+               */
+              if (res.status == 406) {
+                if (typeof location !== "undefined") {
+                  location.reload();
+                }
+                return Promise.reject(new Error('Auth Error'));
+              }
             }
             catch (e) {
               Toast.notify({ type: 'error', message: `${e}` })
@@ -280,6 +290,18 @@ export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, o
             Toast.notify({ type: 'error', message: data.message || 'Server Error' })
           })
         })
+        /**
+         * auth error
+         */
+        if (res.status == 406) {
+          if (typeof location !== "undefined") {
+            location.reload();
+          }
+          onError?.('Auth Error', '406');
+          return
+        }
+
+
         onError?.('Server Error')
         return
       }

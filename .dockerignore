@@ -5,4 +5,6 @@
 .idea
 .yarn
 .husky
+.swc
+.pnp*
 node_modules
