@@ -1,7 +1,6 @@
 'use client'
 import type { FC } from 'react'
 import React, {useMemo, useState} from "react";
-import { useRouter } from 'next/navigation'
 import AppIcon from '@/app/components/base/app-icon'
 import { FormEvent } from 'react'
 import {auth} from "@/service"
@@ -9,11 +8,10 @@ import {auth} from "@/service"
 import "./auth.scss"
 
 const App: FC = () => {
-  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setError] = useState<string>('');
-  const showError = useMemo<boolean>(() => {
-    return errorMsg && errorMsg.length > 0;
+  const showError = useMemo<boolean>(():boolean => {
+    return !!(errorMsg && errorMsg.length > 0);
   }, [errorMsg]);
   const hasError = useMemo<string>(() => {
     return showError ? 'input_box has-error' : 'input_box';
@@ -27,8 +25,8 @@ const App: FC = () => {
     const mobile = formData.get("mobile") || '';
     try {
       const data = await auth(`${mobile}`);
-      if (data?.status) {
-        router.push('/');
+      if (data?.status && (typeof location !== "undefined")) {
+        location.reload();
       }
       if (data.error) {
         setError(data.error);

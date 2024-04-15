@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createSessionStore, userSession } from '@/utils/tools'
-import { getInfo } from '@/app/api/utils/common'
+import { getInfo, setSession, getSession } from '@/app/api/utils/common'
+import { ENABLE_AUTH } from '@/config'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     if (request.nextUrl.pathname.startsWith('/_next')) {
         return NextResponse.next();
     }
@@ -18,28 +19,33 @@ export function middleware(request: NextRequest) {
 
     if (request.nextUrl.pathname.startsWith('/auth')
         || request.nextUrl.pathname.startsWith('/api/auth')) {
-        let resp = NextResponse.next();
-        resp.cookies.set("session_id", sessionId);
 
-        return resp;
+        return NextResponse.next({
+            headers: setSession(sessionId),
+        });
     }
 
     console.log(`middleware: ${sessionId}`);
 
-    const session = createSessionStore(sessionId)
-    return session.get().then((data: userSession) => {
-        console.log(`middleware: ${JSON.stringify(data)}`);
+    if (ENABLE_AUTH) {
+        const session = await getSession(request, sessionId);
+        console.log(`middleware: ${JSON.stringify(session)}`);
 
-        if (data?.channel) {
-            return NextResponse.next();
+        if (session?.channel) {
+            return NextResponse.next({
+                headers: setSession(sessionId),
+            });
         }
 
         const url = request.nextUrl.clone()
         url.pathname = '/auth';
 
-        let resp = NextResponse.rewrite(url);
-        resp.cookies.set("session_id", sessionId);
+        return NextResponse.rewrite(url, {
+            headers: setSession(sessionId),
+        });
+    }
 
-        return resp;
-    })
+    return NextResponse.next({
+        headers: setSession(sessionId),
+    });
 }

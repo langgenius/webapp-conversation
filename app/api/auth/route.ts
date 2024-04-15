@@ -1,7 +1,6 @@
 import { type NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { getInfo, setSession } from '@/app/api/utils/common'
-import { createSessionStore } from "@/utils/tools"
+import { getInfo, ResponseWithSession } from '@/app/api/utils/common'
 import { authSpeedyAgencyMember } from '@/app/api/utils/speedyagency'
 
 export async function POST(request: NextRequest) {
@@ -16,20 +15,11 @@ export async function POST(request: NextRequest) {
       if (channel) {
         console.log(`auth req: ${sessionId}`);
 
-        const session = createSessionStore(sessionId)
-        session.set({
+        return await ResponseWithSession(NextResponse.json({
+          status: true,
+        }), sessionId, {
           mobile,
           channel: `${channel}`,
-        });
-
-        session.get().then((data) => {
-          console.log(`auth resp: ${JSON.stringify(data)}`);
-        })
-
-        return NextResponse.json({
-          status: true,
-        }, {
-          headers: setSession(sessionId),
         })
       }
     }

@@ -13,9 +13,9 @@ const config: Config = {
   // testEnvironment: "jsdom",
   // preset: "ts-jest",
   testEnvironment: "node",
-  moduleNameMapper: {
-    "^axios$": "node_modules/axios/dist/node/axios.cjs"
-  },
+  // moduleNameMapper: {
+  //   "^axios$": "<rootDir>/node_modules/axios/dist/node/axios.cjs"
+  // },
   transformIgnorePatterns: [
     "node_modules/(?!axios)",
   ]

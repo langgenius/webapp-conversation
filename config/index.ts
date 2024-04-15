@@ -2,8 +2,10 @@ import type { AppInfo } from '@/types/app'
 export const APP_ID = `${process.env.APP_ID}`
 export const API_KEY = `${process.env.APP_KEY}`
 export const API_URL = `${process.env.API_URL}`
-export const SA_API_URL = `${process.env.SA_API_URL}`
+export const SA_API_URL = `${process.env.SA_API_URL || 'https://speedyagency.demo2.mixmedia.com/api'}`
 export const SA_API_TOKEN = `${process.env.SA_API_TOKEN}`
+export const ENABLE_AUTH = `${process.env.ENABLE_AUTH}`
+export const SECRET_KEY = `${process.env.SECRET_KEY || 'IEboqt3vmYau9ic6zye78sX2l4JfVHFw'}`
 export const APP_INFO: AppInfo = {
   title: 'ZoEasy',
   description: '',
