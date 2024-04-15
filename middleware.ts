@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createSessionStore, userSession } from '@/utils/tools'
 import { getInfo, setSession, getSession } from '@/app/api/utils/common'
 import { ENABLE_AUTH } from '@/config'
 
@@ -25,11 +24,11 @@ export async function middleware(request: NextRequest) {
         });
     }
 
-    console.log(`middleware: ${sessionId}`);
+    // console.log(`middleware: ${sessionId}`);
 
     if (ENABLE_AUTH) {
         const session = await getSession(request, sessionId);
-        console.log(`middleware: ${JSON.stringify(session)}`);
+        // console.log(`middleware: ${JSON.stringify(session)}`);
 
         if (session?.channel) {
             return NextResponse.next({

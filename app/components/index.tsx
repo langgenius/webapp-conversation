@@ -576,7 +576,7 @@ const Main: FC = ({params}: any) => {
     return <Loading type='app' />
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-100 main-wrapper'>
       <Header
         title={APP_INFO.title}
         isMobile={isMobile}
@@ -597,7 +597,7 @@ const Main: FC = ({params}: any) => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex-col flex h-[calc(100vh_-_3rem)] overflow-y-auto'>
+        <div className='flex-grow flex-col flex h-[calc(100vh_-_3rem)] overflow-y-auto chat-wrapper'>
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
@@ -612,7 +612,7 @@ const Main: FC = ({params}: any) => {
 
           {
             hasSetInputs && (
-              <div className='relative grow h-[200px] pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
+              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
                 <div className='h-full overflow-y-auto' ref={chatListDomRef}>
                   <Chat
                     chatList={chatList}

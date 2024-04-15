@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       const channel = await authSpeedyAgencyMember(mobile);
 
       if (channel) {
-        console.log(`auth req: ${sessionId}`);
+        // console.log(`auth req: ${sessionId}`);
 
         return await ResponseWithSession(NextResponse.json({
           status: true,
