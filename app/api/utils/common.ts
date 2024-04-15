@@ -15,6 +15,23 @@ export const getInfo = (request: NextRequest) => {
   }
 }
 
+export const getSessionFromRequest = async (req: NextRequest): Promise<null|Record<string, string>> => {
+  const hash = req.nextUrl.searchParams.get('hash');
+
+  try {
+    if (hash) {
+      const data = await decrypt(hash);
+      if (data?.channel) {
+        return data;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  return null;
+}
+
 export const setSession = (sessionId: string) => {
   return { 'Set-Cookie': `session_id=${sessionId}` }
 }

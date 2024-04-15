@@ -8,6 +8,19 @@ export type userSession = {
   channel: string,
 }
 
+function arrayBufferToHex(buffer: ArrayBuffer) {
+  let byteArray = new Uint8Array(buffer);
+  let hexParts = [];
+
+  for(let i = 0; i < byteArray.length; i++) {
+    let hex = byteArray[i].toString(16);
+    let paddedHex = ('00' + hex).slice(-2);
+    hexParts.push(paddedHex);
+  }
+
+  return hexParts.join('');
+}
+
 export const encrypt = async (value: Record<string, string>) => {
   const plainText = JSON.stringify(value);
   const ptUtf8 = new TextEncoder().encode(plainText);
@@ -30,7 +43,6 @@ export const decrypt = async (encryptedData: string): Promise<Record<string, str
   const ctBytes = new Uint8Array(ctStr.split('').map(c => c.charCodeAt(0)));
 
   // Parse hexadecimal (base 16) iv and ciphertext from ctBytes array
-
   const iv = ctBytes.slice(0, 24).reduce<number[]>((result, v, i) => {
     if (i % 2 === 0) {
       result.push(parseInt(ctStr.substr(i, 2), 16));

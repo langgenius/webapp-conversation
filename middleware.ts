@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
         const url = request.nextUrl.clone()
         url.pathname = '/auth';
 
-        return NextResponse.rewrite(url, {
+        return NextResponse.redirect(url, {
             headers: setSession(sessionId),
         });
     }
