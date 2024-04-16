@@ -155,12 +155,12 @@ const Answer: FC<IAnswerProps> = ({
               isFinished={!!item.observation || !isResponsing}
             />
           )}
-
           {getImgs(item.message_files).length > 0 && (
             <ImageGallery srcs={getImgs(item.message_files).map(item => item.url)} />
           )}
         </div>
       ))}
+      { isResponsing ? <p>生成答復中...</p> : ''}
     </div>
   )
 

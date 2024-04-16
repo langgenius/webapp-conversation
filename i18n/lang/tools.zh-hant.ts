@@ -62,10 +62,10 @@ const translation = {
     privacyPolicyPlaceholder: '請輸入隱私協議',
   },
   thought: {
-    using: '正在使用',
-    used: '已使用',
-    requestTitle: '請求來自',
-    responseTitle: '響應來自',
+    using: '生成答復中，正在查詢',
+    used: '已查詢',
+    requestTitle: '查詢來自',
+    responseTitle: '數據來自',
   },
   setBuiltInTools: {
     info: '信息',

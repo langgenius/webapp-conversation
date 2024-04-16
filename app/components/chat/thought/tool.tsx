@@ -7,11 +7,13 @@ import cn from 'classnames'
 import type { ToolInfoInThought } from '../type'
 import Panel from './panel'
 import Loading02 from '@/app/components/base/icons/line/loading-02'
-import ChevronDown from '@/app/components/base/icons/line/arrows/chevron-down'
+import detailImage from "./image/details.svg"
+import CloseIcon from '@/app/components/base/icons/line/x-close'
 import CheckCircle from '@/app/components/base/icons/solid/general/check-circle'
 import DataSetIcon from '@/app/components/base/icons/public/data-set'
 import type { Emoji } from '@/types/tools'
 import AppIcon from '@/app/components/base/app-icon'
+import Image from "next/image";
 
 type Props = {
   payload: ToolInfoInThought
@@ -58,7 +60,7 @@ const Tool: FC<Props> = ({
       <div className={cn(!isShowDetail && 'shadow-sm', !isShowDetail && 'inline-block', 'max-w-full overflow-x-auto bg-white rounded-md')}>
         <div
           className={cn('flex items-center h-7 px-2 cursor-pointer')}
-          onClick={() => setIsShowDetail(!isShowDetail)}
+          onClick={() => !isFinished && setIsShowDetail(!isShowDetail)}
         >
           {!isFinished && (
             <Loading02 className='w-3 h-3 text-gray-500 animate-spin shrink-0' />
@@ -78,11 +80,15 @@ const Tool: FC<Props> = ({
           >
             {toolName}
           </span>
-          <ChevronDown
-            className={cn(isShowDetail && 'rotate-180', 'ml-1 w-3 h-3 text-gray-500 select-none cursor-pointer shrink-0')}
-          />
+          {
+            isShowDetail ?
+              <CloseIcon className='ml-1 w-3 h-3 text-gray-500 select-none cursor-pointer shrink-0' />
+              :
+              <Image src={detailImage} alt='detail'
+                className='ml-1 w-3 h-3 text-gray-500 select-none cursor-pointer shrink-0' />
+          }
         </div>
-        {isShowDetail && (
+        {(isShowDetail && !isFinished) && (
           <div className='border-t border-black/5 p-2 space-y-2 '>
             <Panel
               isRequest={true}
