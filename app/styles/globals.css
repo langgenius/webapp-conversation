@@ -169,4 +169,7 @@ html,
         position: fixed;
         bottom: 1em;
     }
+    .chat-wrapper .chat-input textarea {
+      touch-action: manipulation;
+    }
 }
