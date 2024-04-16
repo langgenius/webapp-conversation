@@ -21,6 +21,13 @@ function arrayBufferToHex(buffer: ArrayBuffer) {
   return hexParts.join('');
 }
 
+export async function generateHash(value: string, algorithm = 'SHA-256'): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(value);
+  const hashBuffer = await subtle.digest(algorithm, msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 export const encrypt = async (value: Record<string, string>) => {
   const plainText = JSON.stringify(value);
   const ptUtf8 = new TextEncoder().encode(plainText);

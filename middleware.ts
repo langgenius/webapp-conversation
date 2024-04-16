@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getInfo, setSession, getSession } from '@/app/api/utils/common'
+import { getInfo, setSession, getSession, generateUserHashFromMobile } from '@/app/api/utils/common'
 import { ENABLE_AUTH } from '@/config'
 
 export async function middleware(request: NextRequest) {
@@ -11,6 +11,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
     }
     if (request.nextUrl.pathname.endsWith('.ico')) {
+        return NextResponse.next();
+    }
+    if (request.nextUrl.pathname.endsWith('.map')) {
         return NextResponse.next();
     }
 
@@ -24,15 +27,22 @@ export async function middleware(request: NextRequest) {
         });
     }
 
-    // console.log(`middleware: ${sessionId}`);
+    // console.log(`middleware nextUrl: ${request.nextUrl.pathname}`);
+    // console.log(`middleware auth: ${ENABLE_AUTH}`);
 
     if (ENABLE_AUTH) {
         const session = await getSession(request, sessionId);
         // console.log(`middleware: ${JSON.stringify(session)}`);
 
+        // console.log(`middleware session: ${JSON.stringify(session)}`);
+        if (session?.mobile) {
+            request.headers.set('user_hash', session?.mobile);
+        }
+
         if (session?.channel) {
             return NextResponse.next({
                 headers: setSession(sessionId),
+                request,
             });
         }
 

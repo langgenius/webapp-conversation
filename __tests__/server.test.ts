@@ -1,5 +1,5 @@
 import { authSpeedyAgencyMember } from '@/app/api/utils/speedyagency';
-import { encrypt, decrypt } from '@/utils/tools'
+import { encrypt, decrypt, generateHash } from '@/utils/tools'
 
 describe("Test Server", () => {
     it('authSpeedyAgencyMember', async function () {
@@ -19,7 +19,7 @@ describe("Test Server", () => {
         console.log(encryptedData);
 
         expect(encryptedData).not.toBeNull()
-    })
+    });
 
     it('decrypt', async function () {
         const encryptedData = 'N2M0NGNlZDJiMjRlMmFmNTQwMWIxZGZiTFlA5Al/mcPLvtSD/56Xgzl8+C9GCukkrI8AxyB6LeYfE57b1APZbdPcFD5w';
@@ -28,6 +28,14 @@ describe("Test Server", () => {
         console.dir(decryptedData);
 
         expect(decryptedData).not.toBeNull()
-    })
+    });
+
+    it ("generateHash", async function() {
+        const hash = await generateHash('1234567890');
+
+        console.log(hash);
+
+        expect(hash).not.toBeNull()
+    });
 })
 

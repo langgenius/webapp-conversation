@@ -2,13 +2,14 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { ChatClient } from 'dify-client'
 import { v4 } from 'uuid'
 import { API_KEY, API_URL, APP_ID } from '@/config'
-import { encrypt, decrypt } from '@/utils/tools'
+import { encrypt, decrypt, generateHash } from '@/utils/tools'
 
 const userPrefix = `user_${APP_ID}:`
 
 export const getInfo = (request: NextRequest) => {
   const sessionId = request.cookies.get('session_id')?.value || v4()
-  const user = userPrefix + sessionId
+  const user_hash = request.headers.get('user_hash');
+  const user = user_hash || (userPrefix + sessionId)
   return {
     sessionId,
     user,
@@ -34,6 +35,13 @@ export const getSessionFromRequest = async (req: NextRequest): Promise<null|Reco
 
 export const setSession = (sessionId: string) => {
   return { 'Set-Cookie': `session_id=${sessionId}` }
+}
+
+export const generateUserHashFromMobile = async (mobile: string) => {
+  if (mobile) {
+    return await generateHash(mobile);
+  }
+  return null;
 }
 
 export const ResponseWithSession = async (resp:NextResponse, sessionId: string, value:Record<string, string> = {}) => {
