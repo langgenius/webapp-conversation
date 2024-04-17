@@ -59,10 +59,5 @@ export async function GET(request: NextRequest) {
     return ResponseWithSession(NextResponse.redirect(url), sessionId, data);
   }
 
-  return NextResponse.json({
-    headers: request.headers,
-    url,
-  })
-
-  // return NextResponse.redirect(url);
+  return NextResponse.redirect(url);
 }
