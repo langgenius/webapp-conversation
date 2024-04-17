@@ -160,7 +160,7 @@ const Answer: FC<IAnswerProps> = ({
           )}
         </div>
       ))}
-      { isResponsing ? <p>生成答復中...</p> : ''}
+      { isResponsing ? <p> ⏳ 生成答覆中...</p> : ''}
     </div>
   )
 

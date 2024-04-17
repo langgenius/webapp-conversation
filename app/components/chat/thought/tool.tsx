@@ -60,7 +60,6 @@ const Tool: FC<Props> = ({
       <div className={cn(!isShowDetail && 'shadow-sm', !isShowDetail && 'inline-block', 'max-w-full overflow-x-auto bg-white rounded-md')}>
         <div
           className={cn('flex items-center h-7 px-2 cursor-pointer')}
-          onClick={() => !isFinished && setIsShowDetail(!isShowDetail)}
         >
           {!isFinished && (
             <Loading02 className='w-3 h-3 text-gray-500 animate-spin shrink-0' />

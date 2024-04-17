@@ -144,7 +144,7 @@ a {
 }
 html,
 .font-sans {
-    font-family: Helvetica, Arial, Helvetica Neue, MHeiHK-Medium, PingFang HK, SourceHanSansTWHK-Light, Microsoft JhengHei, sans-serif;
+        font-family: Helvetica, Arial, Helvetica Neue, MHeiHK-Medium, PingFang HK, SourceHanSansTWHK-Light, Microsoft JhengHei, sans-serif, Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
 }
 
 @media (max-width: 768px) {

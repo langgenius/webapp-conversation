@@ -2,7 +2,6 @@ import { type NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { getInfo, ResponseWithSession, getSessionFromRequest } from '@/app/api/utils/common'
 import { authSpeedyAgencyMember } from '@/app/api/utils/speedyagency'
-import {setSession} from "../utils/common";
 
 export async function POST(request: NextRequest) {
   const { sessionId } = getInfo(request)
