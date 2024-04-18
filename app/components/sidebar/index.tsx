@@ -14,7 +14,6 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const MAX_CONVERSATION_LENTH = 20
 
 export type ISidebarProps = {
   copyRight: string
@@ -34,16 +33,13 @@ const Sidebar: FC<ISidebarProps> = ({
     <div
       className="shrink-0 flex flex-col overflow-y-auto bg-white pc:w-[244px] tablet:w-[192px] mobile:w-[240px]  border-r border-gray-200 tablet:h-[calc(100vh_-_3rem)] mobile:h-screen"
     >
-      {list.length < MAX_CONVERSATION_LENTH && (
-        <div className="flex flex-shrink-0 p-4 !pb-0">
-          <Button
-            onClick={() => { onCurrentIdChange('-1') }}
-            className="group block w-full flex-shrink-0 !justify-start !h-9 text-primary-600 items-center text-sm">
-            <PencilSquareIcon className="mr-2 h-4 w-4" /> {t('app.chat.newChat')}
-          </Button>
-        </div>
-      )}
-
+      <div className="flex flex-shrink-0 p-4 !pb-0">
+        <Button
+          onClick={() => { onCurrentIdChange('-1') }}
+          className="group block w-full flex-shrink-0 !justify-start !h-9 text-primary-600 items-center text-sm">
+          <PencilSquareIcon className="mr-2 h-4 w-4" /> {t('app.chat.newChat')}
+        </Button>
+      </div>
       <nav className="mt-4 flex-1 space-y-1 bg-white p-4 !pt-0">
         {list.map((item) => {
           const isCurrent = item.id === currentId
