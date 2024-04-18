@@ -35,6 +35,7 @@ export async function middleware(request: NextRequest) {
         // console.log(`middleware: ${JSON.stringify(session)}`);
         if (session?.mobile) {
             request.headers.set("user_mobile", session?.mobile);
+            request.headers.set("user_hash", session?.mobile);
         }
         // console.log(`middleware session: ${JSON.stringify(session)}`);
 
