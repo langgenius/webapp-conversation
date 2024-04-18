@@ -27,7 +27,7 @@ const Main: FC = ({params}: any) => {
   const { t } = useTranslation()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const {APP_INFO, isShowPrompt, promptTemplate, APP_ID, API_KEY} = params;
+  const {APP_INFO, isShowPrompt, promptTemplate, APP_ID, API_KEY, showMobile} = params;
   const hasSetAppConfig = APP_ID && API_KEY
 
   /*
@@ -580,6 +580,7 @@ const Main: FC = ({params}: any) => {
       <Header
         title={APP_INFO.title}
         isMobile={isMobile}
+        showMobile={showMobile}
         onShowSideBar={showSidebar}
         onCreateNewChat={() => handleConversationIdChange('-1')}
       />

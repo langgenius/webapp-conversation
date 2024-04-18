@@ -30,15 +30,13 @@ export async function middleware(request: NextRequest) {
 
     // console.log(`middleware nextUrl: ${request.nextUrl.pathname}`);
     // console.log(`middleware auth: ${ENABLE_AUTH}`);
-
     if (ENABLE_AUTH) {
         const session = await getSession(request, sessionId);
         // console.log(`middleware: ${JSON.stringify(session)}`);
-
-        // console.log(`middleware session: ${JSON.stringify(session)}`);
         if (session?.mobile) {
-            request.headers.set('user_hash', session?.mobile);
+            request.headers.set("user_mobile", session?.mobile);
         }
+        // console.log(`middleware session: ${JSON.stringify(session)}`);
 
         if (session?.channel) {
             return NextResponse.next({

@@ -22,7 +22,7 @@ describe("Test Server", () => {
     });
 
     it('decrypt', async function () {
-        const encryptedData = 'N2M0NGNlZDJiMjRlMmFmNTQwMWIxZGZiTFlA5Al/mcPLvtSD/56Xgzl8+C9GCukkrI8AxyB6LeYfE57b1APZbdPcFD5w';
+        const encryptedData = 'NzQxNWYzOTYyNjZkODA3YjM4N2MyNDMxp3iSeaCBi1g0A5O9bHYo31XR2oy1tVVu3mp+3Jo8bWLkRx9yi5Q/gFh+u77EaK2+HJ5OF5ZZEJc=';
         const decryptedData = await decrypt(encryptedData)
 
         console.dir(decryptedData);

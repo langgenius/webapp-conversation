@@ -17,10 +17,11 @@ export const getInfo = (request: NextRequest) => {
 }
 
 export const getSessionFromRequest = async (req: NextRequest): Promise<null|Record<string, string>> => {
-  const hash = req.nextUrl.searchParams.get('hash');
+  let hash = req.nextUrl.searchParams.get('hash');
 
   try {
     if (hash) {
+      hash = hash.replace(/([\ ]{1})/ig, '+');
       const data = await decrypt(hash);
       if (data?.channel) {
         return data;
@@ -55,9 +56,10 @@ export const ResponseWithSession = async (resp:NextResponse, sessionId: string, 
 export async function getSession(request: NextRequest, sessionID: string): Promise<Record<string, string>|any> {
   const cookies = request.cookies;
   const k = cookies.get(sessionID)
-  const raw = k?.value || '';
+  let raw = k?.value || '';
   if (raw) {
     try {
+      raw = raw.replace(/([\ ]{1})/ig, '+');
       return await decrypt(raw);
     } catch (error: any) {
       console.error(error);

@@ -1,19 +1,22 @@
 import type { FC } from 'react'
-import React from 'react'
+import React, from 'react'
 import {
   Bars3Icon,
   PencilSquareIcon,
 } from '@heroicons/react/24/solid'
 import AppIcon from '@/app/components/base/app-icon'
+
 export type IHeaderProps = {
   title: string
   isMobile?: boolean
+  showMobile?: string
   onShowSideBar?: () => void
   onCreateNewChat?: () => void
 }
 const Header: FC<IHeaderProps> = ({
   title,
   isMobile,
+  showMobile,
   onShowSideBar,
   onCreateNewChat,
 }) => {
@@ -31,7 +34,7 @@ const Header: FC<IHeaderProps> = ({
         : <div></div>}
       <div className='flex items-center space-x-2'>
         <AppIcon size="small" />
-        <div className="font-frutiger">{title}</div>
+        <div className="font-frutiger">{title} {showMobile? <small>( Member: {showMobile} )</small> : ''}</div>
       </div>
       {isMobile
         ? (
