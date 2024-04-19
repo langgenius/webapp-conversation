@@ -1,4 +1,6 @@
+import type { Annotation } from './log'
 import type { Locale } from '@/i18n'
+import type { ThoughtItem } from '@/app/components/chat/type'
 
 export type PromptVariable = {
   key: string
@@ -74,9 +76,13 @@ export type IChatItem = {
    * More information about this message
    */
   more?: MessageMore
-  isIntroduction?: boolean
+  annotation?: Annotation
   useCurrentUserAvatar?: boolean
   isOpeningStatement?: boolean
+  suggestedQuestions?: string[]
+  log?: { role: string; text: string }[]
+  agent_thoughts?: ThoughtItem[]
+  message_files?: VisionFile[]
 }
 
 export type ResponseHolder = {}
@@ -94,4 +100,43 @@ export type AppInfo = {
   default_language: Locale
   copyright?: string
   privacy_policy?: string
+}
+
+export enum Resolution {
+  low = 'low',
+  high = 'high',
+}
+
+export enum TransferMethod {
+  all = 'all',
+  local_file = 'local_file',
+  remote_url = 'remote_url',
+}
+
+export type VisionSettings = {
+  enabled: boolean
+  number_limits: number
+  detail: Resolution
+  transfer_methods: TransferMethod[]
+  image_file_size_limit?: number | string
+}
+
+export type ImageFile = {
+  type: TransferMethod
+  _id: string
+  fileId: string
+  file?: File
+  progress: number
+  url: string
+  base64Url?: string
+  deleted?: boolean
+}
+
+export type VisionFile = {
+  id?: string
+  type: string
+  transfer_method: TransferMethod
+  url: string
+  upload_file_id: string
+  belongs_to?: string
 }
