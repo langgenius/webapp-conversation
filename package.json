@@ -38,7 +38,7 @@
     "js-cookie": "^3.0.1",
     "katex": "^0.16.7",
     "negotiator": "^0.6.3",
-    "next": "13.4.0",
+    "next": "^14.0.4",
     "rc-textarea": "^1.5.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
