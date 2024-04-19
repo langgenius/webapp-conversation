@@ -167,6 +167,29 @@ const Chat: FC<IChatProps> = ({
       {
         !isHideSendInput && (
           <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
+
+            <div className={`${s.suggestSection}`}>
+              <div className="flex items-center mb-2.5 py-2">
+                <div className={`${s.line} grow`}></div>
+                <div className="shrink-0 flex items-center px-3 text-gray-500">
+                  <div className={`${s.starIcon} w-3 h-3 rounded-md mr-1`}></div>
+                  <span className="text-xs text-gray-500 font-medium">{t('app.chat.tryToAsk')}</span>
+                </div>
+                <div className={`${s.line} grow`}></div>
+              </div>
+              <div className={`${s.suggestionList} flex flex-wrap justify-center items-center`}>
+                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
+                  Live 2 Play的保障範圍？
+                </div>
+                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
+                  如何計算Live 2 Play的保費？
+                </div>
+                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
+                  Live 2 Play的索賠流程是什麼？
+                </div>
+              </div>
+            </div>
+
             <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
               {
                 visionConfig?.enabled && (

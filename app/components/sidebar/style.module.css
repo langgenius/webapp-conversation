@@ -1,0 +1,34 @@
+.qNavItem{
+  position: relative;
+}
+
+.qNavItem:hover .moreIcon{
+  opacity: 1;
+}
+
+.moreIcon{
+  opacity: 0;
+  background: url(./icons/more.svg) center center no-repeat;
+  background-size: contain;
+}
+
+.deleteWrap{
+  position: absolute;
+  right:0;
+  top: 2em;
+  z-index:2;
+  color: #333333;
+}
+
+.deleteWrap:hover {
+  color:#ff0000;
+}
+
+.deleteWrap:hover .deteleIcon{
+  background-image: url(./icons/delete-active.svg);
+}
+
+.deteleIcon{
+  background: url(./icons/delete.svg) center center no-repeat;
+  background-size: contain;
+}

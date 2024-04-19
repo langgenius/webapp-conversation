@@ -22,6 +22,8 @@ const translation = {
       'privacy policy',
     privacyPolicyRight:
       ' provided by the app developer.',
+    delete: 'Delete',
+    tryToAsk:'Try to ask',
   },
   errorMessage: {
     valueOfVarRequired: 'Variables value can not be empty',

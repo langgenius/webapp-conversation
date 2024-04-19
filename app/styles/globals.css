@@ -164,6 +164,7 @@ html,
     }
     .chat-wrapper > .relative {
         flex: 1;
+        padding-bottom: 208px;
     }
     .chat-wrapper .chat-input {
         position: fixed;

@@ -174,6 +174,13 @@ const Main: FC = ({params}: any) => {
     hideSidebar()
   }
 
+ /*
+  * delete conversation.
+  */
+  const handleDeleteConversationItem = (id: string) => {
+    console.log('删除的回话id',id)
+  }
+
   /*
   * chat info. chat is under conversation.
   */
@@ -563,6 +570,7 @@ const Main: FC = ({params}: any) => {
       <Sidebar
         list={conversationList}
         onCurrentIdChange={handleConversationIdChange}
+        onDeleteConversationItem={handleDeleteConversationItem}
         currentId={currConversationId}
         copyRight={APP_INFO.copyright || APP_INFO.title}
       />
@@ -613,7 +621,7 @@ const Main: FC = ({params}: any) => {
 
           {
             hasSetInputs && (
-              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
+              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[149px] mx-auto mb-3.5 overflow-hidden'>
                 <div className='h-full overflow-y-auto' ref={chatListDomRef}>
                   <Chat
                     chatList={chatList}

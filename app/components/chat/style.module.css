@@ -73,8 +73,27 @@
   padding: 0 2px;
 }
 
+.line{
+  height:1px;
+  background-color: #333333;
+  background: linear-gradient(270deg, rgba(243, 244, 246, 0) 0%, rgb(243, 244, 246) 100%);
+}
+
+.suggestSection {
+  
+}
+
+.suggestionList {
+
+}
+
 .sendBtn {
   background: url(./icons/send.svg) center center no-repeat;
+}
+
+.starIcon {
+  background: url(./icons/star.svg) center center no-repeat;
+  background-size: contain;
 }
 
 .sendBtn:hover {

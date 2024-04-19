@@ -18,6 +18,8 @@ const translation = {
     privacyPolicyLeft: '請閱讀由該應用開發者提供的',
     privacyPolicyMiddle: '隱私政策',
     privacyPolicyRight: '。',
+    delete: '刪除',
+    tryToAsk:'嘗試提問',
   },
   errorMessage: {
     valueOfVarRequired: '變量值必填',
