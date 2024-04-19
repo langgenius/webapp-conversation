@@ -168,7 +168,7 @@ const Chat: FC<IChatProps> = ({
         !isHideSendInput && (
           <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
 
-            <div className={`${s.suggestSection}`}>
+            {/* <div className={`${s.suggestSection}`}>
               <div className="flex items-center mb-2.5 py-2">
                 <div className={`${s.line} grow`}></div>
                 <div className="shrink-0 flex items-center px-3 text-gray-500">
@@ -188,7 +188,7 @@ const Chat: FC<IChatProps> = ({
                   Live 2 Play的索賠流程是什麼？
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
               {

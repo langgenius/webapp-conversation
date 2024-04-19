@@ -10,7 +10,7 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
+import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback, deleteConversation} from '@/service'
 import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
 import Chat from '@/app/components/chat'
@@ -21,7 +21,7 @@ import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/p
 import AppUnavailable from '@/app/components/app-unavailable'
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
-import useConversationMaxToken from "@/hooks/use-conversation-maxtoken";
+import useConversationMaxToken from "@/hooks/use-conversation-maxtoken"
 
 const Main: FC = ({params}: any) => {
   const { t } = useTranslation()
@@ -177,8 +177,17 @@ const Main: FC = ({params}: any) => {
  /*
   * delete conversation.
   */
-  const handleDeleteConversationItem = (id: string) => {
-    console.log('删除的回话id',id)
+
+  const handleDeleteConversationItem = async (id: string) => {
+    try {
+      const res = await deleteConversation(id);
+      const result = await fetchConversations();
+      if(result.data.length){
+        setConversationList(result.data);
+      }
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   /*

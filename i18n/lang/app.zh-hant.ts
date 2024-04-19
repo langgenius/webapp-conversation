@@ -20,6 +20,10 @@ const translation = {
     privacyPolicyRight: '。',
     delete: '刪除',
     tryToAsk:'嘗試提問',
+    confirmDeleteTitle:'刪除會話',
+    confirmDeleteSubTitle:'你確定要刪除這個會話嗎?',
+    confirmBtn:'確認',
+    cancelBtn:'取消',
   },
   errorMessage: {
     valueOfVarRequired: '變量值必填',

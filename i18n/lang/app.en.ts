@@ -24,6 +24,10 @@ const translation = {
       ' provided by the app developer.',
     delete: 'Delete',
     tryToAsk:'Try to ask',
+    confirmDeleteTitle:'Delete conversation',
+    confirmDeleteSubTitle:'Are you sure you want to delete this conversation?',
+    confirmBtn:'Confirm',
+    cancelBtn:'Cancel',
   },
   errorMessage: {
     valueOfVarRequired: 'Variables value can not be empty',

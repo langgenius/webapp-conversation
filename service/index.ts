@@ -1,5 +1,5 @@
 import type { IOnCompleted, IOnData, IOnError, IOnFile, IOnMessageEnd, IOnMessageReplace, IOnThought } from './base'
-import { get, post, ssePost } from './base'
+import { get, post, ssePost, del } from './base'
 import type { Feedbacktype } from '@/types/app'
 
 export const sendChatMessage = async (body: Record<string, any>, { onData, onCompleted, onThought, onFile, onError, getAbortController, onMessageEnd, onMessageReplace }: {
@@ -47,4 +47,8 @@ export const fetchSuggestedQuestions = (messageId: string) => {
 
 export const auth = async (mobile: string) => {
   return post(`/auth`, { body: { mobile, } })
+}
+
+export const deleteConversation = (messageId: string) => {
+  return del(`/conversations/${messageId}`)
 }
