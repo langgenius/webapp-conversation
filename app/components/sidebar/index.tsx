@@ -32,9 +32,11 @@ const Sidebar: FC<ISidebarProps> = ({
 }) => {
   const [activeId, setActiveId] = useState(null)
   const [showConfirmModel, setShowConfirmModel] = useState(false)
+  const [deleteId, setdeleteId] = useState(null)
   const { t } = useTranslation()
   function handleMoreIconClick(id) {
     setActiveId(id)
+    setdeleteId(id)
   }
 
   function handleSetShowConfirmModel(flag) {
@@ -93,30 +95,30 @@ const Sidebar: FC<ISidebarProps> = ({
                 }} className={`${s.deleteWrap} flex justify-center items-center rounded-lg px-4 py-2 border-solid border border-gray-200 cursor-pointer bg-white hover:bg-gray-50 hover:shadow-sm hover:border-gray-300`}>
                 <div className={`${s.deteleIcon} w-4 h-4 cursor-pointer rounded-md mr-2`}></div>{t('app.chat.delete')}
               </div>)}
-              {showConfirmModel &&  (<div className={`${s.confirmModel} fixed inset-0`}>
-                <div className="flex items-center justify-center min-h-full p-4">      
-                  <div className={`${s.textWrap} flex bg-white shadow-xl p-7 rounded-2xl`}>
-                    <div className="flex items-center">
-                        <div className={`${s.warnIcon} w-6 h-6 mr-4`}></div>
-                        <div className="text-lg text-gray-900">{t('app.chat.confirmDeleteTitle')}</div>
-                    </div>
-                    <div className="mt-1 text-sm text-gray-500">{t('app.chat.confirmDeleteSubTitle')}</div>
-                    <div className="flex justify-center gap-3 mt-4">
-                      <div onClick={(event) => { 
-                          event.stopPropagation() 
-                          handleSetShowConfirmModel(false) 
-                          onDeleteConversationItem(item.id)}} className="btn bg-primary-600 flex items-center justify-center w-20 text-center text-white rounded-lg cursor-pointer h-9 hover:bg-primary-600/75">{t('app.chat.confirmBtn')}</div>
-                      <div onClick={(event) => { 
-                          event.stopPropagation() 
-                          handleSetShowConfirmModel(false)}} className="btn btn-default flex items-center justify-center w-20 text-center text-gray-500 border rounded-lg cursor-pointer h-9 border-color-gray-200 hover:bg-gray-50 hover:shadow-sm hover:border-gray-300">{t('app.chat.cancelBtn')}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>)}
             </div>
           )
         })}
       </nav>
+      {showConfirmModel &&  (<div className={`${s.confirmModel} fixed inset-0`}>
+        <div className="flex items-center justify-center min-h-full p-4">      
+          <div className={`${s.textWrap} flex bg-white shadow-xl p-7 rounded-2xl`}>
+            <div className="flex items-center">
+                <div className={`${s.warnIcon} w-6 h-6 mr-4`}></div>
+                <div className="text-lg text-gray-900">{t('app.chat.confirmDeleteTitle')}</div>
+            </div>
+            <div className="mt-1 text-sm text-gray-500">{t('app.chat.confirmDeleteSubTitle')}</div>
+            <div className="flex justify-center gap-3 mt-4">
+              <div onClick={(event) => { 
+                  event.stopPropagation() 
+                  handleSetShowConfirmModel(false) 
+                  onDeleteConversationItem(deleteId)}} className="btn bg-primary-600 flex items-center justify-center w-20 text-center text-white rounded-lg cursor-pointer h-9 hover:bg-primary-600/75">{t('app.chat.confirmBtn')}</div>
+              <div onClick={(event) => { 
+                  event.stopPropagation() 
+                  handleSetShowConfirmModel(false)}} className="btn btn-default flex items-center justify-center w-20 text-center text-gray-500 border rounded-lg cursor-pointer h-9 border-color-gray-200 hover:bg-gray-50 hover:shadow-sm hover:border-gray-300">{t('app.chat.cancelBtn')}</div>
+            </div>
+          </div>
+        </div>
+      </div>)}
       {/* <a className="flex flex-shrink-0 p-4" href="https://langgenius.ai/" target="_blank">
         <Card><div className="flex flex-row items-center"><ChatBubbleOvalLeftEllipsisSolidIcon className="text-primary-600 h-6 w-6 mr-2" /><span>LangGenius</span></div></Card>
       </a> */}

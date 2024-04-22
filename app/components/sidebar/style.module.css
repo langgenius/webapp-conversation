@@ -35,7 +35,7 @@
 
 .confirmModel {
   z-index:100;
-  background-color: rgba(191,191,191,.1);
+  background-color: rgba(191,191,191,.5);
 }
 
 .warnIcon{
