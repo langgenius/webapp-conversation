@@ -1,6 +1,6 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useLayoutEffect, useState, useCallback} from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Textarea from 'rc-textarea'
@@ -15,6 +15,7 @@ import Toast from '@/app/components/base/toast'
 import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
+import { TryToAskIcon} from './icon-component'
 
 export type IChatProps = {
   chatList: IChatItem[]
@@ -33,6 +34,9 @@ export type IChatProps = {
   isResponsing?: boolean
   controlClearQuery?: number
   visionConfig?: VisionSettings
+  isShowSuggestion?: boolean
+  suggestionList?: string[]
+  onQueryChange?: (query: string) => void
 }
 
 export type IChatItem = {
@@ -67,14 +71,27 @@ const Chat: FC<IChatProps> = ({
   isResponsing,
   controlClearQuery,
   visionConfig,
+  isShowSuggestion,
+  suggestionList,
+  onQueryChange = () => { },
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
+  const suggestionListRef = useRef<HTMLDivElement>(null)
+  const [hasScrollbar, setHasScrollbar] = useState(false)
+  useLayoutEffect(() => {
+    if (suggestionListRef.current) {
+      const listDom = suggestionListRef.current
+      const hasScrollbar = listDom.scrollWidth > listDom.clientWidth
+      setHasScrollbar(hasScrollbar)
+    }
+  }, [suggestionList])
 
   const [query, setQuery] = React.useState('')
   const handleContentChange = (e: any) => {
     const value = e.target.value
+    onQueryChange(value)
     setQuery(value)
   }
 
@@ -93,6 +110,7 @@ const Chat: FC<IChatProps> = ({
   useEffect(() => {
     if (controlClearQuery)
       setQuery('')
+      onQueryChange('')
   }, [controlClearQuery])
   const {
     files,
@@ -118,6 +136,7 @@ const Chat: FC<IChatProps> = ({
         onClear()
       if (!isResponsing)
         setQuery('')
+        onQueryChange('')
     }
   }
 
@@ -134,9 +153,15 @@ const Chat: FC<IChatProps> = ({
     isUseInputMethod.current = e.nativeEvent.isComposing
     if (e.code === 'Enter' && !e.shiftKey) {
       setQuery(query.replace(/\n$/, ''))
+      onQueryChange(query.replace(/\n$/, ''))
       e.preventDefault()
     }
   }
+
+  const handleQueryChangeFromAnswer = useCallback((val: string) => {
+    onQueryChange(val)
+    handleSend(val)
+  }, [])
 
   return (
     <div className={cn(!feedbackDisabled && 'px-3.5', 'h-full')}>
@@ -151,6 +176,7 @@ const Chat: FC<IChatProps> = ({
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
               isResponsing={isResponsing && isLast}
+              onQueryChange={handleQueryChangeFromAnswer}
             />
           }
           return (
@@ -167,6 +193,40 @@ const Chat: FC<IChatProps> = ({
       {
         !isHideSendInput && (
           <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
+            {
+              isShowSuggestion && (
+                <div className='pt-2'>
+                  <div className='flex items-center justify-center mb-2.5'>
+                    <div className='grow h-[1px]'
+                      style={{
+                        background: 'linear-gradient(270deg, #F3F4F6 0%, rgba(243, 244, 246, 0) 100%)',
+                      }}></div>
+                    <div className='shrink-0 flex items-center px-3 space-x-1'>
+                      {TryToAskIcon}
+                      <span className='text-xs text-gray-500 font-medium'>{t('app.chat.tryToAsk')}</span>
+                    </div>
+                    <div className='grow h-[1px]'
+                      style={{
+                        background: 'linear-gradient(270deg, rgba(243, 244, 246, 0) 0%, #F3F4F6 100%)',
+                      }}></div>
+                  </div>
+                  {/* has scrollbar would hide part of first item */}
+                  <div ref={suggestionListRef} className={cn(!hasScrollbar && 'justify-center', 'flex overflow-x-auto pb-2')}>
+                    {suggestionList?.map((item, index) => (
+                      <div key={item} className='shrink-0 flex justify-center mr-2'>
+                        <Button
+                          key={index}
+                          onClick={() => onQueryChange(item)}
+                        >
+                          <span className='text-primary-600 text-xs font-medium'>{item}</span>
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+
             <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
               {
                 visionConfig?.enabled && (

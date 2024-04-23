@@ -59,6 +59,7 @@ type IAnswerProps = {
   onFeedback?: FeedbackFunc
   isResponsing?: boolean
   allToolIcons?: Record<string, string | Emoji>
+  onQueryChange: (query: string) => void
 }
 
 // The component needs to maintain its own state to control whether to display input component
@@ -68,6 +69,7 @@ const Answer: FC<IAnswerProps> = ({
   onFeedback,
   isResponsing,
   allToolIcons,
+  onQueryChange,
 }) => {
   const { id, content, feedback, agent_thoughts } = item
   const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0

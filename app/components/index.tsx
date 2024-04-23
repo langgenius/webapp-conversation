@@ -10,8 +10,8 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
-import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
+import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback, fetchSuggestedQuestions } from '@/service'
+import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings, SuggestedQuestionsAfterAnswerConfig } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
 import Chat from '@/app/components/chat'
 import { setLocaleOnClient } from '@/i18n/client'
@@ -21,7 +21,7 @@ import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/p
 import AppUnavailable from '@/app/components/app-unavailable'
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
-import useConversationMaxToken from "@/hooks/use-conversation-maxtoken";
+import useConversationMaxToken from "@/hooks/use-conversation-maxtoken"
 
 const Main: FC = ({params}: any) => {
   const { t } = useTranslation()
@@ -46,6 +46,7 @@ const Main: FC = ({params}: any) => {
     detail: Resolution.low,
     transfer_methods: [TransferMethod.local_file],
   })
+  const [suggestedQuestions, setSuggestQuestions] = useState<string[]>([])
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -83,6 +84,8 @@ const Main: FC = ({params}: any) => {
 
   const [conversationIdChangeBecauseOfNew, setConversationIdChangeBecauseOfNew, getConversationIdChangeBecauseOfNew] = useGetState(false)
   const [isChatStarted, { setTrue: setChatStarted, setFalse: setChatNotStarted }] = useBoolean(false)
+  const [isShowSuggestion, setIsShowSuggestion] = useState(false)
+
   const handleStartChat = (inputs: Record<string, any>) => {
     createNewChat()
     setConversationIdChangeBecauseOfNew(true)
@@ -170,7 +173,8 @@ const Main: FC = ({params}: any) => {
     }
     // trigger handleConversationSwitch
     setCurrConversationId(id, APP_ID)
-    setMaxTokenCurrID(id);
+    setMaxTokenCurrID(id)
+    setIsShowSuggestion(false)
     hideSidebar()
   }
 
@@ -179,6 +183,8 @@ const Main: FC = ({params}: any) => {
   */
   const [chatList, setChatList, getChatList] = useGetState<IChatItem[]>([])
   const chatListDomRef = useRef<HTMLDivElement>(null)
+  const [isResponding, { setTrue: setRespondingTrue, setFalse: setRespondingFalse }] = useBoolean(false)
+
   useEffect(() => {
     // scroll to bottom
     if (chatListDomRef.current)
@@ -214,6 +220,7 @@ const Main: FC = ({params}: any) => {
       isAnswer: true,
       feedbackDisabled: true,
       isOpeningStatement: isShowPrompt,
+      suggestedQuestions: openingSuggestedQuestions,
     }
     if (caculatedIntroduction)
       return [openstatement]
@@ -237,7 +244,7 @@ const Main: FC = ({params}: any) => {
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
-        const { user_input_form, opening_statement: introduction, file_upload, system_parameters }: any = appParams
+        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions_after_answer}: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
@@ -258,6 +265,8 @@ const Main: FC = ({params}: any) => {
           setCurrConversationId(_conversationId, APP_ID, false)
 
         setInited(true)
+        setOpeningSuggestedQuestions(suggested_questions || [])
+        setSuggestedQuestionsAfterAnswerConfig(suggested_questions_after_answer)
       }
       catch (e: any) {
         if (e.status === 404) {
@@ -301,7 +310,10 @@ const Main: FC = ({params}: any) => {
   const [messageTaskId, setMessageTaskId] = useState('')
   const [hasStopResponded, setHasStopResponded, getHasStopResponded] = useGetState(false)
   const [isResponsingConIsCurrCon, setIsResponsingConCurrCon, getIsResponsingConIsCurrCon] = useGetState(true)
+  const [isRespondingConIsCurrCon, setIsRespondingConCurrCon, getIsRespondingConIsCurrCon] = useGetState(true)
   const [userQuery, setUserQuery] = useState('')
+  const doShowSuggestion = isShowSuggestion && !isResponding
+  const [suggestedQuestionsAfterAnswerConfig, setSuggestedQuestionsAfterAnswerConfig] = useState<SuggestedQuestionsAfterAnswerConfig | null>(null)
 
   const updateCurrentQA = ({
     responseItem,
@@ -382,6 +394,7 @@ const Main: FC = ({params}: any) => {
 
     const prevTempNewConversationId = getCurrConversationId() || '-1'
     let tempNewConversationId = ''
+    setIsShowSuggestion(false)
 
     setResponsingTrue()
     sendChatMessage(data, {
@@ -431,6 +444,16 @@ const Main: FC = ({params}: any) => {
           })
           setConversationList(newAllConversations as any)
         }
+
+        if (getIsRespondingConIsCurrCon() && suggestedQuestionsAfterAnswerConfig?.enabled && !getHasStopResponded()) {
+          const { data }: any = await fetchSuggestedQuestions(responseItem.id)
+          // const { data }: any = await fetchSuggestedQuestions(responseItem.id, isInstalledApp, installedAppInfo?.id)
+          // const { data }: any = await fetchSuggestedQuestions(responseItem.id, APP_ID)
+          console.log('建议是', data)
+          setSuggestQuestions(data)
+          setIsShowSuggestion(true)
+        }
+
         setConversationIdChangeBecauseOfNew(false)
         resetNewConversationInputs()
         setChatNotStarted()
@@ -623,6 +646,8 @@ const Main: FC = ({params}: any) => {
                     checkCanSend={checkCanSend}
                     visionConfig={visionConfig}
                     isHideSendInput={isMaxToken}
+                    suggestionList={suggestedQuestions}
+                    isShowSuggestion={doShowSuggestion}
                   />
                 </div>
               </div>)
