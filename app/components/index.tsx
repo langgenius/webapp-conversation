@@ -46,7 +46,8 @@ const Main: FC = ({params}: any) => {
     detail: Resolution.low,
     transfer_methods: [TransferMethod.local_file],
   })
-  const [suggestedQuestions, setSuggestQuestions] = useState<string[]>([])
+
+  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([])
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -85,7 +86,6 @@ const Main: FC = ({params}: any) => {
   const [conversationIdChangeBecauseOfNew, setConversationIdChangeBecauseOfNew, getConversationIdChangeBecauseOfNew] = useGetState(false)
   const [isChatStarted, { setTrue: setChatStarted, setFalse: setChatNotStarted }] = useBoolean(false)
   const [isShowSuggestion, setIsShowSuggestion] = useState(false)
-
   const handleStartChat = (inputs: Record<string, any>) => {
     createNewChat()
     setConversationIdChangeBecauseOfNew(true)
@@ -244,7 +244,7 @@ const Main: FC = ({params}: any) => {
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
-        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions_after_answer}: any = appParams
+        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions, suggested_questions_after_answer}: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
@@ -444,13 +444,9 @@ const Main: FC = ({params}: any) => {
           })
           setConversationList(newAllConversations as any)
         }
-
         if (getIsRespondingConIsCurrCon() && suggestedQuestionsAfterAnswerConfig?.enabled && !getHasStopResponded()) {
-          const { data }: any = await fetchSuggestedQuestions(responseItem.id)
-          // const { data }: any = await fetchSuggestedQuestions(responseItem.id, isInstalledApp, installedAppInfo?.id)
-          // const { data }: any = await fetchSuggestedQuestions(responseItem.id, APP_ID)
-          console.log('建议是', data)
-          setSuggestQuestions(data)
+          const { data } = await fetchSuggestedQuestions(responseItem.id)
+          setSuggestedQuestions(data)
           setIsShowSuggestion(true)
         }
 
@@ -636,7 +632,7 @@ const Main: FC = ({params}: any) => {
 
           {
             hasSetInputs && (
-              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
+              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pc:pb-[149px] mobile:pb-[220px] mx-auto mb-3.5 overflow-hidden'>
                 <div className='h-full overflow-y-auto' ref={chatListDomRef}>
                   <Chat
                     chatList={chatList}

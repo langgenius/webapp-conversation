@@ -16,6 +16,7 @@ import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-u
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
 import { TryToAskIcon} from './icon-component'
+import Button from '@/app/components/base/button'
 
 export type IChatProps = {
   chatList: IChatItem[]
@@ -79,14 +80,6 @@ const Chat: FC<IChatProps> = ({
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
   const suggestionListRef = useRef<HTMLDivElement>(null)
-  const [hasScrollbar, setHasScrollbar] = useState(false)
-  useLayoutEffect(() => {
-    if (suggestionListRef.current) {
-      const listDom = suggestionListRef.current
-      const hasScrollbar = listDom.scrollWidth > listDom.clientWidth
-      setHasScrollbar(hasScrollbar)
-    }
-  }, [suggestionList])
 
   const [query, setQuery] = React.useState('')
   const handleContentChange = (e: any) => {
@@ -197,23 +190,16 @@ const Chat: FC<IChatProps> = ({
               isShowSuggestion && (
                 <div className='pt-2'>
                   <div className='flex items-center justify-center mb-2.5'>
-                    <div className='grow h-[1px]'
-                      style={{
-                        background: 'linear-gradient(270deg, #F3F4F6 0%, rgba(243, 244, 246, 0) 100%)',
-                      }}></div>
+                    <div className='grow h-[1px]' style={{ background: 'linear-gradient(270deg, #F3F4F6 0%, rgba(243, 244, 246, 0) 100%)', }}></div>
                     <div className='shrink-0 flex items-center px-3 space-x-1'>
                       {TryToAskIcon}
                       <span className='text-xs text-gray-500 font-medium'>{t('app.chat.tryToAsk')}</span>
                     </div>
-                    <div className='grow h-[1px]'
-                      style={{
-                        background: 'linear-gradient(270deg, rgba(243, 244, 246, 0) 0%, #F3F4F6 100%)',
-                      }}></div>
+                    <div className='grow h-[1px]' style={{ background: 'linear-gradient(270deg, rgba(243, 244, 246, 0) 0%, #F3F4F6 100%)',}}></div>
                   </div>
-                  {/* has scrollbar would hide part of first item */}
-                  <div ref={suggestionListRef} className={cn(!hasScrollbar && 'justify-center', 'flex overflow-x-auto pb-2')}>
+                  <div ref={suggestionListRef} className="flex flex-wrap justify-center">
                     {suggestionList?.map((item, index) => (
-                      <div key={item} className='shrink-0 flex justify-center mr-2'>
+                      <div key={item} className='shrink-0 flex justify-center mr-2 mb-2'>
                         <Button
                           key={index}
                           onClick={() => onQueryChange(item)}
