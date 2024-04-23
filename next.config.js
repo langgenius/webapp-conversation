@@ -4,7 +4,7 @@ const nextConfig = {
   // Configure pageExtensions to include md and mdx
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   experimental: {
-    appDir: true,
+    // appDir: true,
   },
   // fix all before production. Now it slow the develop speed.
   eslint: {

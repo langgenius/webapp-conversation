@@ -11,8 +11,8 @@ import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
 import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
-import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
-import { Resolution, TransferMethod } from '@/types/app'
+import type { ChatItem, ConversationItem, Feedbacktype, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
+import { Resolution, TransferMethod, WorkflowRunningStatus } from '@/types/app'
 import Chat from '@/app/components/chat'
 import { setLocaleOnClient } from '@/i18n/client'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
@@ -124,7 +124,7 @@ const Main: FC = () => {
     if (!isNewConversation && !conversationIdChangeBecauseOfNew && !isResponsing) {
       fetchChatList(currConversationId).then((res: any) => {
         const { data } = res
-        const newChatList: IChatItem[] = generateNewChatListWithOpenstatement(notSyncToStateIntroduction, notSyncToStateInputs)
+        const newChatList: ChatItem[] = generateNewChatListWithOpenstatement(notSyncToStateIntroduction, notSyncToStateInputs)
 
         data.forEach((item: any) => {
           newChatList.push({
@@ -168,7 +168,7 @@ const Main: FC = () => {
   /*
   * chat info. chat is under conversation.
   */
-  const [chatList, setChatList, getChatList] = useGetState<IChatItem[]>([])
+  const [chatList, setChatList, getChatList] = useGetState<ChatItem[]>([])
   const chatListDomRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // scroll to bottom
@@ -300,10 +300,10 @@ const Main: FC = () => {
     placeholderAnswerId,
     questionItem,
   }: {
-    responseItem: IChatItem
+    responseItem: ChatItem
     questionId: string
     placeholderAnswerId: string
-    questionItem: IChatItem
+    questionItem: ChatItem
   }) => {
     // closesure new list is outdated.
     const newListWithAnswer = produce(
@@ -362,7 +362,7 @@ const Main: FC = () => {
     let isAgentMode = false
 
     // answer
-    const responseItem: IChatItem = {
+    const responseItem: ChatItem = {
       id: `${Date.now()}`,
       content: '',
       agent_thoughts: [],
@@ -524,6 +524,52 @@ const Main: FC = () => {
         // role back placeholder answer
         setChatList(produce(getChatList(), (draft) => {
           draft.splice(draft.findIndex(item => item.id === placeholderAnswerId), 1)
+        }))
+      },
+      onWorkflowStarted: ({ workflow_run_id, task_id }) => {
+        // taskIdRef.current = task_id
+        responseItem.workflow_run_id = workflow_run_id
+        responseItem.workflowProcess = {
+          status: WorkflowRunningStatus.Running,
+          tracing: [],
+        }
+        setChatList(produce(getChatList(), (draft) => {
+          const currentIndex = draft.findIndex(item => item.id === responseItem.id)
+          draft[currentIndex] = {
+            ...draft[currentIndex],
+            ...responseItem,
+          }
+        }))
+      },
+      onWorkflowFinished: ({ data }) => {
+        responseItem.workflowProcess!.status = data.status as WorkflowRunningStatus
+        setChatList(produce(getChatList(), (draft) => {
+          const currentIndex = draft.findIndex(item => item.id === responseItem.id)
+          draft[currentIndex] = {
+            ...draft[currentIndex],
+            ...responseItem,
+          }
+        }))
+      },
+      onNodeStarted: ({ data }) => {
+        responseItem.workflowProcess!.tracing!.push(data as any)
+        setChatList(produce(getChatList(), (draft) => {
+          const currentIndex = draft.findIndex(item => item.id === responseItem.id)
+          draft[currentIndex] = {
+            ...draft[currentIndex],
+            ...responseItem,
+          }
+        }))
+      },
+      onNodeFinished: ({ data }) => {
+        const currentIndex = responseItem.workflowProcess!.tracing!.findIndex(item => item.node_id === data.node_id)
+        responseItem.workflowProcess!.tracing[currentIndex] = data as any
+        setChatList(produce(getChatList(), (draft) => {
+          const currentIndex = draft.findIndex(item => item.id === responseItem.id)
+          draft[currentIndex] = {
+            ...draft[currentIndex],
+            ...responseItem,
+          }
         }))
       },
     })
