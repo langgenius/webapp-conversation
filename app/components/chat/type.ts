@@ -132,3 +132,5 @@ export type AnnotationReply = {
   annotation_id: string
   annotation_author_name: string
 }
+
+export type OnSend = (message: string, files?: VisionFile[]) => void

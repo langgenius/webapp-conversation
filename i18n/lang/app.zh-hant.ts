@@ -21,13 +21,15 @@ const translation = {
     delete: '刪除',
     tryToAsk:'嘗試提問',
     confirmDeleteTitle:'刪除會話',
-    confirmDeleteSubTitle:'你確定要刪除這個會話嗎?',
+    confirmDeleteContent:'你確定要刪除這個會話嗎?',
     confirmBtn:'確認',
     cancelBtn:'取消',
+    deleteSuccess:'成功',
   },
   errorMessage: {
     valueOfVarRequired: '變量值必填',
     waitForResponse: '請等待上條信息響應完成',
+    deleteFailed:'失敗',
   },
 }
 

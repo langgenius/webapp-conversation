@@ -12,6 +12,7 @@
   background-size: contain;
 }
 
+
 .deleteWrap{
   position: absolute;
   right:0;
@@ -31,18 +32,4 @@
 .deteleIcon{
   background: url(./icons/delete.svg) center center no-repeat;
   background-size: contain;
-}
-
-.confirmModel {
-  z-index:100;
-  background-color: rgba(191,191,191,.5);
-}
-
-.warnIcon{
-  background: url(./icons/warning.svg) center center no-repeat;
-  background-size: contain;
-}
-
-.textWrap {
-  flex-direction:column;
 }

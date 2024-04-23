@@ -25,14 +25,16 @@ const translation = {
     delete: 'Delete',
     tryToAsk:'Try to ask',
     confirmDeleteTitle:'Delete conversation',
-    confirmDeleteSubTitle:'Are you sure you want to delete this conversation?',
+    confirmDeleteContent:'Are you sure you want to delete this conversation?',
     confirmBtn:'Confirm',
     cancelBtn:'Cancel',
+    deleteSuccess:'Success',
   },
   errorMessage: {
     valueOfVarRequired: 'Variables value can not be empty',
     waitForResponse:
       'Please wait for the response to the previous message to complete.',
+    deleteFailed:'Failed',
   },
 }
 

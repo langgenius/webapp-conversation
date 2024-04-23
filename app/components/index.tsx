@@ -180,15 +180,31 @@ const Main: FC = ({params}: any) => {
 
   const handleDeleteConversationItem = async (id: string) => {
     try {
-      const res = await deleteConversation(id);
-      const result = await fetchConversations();
-      if(result.data.length){
-        setConversationList(result.data);
+      const res = await deleteConversation(id)
+      const result = await fetchConversations()
+
+      if (getCurrConversationId() === id) {
+        setConversationList(produce(result.data, (draft) => {
+          draft.unshift({
+            id: '-1',
+            name: t('app.chat.newChatDefaultName'),
+            inputs: newConversationInputs,
+            introduction: conversationIntroduction,
+          })
+        }))
+        setCurrConversationId('-1', APP_ID)
       }
-    } catch(e) {
-      console.log(e);
+      else {
+        setConversationList(result.data)
+      }
+
+      notify({ type: 'success', message: t('app.chat.deleteSuccess'), duration: 3000 })
+    }
+    catch (e: any) {
+      notify({ type: 'error', message: `${t('app.errorMessage.deleteFailed')}${'message' in e ? `: ${e.message}` : ''}`, duration: 3000 })
     }
   }
+
 
   /*
   * chat info. chat is under conversation.
