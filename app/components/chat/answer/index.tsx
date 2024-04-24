@@ -4,13 +4,14 @@ import React from 'react'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import LoadingAnim from '../loading-anim'
-import type { FeedbackFunc, IChatItem } from '../type'
+import type { FeedbackFunc } from '../type'
 import s from '../style.module.css'
 import ImageGallery from '../../base/image-gallery'
 import Thought from '../thought'
 import { randomString } from '@/utils/string'
-import type { MessageRating, VisionFile } from '@/types/app'
+import type { ChatItem, MessageRating, VisionFile } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
+import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { Markdown } from '@/app/components/base/markdown'
 import type { Emoji } from '@/types/tools'
 
@@ -54,7 +55,7 @@ const IconWrapper: FC<{ children: React.ReactNode | string }> = ({ children }) =
 }
 
 type IAnswerProps = {
-  item: IChatItem
+  item: ChatItem
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
   isResponsing?: boolean
@@ -69,7 +70,7 @@ const Answer: FC<IAnswerProps> = ({
   isResponsing,
   allToolIcons,
 }) => {
-  const { id, content, feedback, agent_thoughts } = item
+  const { id, content, feedback, agent_thoughts, workflowProcess } = item
   const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0
 
   const { t } = useTranslation()
@@ -176,7 +177,10 @@ const Answer: FC<IAnswerProps> = ({
         </div>
         <div className={`${s.answerWrap}`}>
           <div className={`${s.answer} relative text-sm text-gray-900`}>
-            <div className={'ml-2 py-3 px-4 bg-gray-100 rounded-tr-2xl rounded-b-2xl'}>
+            <div className={`ml-2 py-3 px-4 bg-gray-100 rounded-tr-2xl rounded-b-2xl ${workflowProcess && 'min-w-[480px]'}`}>
+              {workflowProcess && (
+                <WorkflowProcess data={workflowProcess} hideInfo />
+              )}
               {(isResponsing && (isAgentMode ? (!content && (agent_thoughts || []).filter(item => !!item.thought || !!item.tool).length === 0) : !content))
                 ? (
                   <div className='flex items-center justify-center w-6 h-5'>
