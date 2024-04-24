@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import produce, { setAutoFreeze } from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
@@ -47,7 +47,16 @@ const Main: FC = ({params}: any) => {
     transfer_methods: [TransferMethod.local_file],
   })
 
+  /*
+  * suggesttion 
+  */
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([])
+  const [footerHeight, setFooterHeight] = useState('66')
+
+  const handleFooterHeightChange = (val: string) => {
+    setFooterHeight(val)
+  }
+
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -185,11 +194,11 @@ const Main: FC = ({params}: any) => {
   const chatListDomRef = useRef<HTMLDivElement>(null)
   const [isResponding, { setTrue: setRespondingTrue, setFalse: setRespondingFalse }] = useBoolean(false)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // scroll to bottom
     if (chatListDomRef.current)
-      chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight
-  }, [chatList, currConversationId])
+      chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight + footerHeight
+  }, [chatList, currConversationId, suggestedQuestions])
   // user can not edit inputs if user had send message
   const canEditInpus = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
@@ -632,7 +641,7 @@ const Main: FC = ({params}: any) => {
 
           {
             hasSetInputs && (
-              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pc:pb-[149px] mobile:pb-[220px] mx-auto mb-3.5 overflow-hidden'>
+              <div style={{ paddingBottom: `${footerHeight}px` }} className='relative grow pc:w-[794px] max-w-full mobile:w-full mx-auto mb-3.5 overflow-hidden'>
                 <div className='h-full overflow-y-auto' ref={chatListDomRef}>
                   <Chat
                     chatList={chatList}
@@ -644,6 +653,7 @@ const Main: FC = ({params}: any) => {
                     isHideSendInput={isMaxToken}
                     suggestionList={suggestedQuestions}
                     isShowSuggestion={doShowSuggestion}
+                    onHeightChange={handleFooterHeightChange}
                   />
                 </div>
               </div>)

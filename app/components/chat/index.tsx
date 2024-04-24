@@ -37,6 +37,7 @@ export type IChatProps = {
   isShowSuggestion?: boolean
   suggestionList?: string[]
   onQueryChange?: (query: string) => void
+  onHeightChange?: (height: string) => void
 }
 
 export type IChatItem = {
@@ -74,10 +75,33 @@ const Chat: FC<IChatProps> = ({
   isShowSuggestion,
   suggestionList,
   onQueryChange = () => { },
+  onHeightChange = () => { },
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
+
+  const footerRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    // change footer padding bottom
+    if (footerRef.current){
+      const domHeight = String(footerRef.current.scrollHeight)
+      onHeightChange(domHeight)
+    }
+  }, [suggestionList])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (footerRef.current){
+        const domHeight = String(footerRef.current.scrollHeight)
+        onHeightChange(domHeight)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const [query, setQuery] = React.useState('')
 
@@ -198,7 +222,7 @@ const Chat: FC<IChatProps> = ({
       </div>
       {
         !isHideSendInput && (
-          <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
+          <div ref={footerRef} className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
             {
               isShowSuggestion && (
                 <TryToAsk
