@@ -15,8 +15,7 @@ import Toast from '@/app/components/base/toast'
 import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
-import { TryToAskIcon} from './icon-component'
-import Button from '@/app/components/base/button'
+import TryToAsk from './try-to-ask'
 
 export type IChatProps = {
   chatList: IChatItem[]
@@ -79,12 +78,11 @@ const Chat: FC<IChatProps> = ({
   const { t } = useTranslation()
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
-  const suggestionListRef = useRef<HTMLDivElement>(null)
 
   const [query, setQuery] = React.useState('')
+
   const handleContentChange = (e: any) => {
     const value = e.target.value
-    onQueryChange(value)
     setQuery(value)
   }
 
@@ -103,7 +101,6 @@ const Chat: FC<IChatProps> = ({
   useEffect(() => {
     if (controlClearQuery)
       setQuery('')
-      onQueryChange('')
   }, [controlClearQuery])
   const {
     files,
@@ -129,7 +126,6 @@ const Chat: FC<IChatProps> = ({
         onClear()
       if (!isResponsing)
         setQuery('')
-        onQueryChange('')
     }
   }
 
@@ -146,14 +142,31 @@ const Chat: FC<IChatProps> = ({
     isUseInputMethod.current = e.nativeEvent.isComposing
     if (e.code === 'Enter' && !e.shiftKey) {
       setQuery(query.replace(/\n$/, ''))
-      onQueryChange(query.replace(/\n$/, ''))
       e.preventDefault()
     }
   }
 
   const handleQueryChangeFromAnswer = useCallback((val: string) => {
-    onQueryChange(val)
-    handleSend(val)
+    setQuery(val)
+    handleSend()
+  }, [])
+  
+  const handleSuggestQuery = useCallback((val: string) => {
+    if(val){
+      setQuery(val)
+      onSend(val, files.filter(file => file.progress !== -1).map(fileItem => ({
+        type: 'image',
+        transfer_method: fileItem.type,
+        url: fileItem.url,
+        upload_file_id: fileItem.fileId,
+      })))
+      if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
+        if (files.length)
+          onClear()
+        if (!isResponsing)
+          setQuery('')
+      }
+    }
   }, [])
 
   return (
@@ -188,28 +201,10 @@ const Chat: FC<IChatProps> = ({
           <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
             {
               isShowSuggestion && (
-                <div className='pt-2'>
-                  <div className='flex items-center justify-center mb-2.5'>
-                    <div className='grow h-[1px]' style={{ background: 'linear-gradient(270deg, #F3F4F6 0%, rgba(243, 244, 246, 0) 100%)', }}></div>
-                    <div className='shrink-0 flex items-center px-3 space-x-1'>
-                      {TryToAskIcon}
-                      <span className='text-xs text-gray-500 font-medium'>{t('app.chat.tryToAsk')}</span>
-                    </div>
-                    <div className='grow h-[1px]' style={{ background: 'linear-gradient(270deg, rgba(243, 244, 246, 0) 0%, #F3F4F6 100%)',}}></div>
-                  </div>
-                  <div ref={suggestionListRef} className="flex flex-wrap justify-center">
-                    {suggestionList?.map((item, index) => (
-                      <div key={item} className='shrink-0 flex justify-center mr-2 mb-2'>
-                        <Button
-                          key={index}
-                          onClick={() => onQueryChange(item)}
-                        >
-                          <span className='text-primary-600 text-xs font-medium'>{item}</span>
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <TryToAsk
+                  suggestList={suggestionList}
+                  OnSuggestSend={handleSuggestQuery}
+                />
               )
             }
 
