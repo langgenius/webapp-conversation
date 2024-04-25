@@ -37,7 +37,7 @@ export type IChatProps = {
   isShowSuggestion?: boolean
   suggestionList?: string[]
   onQueryChange?: (query: string) => void
-  onHeightChange?: (height: string) => void
+  onHeightChange?: (height: number) => void
 }
 
 export type IChatItem = {
@@ -85,7 +85,7 @@ const Chat: FC<IChatProps> = ({
   useLayoutEffect(() => {
     // change footer padding bottom
     if (footerRef.current){
-      const domHeight = String(footerRef.current.scrollHeight)
+      const domHeight = footerRef.current.scrollHeight + 20
       onHeightChange(domHeight)
     }
   }, [suggestionList])
@@ -93,7 +93,7 @@ const Chat: FC<IChatProps> = ({
   useEffect(() => {
     const handleResize = () => {
       if (footerRef.current){
-        const domHeight = String(footerRef.current.scrollHeight)
+        const domHeight = footerRef.current.scrollHeight + 20
         onHeightChange(domHeight)
       }
     }

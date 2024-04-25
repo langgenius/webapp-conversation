@@ -141,10 +141,6 @@ export type VisionFile = {
   belongs_to?: string
 }
 
-export type MoreLikeThisConfig = {
+export type SuggestedQuestionsAfterAnswerConfig = {
   enabled: boolean
 }
-
-export type SuggestedQuestionsAfterAnswerConfig = MoreLikeThisConfig
-
-export type SpeechToTextConfig = MoreLikeThisConfig

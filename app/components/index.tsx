@@ -38,6 +38,7 @@ const Main: FC = ({params}: any) => {
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
   const [isMaxToken, setMaxTokenCurrID, addMaxTokenConversation] = useConversationMaxToken()
+
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
   const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>({
@@ -53,7 +54,7 @@ const Main: FC = ({params}: any) => {
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([])
   const [footerHeight, setFooterHeight] = useState('66')
 
-  const handleFooterHeightChange = (val: string) => {
+  const handleFooterHeightChange = (val: number) => {
     setFooterHeight(val)
   }
 
@@ -226,11 +227,11 @@ const Main: FC = ({params}: any) => {
   const chatListDomRef = useRef<HTMLDivElement>(null)
   const [isResponding, { setTrue: setRespondingTrue, setFalse: setRespondingFalse }] = useBoolean(false)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // scroll to bottom
     if (chatListDomRef.current)
       chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight + footerHeight
-  }, [chatList, currConversationId, suggestedQuestions])
+  }, [chatList, currConversationId, footerHeight])
   // user can not edit inputs if user had send message
   const canEditInpus = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
@@ -384,6 +385,7 @@ const Main: FC = ({params}: any) => {
       notify({ type: 'info', message: t('app.errorMessage.waitForResponse') })
       return
     }
+
     const data: Record<string, any> = {
       inputs: currInputs,
       query: message,
@@ -487,8 +489,10 @@ const Main: FC = ({params}: any) => {
         }
         if (getIsRespondingConIsCurrCon() && suggestedQuestionsAfterAnswerConfig?.enabled && !getHasStopResponded()) {
           const { data } = await fetchSuggestedQuestions(responseItem.id)
-          setSuggestedQuestions(data)
-          setIsShowSuggestion(true)
+          if(data.length){
+            setSuggestedQuestions(data)
+            setIsShowSuggestion(true)
+          }
         }
 
         setConversationIdChangeBecauseOfNew(false)
@@ -597,6 +601,7 @@ const Main: FC = ({params}: any) => {
         setChatList(produce(getChatList(), (draft) => {
           draft.splice(draft.findIndex(item => item.id === placeholderAnswerId), 1)
         }))
+        setIsShowSuggestion(false)
       },
     })
   }
