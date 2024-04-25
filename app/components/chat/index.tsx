@@ -1,6 +1,6 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useLayoutEffect, useState, useCallback} from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Textarea from 'rc-textarea'
@@ -15,6 +15,7 @@ import Toast from '@/app/components/base/toast'
 import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
+import TryToAsk from './try-to-ask'
 
 export type IChatProps = {
   chatList: IChatItem[]
@@ -33,6 +34,10 @@ export type IChatProps = {
   isResponsing?: boolean
   controlClearQuery?: number
   visionConfig?: VisionSettings
+  isShowSuggestion?: boolean
+  suggestionList?: string[]
+  onQueryChange?: (query: string) => void
+  onHeightChange?: (height: string) => void
 }
 
 export type IChatItem = {
@@ -67,12 +72,39 @@ const Chat: FC<IChatProps> = ({
   isResponsing,
   controlClearQuery,
   visionConfig,
+  isShowSuggestion,
+  suggestionList,
+  onQueryChange = () => { },
+  onHeightChange = () => { },
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
 
+  const footerRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    // change footer padding bottom
+    if (footerRef.current){
+      const domHeight = String(footerRef.current.scrollHeight)
+      onHeightChange(domHeight)
+    }
+  }, [suggestionList])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (footerRef.current){
+        const domHeight = String(footerRef.current.scrollHeight)
+        onHeightChange(domHeight)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   const [query, setQuery] = React.useState('')
+
   const handleContentChange = (e: any) => {
     const value = e.target.value
     setQuery(value)
@@ -138,6 +170,29 @@ const Chat: FC<IChatProps> = ({
     }
   }
 
+  const handleQueryChangeFromAnswer = useCallback((val: string) => {
+    setQuery(val)
+    handleSend()
+  }, [])
+  
+  const handleSuggestQuery = useCallback((val: string) => {
+    if(val){
+      setQuery(val)
+      onSend(val, files.filter(file => file.progress !== -1).map(fileItem => ({
+        type: 'image',
+        transfer_method: fileItem.type,
+        url: fileItem.url,
+        upload_file_id: fileItem.fileId,
+      })))
+      if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
+        if (files.length)
+          onClear()
+        if (!isResponsing)
+          setQuery('')
+      }
+    }
+  }, [])
+
   return (
     <div className={cn(!feedbackDisabled && 'px-3.5', 'h-full')}>
       {/* Chat List */}
@@ -151,6 +206,7 @@ const Chat: FC<IChatProps> = ({
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
               isResponsing={isResponsing && isLast}
+              onQueryChange={handleQueryChangeFromAnswer}
             />
           }
           return (
@@ -166,29 +222,15 @@ const Chat: FC<IChatProps> = ({
       </div>
       {
         !isHideSendInput && (
-          <div className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
-
-            {/* <div className={`${s.suggestSection}`}>
-              <div className="flex items-center mb-2.5 py-2">
-                <div className={`${s.line} grow`}></div>
-                <div className="shrink-0 flex items-center px-3 text-gray-500">
-                  <div className={`${s.starIcon} w-3 h-3 rounded-md mr-1`}></div>
-                  <span className="text-xs text-gray-500 font-medium">{t('app.chat.tryToAsk')}</span>
-                </div>
-                <div className={`${s.line} grow`}></div>
-              </div>
-              <div className={`${s.suggestionList} flex flex-wrap justify-center items-center`}>
-                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
-                  Live 2 Play的保障範圍？
-                </div>
-                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
-                  如何計算Live 2 Play的保費？
-                </div>
-                <div className="mb-2 mr-2 last:mr-0 px-3 py-[5px] bg-white text-primary-600 text-xs font-medium border-solid border border-gray-200 rounded-lg cursor-pointer hover:shadow-sm hover:border-gray-300 ">
-                  Live 2 Play的索賠流程是什麼？
-                </div>
-              </div>
-            </div> */}
+          <div ref={footerRef} className={cn(!feedbackDisabled && '!left-3.5 !right-3.5', 'absolute z-10 bottom-0 left-0 right-0 chat-input')}>
+            {
+              isShowSuggestion && (
+                <TryToAsk
+                  suggestList={suggestionList}
+                  OnSuggestSend={handleSuggestQuery}
+                />
+              )
+            }
 
             <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
               {

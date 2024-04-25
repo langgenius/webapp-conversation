@@ -140,3 +140,11 @@ export type VisionFile = {
   upload_file_id: string
   belongs_to?: string
 }
+
+export type MoreLikeThisConfig = {
+  enabled: boolean
+}
+
+export type SuggestedQuestionsAfterAnswerConfig = MoreLikeThisConfig
+
+export type SpeechToTextConfig = MoreLikeThisConfig

@@ -8,5 +8,10 @@ services:
       APP_KEY: "${APP_KEY}"
       API_URL: "${API_URL}"
       NODE_ENV: development
+      SA_API_URL:
+      SA_API_TOKEN:
+      ENABLE_AUTH: false
+      SECRET_KEY:
+      SHOW_MOBILE: false
     ports:
       - "3000:3000"
