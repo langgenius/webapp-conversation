@@ -194,11 +194,11 @@ const Main: FC = ({params}: any) => {
   const chatListDomRef = useRef<HTMLDivElement>(null)
   const [isResponding, { setTrue: setRespondingTrue, setFalse: setRespondingFalse }] = useBoolean(false)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // scroll to bottom
     if (chatListDomRef.current)
       chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight + footerHeight
-  }, [chatList, currConversationId, suggestedQuestions])
+  }, [chatList, currConversationId, footerHeight])
   // user can not edit inputs if user had send message
   const canEditInpus = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
