@@ -312,6 +312,11 @@ export const ssePost = (url: string, fetchOptions: any, { onData, onCompleted, o
             Toast.notify({ type: 'info', message: '這個對話已經很長了，請新開對話繼續吧' })
             return
           }
+          if (/(rate limit)/i.test(`${moreInfo.errorMessage}`)) {
+            onError?.('context_length_exceeded', '429');
+            Toast.notify({ type: 'info', message: 'AI助手正在忙於答覆中，請稍等' })
+            return
+          }
           Toast.notify({ type: 'error', message: moreInfo.errorMessage })
           return
         }
