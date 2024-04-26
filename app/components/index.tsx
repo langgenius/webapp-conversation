@@ -10,7 +10,7 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback, fetchSuggestedQuestions } from '@/service'
+import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback, fetchSuggestedQuestions, deleteConversation } from '@/service'
 import type { ConversationItem, Feedbacktype, IChatItem, PromptConfig, VisionFile, VisionSettings, SuggestedQuestionsAfterAnswerConfig } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
 import Chat from '@/app/components/chat'
@@ -49,7 +49,7 @@ const Main: FC = ({params}: any) => {
   })
 
   /*
-  * suggesttion 
+  * suggesttion
   */
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([])
   const [footerHeight, setFooterHeight] = useState('66')
