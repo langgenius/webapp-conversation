@@ -27,7 +27,7 @@ const Main: FC = ({params}: any) => {
   const { t } = useTranslation()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const {APP_INFO, isShowPrompt, promptTemplate, APP_ID, API_KEY, showMobile} = params;
+  const {APP_INFO, isShowPrompt, promptTemplate, APP_ID, API_KEY, showMobile} = params 
   const hasSetAppConfig = APP_ID && API_KEY
 
   /*
@@ -206,7 +206,7 @@ const Main: FC = ({params}: any) => {
             introduction: conversationIntroduction,
           })
         }))
-        setCurrConversationId('-1', APP_ID)
+        setCurrConversationId('-1', APP_ID, false)
       }
       else {
         setConversationList(result.data)
@@ -381,13 +381,15 @@ const Main: FC = ({params}: any) => {
   }
 
   const handleSend = async (message: string, files?: VisionFile[]) => {
+    
     if (isResponsing) {
       notify({ type: 'info', message: t('app.errorMessage.waitForResponse') })
       return
     }
 
+    const target = conversationList.find(item => item.id === currConversationId)
     const data: Record<string, any> = {
-      inputs: currInputs,
+      inputs: target?.inputs || currInputs,
       query: message,
       conversation_id: isNewConversation ? null : currConversationId,
     }
