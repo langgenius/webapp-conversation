@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import produce from 'immer'
 import { useGetState } from 'ahooks'
 import type { ConversationItem } from '@/types/app'
@@ -26,7 +26,10 @@ function useConversation() {
     return id
   }
 
-  const isNewConversation = currConversationId === '-1'
+  const isNewConversation = useMemo<boolean>((): boolean => {
+    return currConversationId === '-1'
+  }, [currConversationId])
+
   // input can be updated by user
   const [newConversationInputs, setNewConversationInputs] = useState<Record<string, any> | null>(null)
   const resetNewConversationInputs = () => {

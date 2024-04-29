@@ -387,11 +387,11 @@ const Main: FC = ({params}: any) => {
       return
     }
 
-    const target = conversationList.find(item => item.id === currConversationId)
+    const target = conversationList.find(item => item.id === getCurrConversationId())
     const data: Record<string, any> = {
       inputs: target?.inputs || currInputs,
       query: message,
-      conversation_id: isNewConversation ? null : currConversationId,
+      conversation_id: isNewConversation ? null : getCurrConversationId(),
     }
 
     if (visionConfig?.enabled && files && files?.length > 0) {
@@ -482,7 +482,7 @@ const Main: FC = ({params}: any) => {
 
         if (getConversationIdChangeBecauseOfNew()) {
           const { data: allConversations }: any = await fetchConversations()
-          const newItem: any = await generationConversationName(allConversations[0].id)
+          const newItem: any = await generationConversationName(allConversations[0].id)      
 
           const newAllConversations = produce(allConversations, (draft: any) => {
             draft[0].name = newItem.name
