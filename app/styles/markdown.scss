@@ -109,6 +109,7 @@
   background-color: transparent;
   color: var(--color-accent-fg);
   text-decoration: none;
+  word-break: break-all;
 }
 
 .markdown-body abbr[title] {

@@ -122,7 +122,7 @@ const Main: FC = ({params}: any) => {
     let notSyncToStateIntroduction = ''
     let notSyncToStateInputs: Record<string, any> | undefined | null = {}
     if (!isNewConversation) {
-      const item = conversationList.find(item => item.id === currConversationId)
+      const item = conversationList.find(item => item.id === getCurrConversationId())
       notSyncToStateInputs = item?.inputs || {}
       setCurrInputs(notSyncToStateInputs as any)
       notSyncToStateIntroduction = item?.introduction || ''
@@ -167,6 +167,7 @@ const Main: FC = ({params}: any) => {
       setChatList(generateNewChatListWithOpenstatement())
   }
   useEffect(handleConversationSwitch, [currConversationId, inited])
+
   useEffect(() => {
     if (currConversationId) {
       setMaxTokenCurrID(currConversationId);
@@ -386,12 +387,12 @@ const Main: FC = ({params}: any) => {
       notify({ type: 'info', message: t('app.errorMessage.waitForResponse') })
       return
     }
-
+    
     const target = conversationList.find(item => item.id === getCurrConversationId())
     const data: Record<string, any> = {
-      inputs: target?.inputs || currInputs,
+      inputs: (target?.inputs?.product) ? target.inputs : currInputs,
       query: message,
-      conversation_id: isNewConversation ? null : getCurrConversationId(),
+      conversation_id: getConversationIdChangeBecauseOfNew() ? null : getCurrConversationId(),
     }
 
     if (visionConfig?.enabled && files && files?.length > 0) {
@@ -482,7 +483,8 @@ const Main: FC = ({params}: any) => {
 
         if (getConversationIdChangeBecauseOfNew()) {
           const { data: allConversations }: any = await fetchConversations()
-          const newItem: any = await generationConversationName(allConversations[0].id)      
+          const newItem: any = await generationConversationName(allConversations[0].id)
+          allConversations[0].id && setCurrConversationId(allConversations[0].id, APP_ID, true)
 
           const newAllConversations = produce(allConversations, (draft: any) => {
             draft[0].name = newItem.name
@@ -595,8 +597,8 @@ const Main: FC = ({params}: any) => {
         ))
       },
       onError(msg, code) {
-        if (code == '413') {
-          addMaxTokenConversation(currConversationId);
+        if (code == '413' && currConversationId !== '-1') {
+          addMaxTokenConversation(currConversationId)
         }
         setResponsingFalse()
         // role back placeholder answer
@@ -631,7 +633,7 @@ const Main: FC = ({params}: any) => {
         list={conversationList}
         onCurrentIdChange={handleConversationIdChange}
         onDeleteConversationItem={handleDeleteConversationItem}
-        currentId={currConversationId}
+        currentId={getCurrConversationId()}
         copyRight={APP_INFO.copyright || APP_INFO.title}
       />
     )
