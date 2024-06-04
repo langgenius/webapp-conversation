@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  next-app:
+    platform: linux/amd64
+    container_name: next-app
+    image: node:19-bullseye-slim
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    command: |
+      npm start
