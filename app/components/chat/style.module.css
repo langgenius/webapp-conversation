@@ -17,7 +17,6 @@
   border-radius: 16px;
 }
 
-
 .questionIcon {
   background: url(./icons/default-avatar.jpg);
   background-size: contain;
@@ -52,40 +51,35 @@
 }
 
 .textArea {
-  padding-top: 13px;
-  padding-bottom: 13px;
-  padding-right: 90px;
+  padding: 13px 90px 13px 13px;
   border-radius: 12px;
   line-height: 20px;
-  background-color: #fff;
+  background-color: #e8f0e8; /* 薄い緑色の背景 */
+  border: 1px solid #e2e8f0;
 }
 
-.textArea:hover {
-  background-color: #fff;
+.textArea:hover, .textArea:focus {
+  background-color: #e8f0e8;
+  box-shadow: 0 0 0 2px rgba(181, 166, 152, 0.2); /* #b5a698 の薄い影 */
 }
-
-/* .textArea:focus {
-  box-shadow: 0px 3px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
-} */
 
 .count {
-  /* display: none; */
   padding: 0 2px;
 }
 
 .sendBtn {
   background: url(./icons/send.svg) center center no-repeat;
+  background-color: #b5a698; /* ボタンの背景色 */
+  border-radius: 0.375rem;
+  width: 32px;
+  height: 32px;
 }
 
 .sendBtn:hover {
   background-image: url(./icons/send-active.svg);
-  background-color: #EBF5FF;
+  background-color: #a29587; /* ホバー時の色 */
 }
 
-.textArea:focus+div .count {
-  display: block;
-}
-
-.textArea:focus+div .sendBtn {
+.textArea:focus + div .sendBtn {
   background-image: url(./icons/send-active.svg);
 }
