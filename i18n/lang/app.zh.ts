@@ -23,6 +23,9 @@ const translation = {
     valueOfVarRequired: '变量值必填',
     waitForResponse: '请等待上条信息响应完成',
   },
+  variableTable: {
+    optional: '可选',
+  },
 }
 
 export default translation
