@@ -28,6 +28,9 @@ const translation = {
     waitForResponse:
       'Please wait for the response to the previous message to complete.',
   },
+  variableTable: {
+    optional: 'Optional',
+  },
 }
 
 export default translation
