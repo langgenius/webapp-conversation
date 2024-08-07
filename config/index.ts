@@ -11,7 +11,7 @@ export const APP_INFO: AppInfo = {
 }
 
 export const isShowPrompt = false
-export const promptTemplate = 'I want you to act as a javascript console.'
+export const promptTemplate = ''
 
 export const API_PREFIX = '/api'
 
