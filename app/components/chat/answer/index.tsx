@@ -58,7 +58,7 @@ type IAnswerProps = {
   item: ChatItem
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
-  isResponsing?: boolean
+  isResponding?: boolean
   allToolIcons?: Record<string, string | Emoji>
 }
 
@@ -67,7 +67,7 @@ const Answer: FC<IAnswerProps> = ({
   item,
   feedbackDisabled = false,
   onFeedback,
-  isResponsing,
+  isResponding,
   allToolIcons,
 }) => {
   const { id, content, feedback, agent_thoughts, workflowProcess } = item
@@ -153,7 +153,7 @@ const Answer: FC<IAnswerProps> = ({
             <Thought
               thought={item}
               allToolIcons={allToolIcons || {}}
-              isFinished={!!item.observation || !isResponsing}
+              isFinished={!!item.observation || !isResponding}
             />
           )}
 
@@ -169,7 +169,7 @@ const Answer: FC<IAnswerProps> = ({
     <div key={id}>
       <div className='flex items-start'>
         <div className={`${s.answerIcon} w-10 h-10 shrink-0`}>
-          {isResponsing
+          {isResponding
             && <div className={s.typeingIcon}>
               <LoadingAnim type='avatar' />
             </div>
@@ -181,7 +181,7 @@ const Answer: FC<IAnswerProps> = ({
               {workflowProcess && (
                 <WorkflowProcess data={workflowProcess} hideInfo />
               )}
-              {(isResponsing && (isAgentMode ? (!content && (agent_thoughts || []).filter(item => !!item.thought || !!item.tool).length === 0) : !content))
+              {(isResponding && (isAgentMode ? (!content && (agent_thoughts || []).filter(item => !!item.thought || !!item.tool).length === 0) : !content))
                 ? (
                   <div className='flex items-center justify-center w-6 h-5'>
                     <LoadingAnim type='text' />
