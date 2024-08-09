@@ -199,7 +199,7 @@ const Main: FC = () => {
     if (calculatedIntroduction && calculatedPromptVariables)
       calculatedIntroduction = replaceVarWithValues(calculatedIntroduction, promptConfig?.prompt_variables || [], calculatedPromptVariables)
 
-    const openstatement = {
+    const openStatement = {
       id: `${Date.now()}`,
       content: calculatedIntroduction,
       isAnswer: true,
