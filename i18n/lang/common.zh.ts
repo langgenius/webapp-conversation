@@ -28,6 +28,20 @@ const translation = {
     pasteImageLinkInvalid: '图片链接无效',
     imageUpload: '图片上传',
   },
+  chat: {
+    renameConversation: '重命名会话',
+    conversationName: '会话名称',
+    conversationNamePlaceholder: '请输入会话名称',
+    conversationNameCanNotEmpty: '会话名称必填',
+    citation: {
+      title: '引用',
+      linkToDataset: '跳转至知识库',
+      characters: '字符：',
+      hitCount: '召回次数：',
+      vectorHash: '向量哈希：',
+      hitScore: '召回得分：',
+    },
+  },
 }
 
 export default translation
