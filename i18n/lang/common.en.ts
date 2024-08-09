@@ -28,6 +28,20 @@ const translation = {
     pasteImageLinkInvalid: 'Invalid image link',
     imageUpload: 'Image Upload',
   },
+  chat: {
+    renameConversation: 'Rename Conversation',
+    conversationName: 'Conversation name',
+    conversationNamePlaceholder: 'Please input conversation name',
+    conversationNameCanNotEmpty: 'Conversation name required',
+    citation: {
+      title: 'CITATIONS',
+      linkToDataset: 'Link to Knowledge',
+      characters: 'Characters:',
+      hitCount: 'Retrieval count:',
+      vectorHash: 'Vector hash:',
+      hitScore: 'Retrieval Score:',
+    },
+  },
 }
 
 export default translation

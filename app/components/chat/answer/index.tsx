@@ -8,13 +8,14 @@ import type { FeedbackFunc } from '../type'
 import s from '../style.module.css'
 import ImageGallery from '../../base/image-gallery'
 import Thought from '../thought'
+import SuggestedQuestions from './suggested-questions'
 import { randomString } from '@/utils/string'
 import type { ChatItem, MessageRating, VisionFile } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
 import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { Markdown } from '@/app/components/base/markdown'
 import type { Emoji } from '@/types/tools'
-
+import Citation from '@/app/components/chat/citation'
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
   <div
     className={`relative box-border flex items-center justify-center h-7 w-7 p-0.5 rounded-lg bg-white cursor-pointer text-gray-500 hover:text-gray-800 ${className ?? ''}`}
@@ -56,8 +57,10 @@ const IconWrapper: FC<{ children: React.ReactNode | string }> = ({ children }) =
 
 type IAnswerProps = {
   item: ChatItem
+  config?: any
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
+  onHandleSend?: (message: string) => void
   isResponding?: boolean
   allToolIcons?: Record<string, string | Emoji>
 }
@@ -67,12 +70,13 @@ const Answer: FC<IAnswerProps> = ({
   item,
   feedbackDisabled = false,
   onFeedback,
+  onHandleSend,
   isResponding,
   allToolIcons,
+  config,
 }) => {
-  const { id, content, feedback, agent_thoughts, workflowProcess } = item
+  const { id, content, feedback, agent_thoughts, workflowProcess, suggestedQuestions, citation } = item
   const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0
-
   const { t } = useTranslation()
 
   /**
@@ -145,7 +149,14 @@ const Answer: FC<IAnswerProps> = ({
       {agent_thoughts?.map((item, index) => (
         <div key={index}>
           {item.thought && (
-            <Markdown content={item.thought} />
+            <>
+              <Markdown content={item.thought} />
+              {
+                !!citation?.length && (
+                  <Citation data={citation} showHitInfo={config?.supportCitationHitInfo} />
+                )
+              }
+            </>
           )}
           {/* {item.tool} */}
           {/* perhaps not use tool */}
@@ -190,7 +201,17 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <Markdown content={content} />
+                    <>
+                      <Markdown content={content} />
+                      {suggestedQuestions
+                        ? (
+                          <SuggestedQuestions
+                            onHandleSend={onHandleSend}
+                            suggestedQuestions={suggestedQuestions}
+                          />
+                        )
+                        : null}
+                    </>
                   ))}
             </div>
             <div className='absolute top-[-14px] right-[-14px] flex flex-row justify-end gap-1'>

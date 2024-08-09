@@ -83,10 +83,20 @@ const Chat: FC<IChatProps> = ({
     onClear,
   } = useImageFiles()
 
-  const handleSend = () => {
-    if (!valid() || (checkCanSend && !checkCanSend()))
-      return
-    onSend(query, files.filter(file => file.progress !== -1).map(fileItem => ({
+  const handleSend = (input: any) => {
+    // 快捷问答模式下，直接发送
+    let message = ''
+    if (typeof input === 'string') {
+      if (checkCanSend && !checkCanSend())
+        return
+      message = input
+    }
+    else {
+      if (!valid() || (checkCanSend && !checkCanSend()))
+        return
+      message = query
+    }
+    onSend(message, files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,
       url: fileItem.url,
@@ -127,8 +137,12 @@ const Chat: FC<IChatProps> = ({
             return <Answer
               key={item.id}
               item={item}
+              onHandleSend={handleSend}
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
+              config={
+                { upportCitationHitInfo: false }
+              }
               isResponding={isResponding && isLast}
             />
           }
