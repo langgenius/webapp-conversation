@@ -4,6 +4,11 @@ const translation = {
     saved: 'Saved',
     create: 'Created',
   },
+  voiceInput: {
+    speaking: 'Speak now...',
+    converting: 'Converting to text...',
+    notAllow: 'microphone not authorized',
+  },
   operation: {
     confirm: 'Confirm',
     cancel: 'Cancel',

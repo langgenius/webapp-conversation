@@ -6,7 +6,7 @@ import {
 import cn from 'classnames'
 import NodePanel from './node'
 import type { WorkflowProcess } from '@/types/app'
-import CheckCircle from '@/app/components/base/icons/solid/general/check-circle'
+import { CheckCircle } from '@/app/components/base/icons/solid/general/'
 import AlertCircle from '@/app/components/base/icons/solid/alert-circle'
 import Loading02 from '@/app/components/base/icons/line/loading-02'
 import ChevronRight from '@/app/components/base/icons/line/chevron-right'

@@ -4,6 +4,11 @@ const translation = {
     saved: '已保存',
     create: '已创建',
   },
+  voiceInput: {
+    speaking: '现在讲...',
+    converting: '正在转换为文本...',
+    notAllow: '麦克风未授权',
+  },
   operation: {
     confirm: '确认',
     cancel: '取消',

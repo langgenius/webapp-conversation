@@ -44,6 +44,7 @@ const Main: FC = () => {
     detail: Resolution.low,
     transfer_methods: [TransferMethod.local_file],
   })
+  const [speechToText, setSpeechToText] = useState<boolean>(false)
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -234,7 +235,7 @@ const Main: FC = () => {
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
-        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions: suggestedQuestions }: any = appParams
+        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions: suggestedQuestions, speech_to_text: speechToText }: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
@@ -250,6 +251,7 @@ const Main: FC = () => {
           ...file_upload?.image,
           image_file_size_limit: system_parameters?.system_parameters || 0,
         })
+        setSpeechToText(speechToText)
         setConversationList(conversations as ConversationItem[])
 
         if (isNotNewConversation)
@@ -662,6 +664,7 @@ const Main: FC = () => {
                     isResponding={isResponding}
                     checkCanSend={checkCanSend}
                     visionConfig={visionConfig}
+                    speechToTextConfig={speechToText}
                   />
                 </div>
               </div>)
