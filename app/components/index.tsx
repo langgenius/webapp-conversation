@@ -45,10 +45,10 @@ const Main: FC = () => {
     transfer_methods: [TransferMethod.local_file],
   })
 
-  useEffect(() => {
-    if (APP_INFO?.title)
-      document.title = `${APP_INFO.title} - Powered by Dify`
-  }, [APP_INFO?.title])
+  // useEffect(() => {
+  //   if (APP_INFO?.title)
+  //     document.title = `${APP_INFO.title} - Powered by Dify`
+  // }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
   useEffect(() => {
