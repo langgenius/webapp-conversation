@@ -4,11 +4,14 @@ import { initReactI18next } from 'react-i18next'
 import commonEn from './lang/common.en'
 import commonEs from './lang/common.es'
 import commonZh from './lang/common.zh'
+import commonVi from './lang/common.vi'
 import appEn from './lang/app.en'
 import appEs from './lang/app.es'
 import appZh from './lang/app.zh'
+import appVi from './lang/app.vi'
 import toolsEn from './lang/tools.en'
 import toolsZh from './lang/tools.zh'
+import toolsVi from './lang/tools.vi'
 import type { Locale } from '.'
 
 const resources = {
@@ -34,6 +37,14 @@ const resources = {
       tools: toolsZh,
     },
   },
+  'vi': {
+    translation: {
+      common: commonVi,
+      app: appVi,
+      // tools
+      tools: toolsVi,
+    },
+  }
 }
 
 i18n.use(initReactI18next)
