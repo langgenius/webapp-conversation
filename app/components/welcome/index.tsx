@@ -26,6 +26,20 @@ export type IWelcomeProps = {
   /** 传递默认值 */
   onDefaultQuery: (input: string) => void
 }
+const questionCard = [
+  {
+    title: '政策条例',
+    questions: ['南京市智能建造政策有哪些？', '2024年天津市智能建造试点城市推进工作计划是什么？']
+  },
+  {
+    title: '行业标准',
+    questions: ['各省市发布的关于智能建造项目的评价规定都有什么？各地之间有什么不同？', '上海市智能建造应用场景目录中，设计阶段的应用场景及评价标准是什么？']
+  },
+  {
+    title: '项目信息',
+    questions: ['河南省住建厅发布的第一批智能建造试点项目有什么？列出项目名称及详细信息', '广东省第一批智能建造试点项目名单中，应用了数字设计技术的项目有哪些？']
+  }
+]
 
 const Welcome: FC<IWelcomeProps> = ({
   conversationName,
@@ -36,6 +50,7 @@ const Welcome: FC<IWelcomeProps> = ({
   onStartChat,
   canEditInputs,
   savedInputs,
+  onDefaultQuery,
   onInputsChange,
 }) => {
   const { t } = useTranslation()
@@ -53,6 +68,7 @@ const Welcome: FC<IWelcomeProps> = ({
     }
     return res
   })())
+
   useEffect(() => {
     if (!savedInputs) {
       const res: Record<string, any> = {}
@@ -126,6 +142,7 @@ const Welcome: FC<IWelcomeProps> = ({
             )}
           </div>
         ))}
+
       </div>
     )
   }
@@ -144,10 +161,15 @@ const Welcome: FC<IWelcomeProps> = ({
   const handleChat = () => {
     if (!canChat())
       return
-
     onStartChat(inputs)
   }
 
+  const handleQueClick = (val: string) => {
+    if (!canChat())
+      return
+    onDefaultQuery(val)
+    onStartChat(inputs)
+  }
   const renderNoVarPanel = () => {
     if (isPublicVersion) {
       return (
@@ -167,6 +189,7 @@ const Welcome: FC<IWelcomeProps> = ({
           >
             <ChatBtn onClick={handleChat} />
           </TemplateVarPanel>
+
         </div>
       )
     }
@@ -182,7 +205,31 @@ const Welcome: FC<IWelcomeProps> = ({
       </TemplateVarPanel>
     )
   }
-
+  const rederDefaultQue = () => {
+    return (
+      <div>
+        {
+          !hasSetInputs && (
+            <div className='mx-auto pc:w-[1000px] max-w-full mobile:w-full px-3.5'>
+              <p className='my-0 font-semibold'>你可以尝试下面的示例...</p>
+              <div className='flex mt-10 gap-6 mb-10 justify-between items-stretch'>
+                {
+                  questionCard.map((item, index) => (
+                    <div key={index} className='flex-1  ring-2 ring-gray-900/5 hover:ring-blue-600  py-2 shadow-md sm:rounded-md h-70'>
+                      <h2 className='font-bold border-b text-lg p-2 text-center' >{item.title}</h2>
+                      {item.questions.map((que, i) => (
+                        <p key={i} className='hover:bg-gray-200 min-h-24 flex items-center rounded-sm bg-gray-100 cursor-pointer p-2 m-2' onClick={() => handleQueClick(que)}>{que}</p>
+                      ))}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          )
+        }
+      </div>
+    )
+  }
   const renderVarPanel = () => {
     return (
       <TemplateVarPanel
@@ -193,9 +240,10 @@ const Welcome: FC<IWelcomeProps> = ({
       >
         {renderInputs()}
         <ChatBtn
-          className='mt-3 mobile:ml-0 tablet:ml-[128px]'
+          className='mt-3 mobile:ml-0 tablet:ml-auto'
           onClick={handleChat}
         />
+        {rederDefaultQue()}
       </TemplateVarPanel>
     )
   }
@@ -318,7 +366,7 @@ const Welcome: FC<IWelcomeProps> = ({
 
         {/* Has set inputs */}
         {hasSetInputs && renderHasSetInputs()}
-
+        {/* {hasSetInputs && rederDefaultQue()} */}
         {/* foot */}
         {!hasSetInputs && (
           <div className='mt-4 flex justify-between items-center h-8 text-xs text-gray-400'>
