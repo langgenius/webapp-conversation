@@ -602,12 +602,14 @@ const Main: FC = () => {
       />
     )
   }
+  const [defalutQuery, setDefaultQuery] = useState<string>()
 
   if (appUnavailable)
     return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
 
   if (!APP_ID || !APP_INFO || !promptConfig)
     return <Loading type='app' />
+
 
   return (
     <div className='bg-gray-100'>
@@ -639,6 +641,7 @@ const Main: FC = () => {
             siteInfo={APP_INFO}
             promptConfig={promptConfig}
             onStartChat={handleStartChat}
+            onDefaultQuery={(val) => setDefaultQuery(val)}
             canEditInputs={canEditInputs}
             savedInputs={currInputs as Record<string, any>}
             onInputsChange={setCurrInputs}
@@ -654,6 +657,7 @@ const Main: FC = () => {
                     onFeedback={handleFeedback}
                     isResponding={isResponding}
                     checkCanSend={checkCanSend}
+                    defalutQuery={defalutQuery}
                     visionConfig={visionConfig}
                   />
                 </div>

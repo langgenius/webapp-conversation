@@ -33,6 +33,8 @@ export type IChatProps = {
   isResponding?: boolean
   controlClearQuery?: number
   visionConfig?: VisionSettings
+  /** 默认聊天框内容 */
+  defalutQuery?: string
 }
 
 const Chat: FC<IChatProps> = ({
@@ -46,12 +48,13 @@ const Chat: FC<IChatProps> = ({
   isResponding,
   controlClearQuery,
   visionConfig,
+  defalutQuery
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
   const isUseInputMethod = useRef(false)
 
-  const [query, setQuery] = React.useState('')
+  const [query, setQuery] = React.useState(defalutQuery ?? '')
   const handleContentChange = (e: any) => {
     const value = e.target.value
     setQuery(value)
