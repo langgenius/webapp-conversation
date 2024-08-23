@@ -116,7 +116,7 @@ const Welcome: FC<IWelcomeProps> = ({
               && (
                 <Select
                   className='w-full'
-                  defaultValue={inputs?.[item.key]}
+                  defaultValue={inputs?.[item.key] || '开启'}
                   onSelect={(i) => { setInputs({ ...inputs, [item.key]: i.value }) }}
                   items={(item.options || []).map(i => ({ name: i, value: i }))}
                   allowSearch={false}
@@ -151,10 +151,10 @@ const Welcome: FC<IWelcomeProps> = ({
     const inputLens = Object.values(inputs).length
     const promptVariablesLens = promptConfig.prompt_variables.length
     const emptyInput = inputLens < promptVariablesLens || Object.values(inputs).filter(v => v === '').length > 0
-    if (emptyInput) {
-      logError(t('app.errorMessage.valueOfVarRequired'))
-      return false
-    }
+    // if (emptyInput) {
+    //   logError(t('app.errorMessage.valueOfVarRequired'))
+    //   return false
+    // }
     return true
   }
 
@@ -168,6 +168,7 @@ const Welcome: FC<IWelcomeProps> = ({
     if (!canChat())
       return
     onDefaultQuery(val)
+    // setInputs({ sys_online: "开启" })
     onStartChat(inputs)
   }
   const renderNoVarPanel = () => {
