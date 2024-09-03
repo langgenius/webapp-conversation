@@ -48,7 +48,7 @@ const resources = {
       // tools
       tools: toolsVi,
     },
-  }
+  },
   'ja': {
     translation: {
       common: commonJa,
