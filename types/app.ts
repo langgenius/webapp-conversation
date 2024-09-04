@@ -37,6 +37,8 @@ export type UserInputFormItem = {
   'text-input': TextTypeFormItem
 } | {
   'select': SelectTypeFormItem
+} | {
+  'paragraph': TextTypeFormItem
 }
 
 export const MessageRatings = ['like', 'dislike', null] as const
