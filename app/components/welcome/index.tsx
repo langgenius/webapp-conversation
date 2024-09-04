@@ -122,6 +122,15 @@ const Welcome: FC<IWelcomeProps> = ({
                 onChange={(e) => { setInputs({ ...inputs, [item.key]: e.target.value }) }}
               />
             )}
+            {item.type === 'number' && (
+              <input
+                type="number"
+                className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                placeholder={`${item.name}${!item.required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
+                value={inputs[item.key]}
+                onChange={(e) => { onInputsChange({ ...inputs, [item.key]: e.target.value }) }}
+              />
+            )}
           </div>
         ))}
       </div>
