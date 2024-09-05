@@ -1,6 +1,7 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef } from 'react'
+import Recorder from 'js-audio-recorder'
+import React, { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import Textarea from 'rc-textarea'
@@ -8,6 +9,10 @@ import s from './style.module.css'
 import Answer from './answer'
 import Question from './question'
 import type { FeedbackFunc } from './type'
+import VoiceInput from './answer/voice-input'
+import { Microphone01 } from '@/app/components/base/icons/line/mediaAndDevices'
+import { Microphone01 as Microphone01Solid } from '@/app/components/base/icons/solid/mediaAndDevices'
+
 import type { ChatItem, VisionFile, VisionSettings } from '@/types/app'
 import { TransferMethod } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
@@ -15,6 +20,7 @@ import Toast from '@/app/components/base/toast'
 import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
+import { XCircle } from '@/app/components/base/icons/solid/general'
 
 export type IChatProps = {
   chatList: ChatItem[]
@@ -33,6 +39,8 @@ export type IChatProps = {
   isResponding?: boolean
   controlClearQuery?: number
   visionConfig?: VisionSettings
+  speechToTextConfig?: boolean
+
 }
 
 const Chat: FC<IChatProps> = ({
@@ -46,9 +54,12 @@ const Chat: FC<IChatProps> = ({
   isResponding,
   controlClearQuery,
   visionConfig,
+  speechToTextConfig,
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
+  const [voiceInputShow, setVoiceInputShow] = useState(false)
+
   const isUseInputMethod = useRef(false)
 
   const [query, setQuery] = React.useState('')
@@ -60,7 +71,16 @@ const Chat: FC<IChatProps> = ({
   const logError = (message: string) => {
     notify({ type: 'error', message, duration: 3000 })
   }
-
+  const handleVoiceInputShow = () => {
+    (Recorder as any).getPermission().then(
+      () => {
+        setVoiceInputShow(true)
+      },
+      () => {
+        logError(t('common.voiceInput.notAllow'))
+      },
+    )
+  }
   const valid = () => {
     if (!query || query.trim() === '') {
       logError('Message cannot be empty')
@@ -83,10 +103,20 @@ const Chat: FC<IChatProps> = ({
     onClear,
   } = useImageFiles()
 
-  const handleSend = () => {
-    if (!valid() || (checkCanSend && !checkCanSend()))
-      return
-    onSend(query, files.filter(file => file.progress !== -1).map(fileItem => ({
+  const handleSend = (input: any) => {
+    // 快捷问答模式下，直接发送
+    let message = ''
+    if (typeof input === 'string') {
+      if (checkCanSend && !checkCanSend())
+        return
+      message = input
+    }
+    else {
+      if (!valid() || (checkCanSend && !checkCanSend()))
+        return
+      message = query
+    }
+    onSend(message, files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,
       url: fileItem.url,
@@ -127,8 +157,12 @@ const Chat: FC<IChatProps> = ({
             return <Answer
               key={item.id}
               item={item}
+              onHandleSend={handleSend}
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
+              config={
+                { upportCitationHitInfo: false }
+              }
               isResponding={isResponding && isLast}
             />
           }
@@ -183,6 +217,26 @@ const Chat: FC<IChatProps> = ({
               />
               <div className="absolute bottom-2 right-2 flex items-center h-8">
                 <div className={`${s.count} mr-4 h-5 leading-5 text-sm bg-gray-50 text-gray-500`}>{query.trim().length}</div>
+                {query
+                  ? (
+                    <div
+                      className="flex justify-center items-center ml-2 w-8 h-8 cursor-pointer hover:bg-gray-100 rounded-lg"
+                      onClick={() => setQuery('')}
+                    >
+                      <XCircle className="w-4 h-4 text-[#98A2B3]" />
+                    </div>
+                  )
+                  : speechToTextConfig?.enabled
+                    ? (
+                      <div
+                        className="group flex justify-center items-center ml-2 w-8 h-8 hover:bg-primary-50 rounded-lg cursor-pointer"
+                        onClick={handleVoiceInputShow}
+                      >
+                        <Microphone01 className="block w-4 h-4 text-gray-500 group-hover:hidden" />
+                        <Microphone01Solid className="hidden w-4 h-4 text-primary-600 group-hover:block" />
+                      </div>
+                    )
+                    : null}
                 <Tooltip
                   selector='send-tip'
                   htmlContent={
@@ -195,6 +249,12 @@ const Chat: FC<IChatProps> = ({
                   <div className={`${s.sendBtn} w-8 h-8 cursor-pointer rounded-md`} onClick={handleSend}></div>
                 </Tooltip>
               </div>
+              {voiceInputShow && (
+                <VoiceInput
+                  onCancel={() => setVoiceInputShow(false)}
+                  onConverted={text => setQuery(text)}
+                />
+              )}
             </div>
           </div>
         )

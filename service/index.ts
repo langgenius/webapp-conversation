@@ -1,5 +1,5 @@
 import type { IOnCompleted, IOnData, IOnError, IOnFile, IOnMessageEnd, IOnMessageReplace, IOnNodeFinished, IOnNodeStarted, IOnThought, IOnWorkflowFinished, IOnWorkflowStarted } from './base'
-import { get, post, ssePost } from './base'
+import { get, post, ssePost, upload } from './base'
 import type { Feedbacktype } from '@/types/app'
 
 export const sendChatMessage = async (
@@ -59,4 +59,7 @@ export const updateFeedback = async ({ url, body }: { url: string; body: Feedbac
 
 export const generationConversationName = async (id: string) => {
   return post(`conversations/${id}/name`, { body: { auto_generate: true } })
+}
+export const audioToText = (fetchOptions: any): Promise<{ text: string }> => {
+  return upload(fetchOptions)
 }

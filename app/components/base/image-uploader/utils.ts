@@ -1,6 +1,7 @@
 'use client'
 
 import { upload } from '@/service/base'
+import { API_PREFIX } from '@/config'
 
 type ImageUploadParams = {
   file: File
@@ -27,6 +28,7 @@ export const imageUpload: ImageUpload = ({
   upload({
     xhr: new XMLHttpRequest(),
     data: formData,
+    url: `${API_PREFIX}/file-upload`,
     onprogress: onProgress,
   })
     .then((res: { id: string }) => {
