@@ -4,13 +4,18 @@ import { initReactI18next } from 'react-i18next'
 import commonEn from './lang/common.en'
 import commonEs from './lang/common.es'
 import commonZh from './lang/common.zh'
+import commonVi from './lang/common.vi'
+import commonJa from './lang/common.ja'
 import appEn from './lang/app.en'
 import appEs from './lang/app.es'
 import appZh from './lang/app.zh'
+import appVi from './lang/app.vi'
+import appJa from './lang/app.ja'
 import toolsEn from './lang/tools.en'
 import toolsZh from './lang/tools.zh'
-import datasetEn from './lang/dataset.en'
-import datasetZh from './lang/dataset.zh'
+import toolsVi from './lang/tools.vi'
+import toolsJa from './lang/tools.ja'
+
 import type { Locale } from '.'
 
 const resources = {
@@ -20,7 +25,6 @@ const resources = {
       app: appEn,
       // tools
       tools: toolsEn,
-      dataset: datasetEn,
     },
   },
   'es': {
@@ -35,7 +39,22 @@ const resources = {
       app: appZh,
       // tools
       tools: toolsZh,
-      dataset: datasetZh,
+    },
+  },
+  'vi': {
+    translation: {
+      common: commonVi,
+      app: appVi,
+      // tools
+      tools: toolsVi,
+    },
+  },
+  'ja': {
+    translation: {
+      common: commonJa,
+      app: appJa,
+      // tools
+      tools: toolsJa,
     },
   },
 }
