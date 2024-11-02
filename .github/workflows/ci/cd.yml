@@ -102,9 +102,33 @@ jobs:
       - name: Build for Deployment
         run: yarn build
 
-      # Deployment 
-      #- name: Deploy to Vercel
-       # env:
-       #   VERCEL_TOKEN:
-       # run: |
-        #  npx vercel --prod --token $VERCEL_TOKEN
+     - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build and push Docker image for 'main' branch
+      - name: Build and push production image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker build -t andersoninc12/aibosRAG:latest .
+          docker push andersoninc12/aibosRAG:latest
+
+      # SSH into VPS and deploy for 'main' branch
+      - name: SSH into VPS and deploy for production
+        if: github.ref == 'refs/heads/main'
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy to VPS (Production)
+        if: github.ref == 'refs/heads/main'
+        run: |
+            ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} << 'EOF'
+            sudo docker stop aibosRAG || truels -ld 
+            sudo docker rm -f aibosRAG || true
+            sudo docker rmi andersoninc12/aibosRAG:latest || true
+            sudo docker pull andersoninc12/aibosRAG:latest
+            sudo docker run  --name epanet -p 8083:3000 andersoninc12/aibosRAG:latest
+            EOF
