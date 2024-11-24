@@ -276,11 +276,13 @@ const Main: FC = () => {
     if (!currInputs || !promptConfig?.prompt_variables)
       return true
 
-    const inputLens = Object.values(currInputs).length
-    const promptVariablesLens = promptConfig.prompt_variables.length
+    let emptyRequiredInput = false
+    promptConfig.prompt_variables.forEach((item) => {
+      if (item.required && !currInputs[item.key])
+        emptyRequiredInput = true
+    })
 
-    const emptyInput = inputLens < promptVariablesLens || Object.values(currInputs).find(v => !v)
-    if (emptyInput) {
+    if (emptyRequiredInput) {
       logError(t('app.errorMessage.valueOfVarRequired'))
       return false
     }
