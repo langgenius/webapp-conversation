@@ -4,6 +4,11 @@ const translation = {
     saved: 'Saved',
     create: 'Created',
   },
+  voiceInput: {
+    speaking: 'Speak now...',
+    converting: 'Converting to text...',
+    notAllow: 'microphone not authorized',
+  },
   operation: {
     confirm: 'Confirm',
     cancel: 'Cancel',
@@ -27,6 +32,20 @@ const translation = {
     pasteImageLinkInputPlaceholder: 'Paste image link here',
     pasteImageLinkInvalid: 'Invalid image link',
     imageUpload: 'Image Upload',
+  },
+  chat: {
+    renameConversation: 'Rename Conversation',
+    conversationName: 'Conversation name',
+    conversationNamePlaceholder: 'Please input conversation name',
+    conversationNameCanNotEmpty: 'Conversation name required',
+    citation: {
+      title: 'CITATIONS',
+      linkToDataset: 'Link to Knowledge',
+      characters: 'Characters:',
+      hitCount: 'Retrieval count:',
+      vectorHash: 'Vector hash:',
+      hitScore: 'Retrieval Score:',
+    },
   },
 }
 

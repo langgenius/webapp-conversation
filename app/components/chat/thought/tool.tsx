@@ -8,7 +8,7 @@ import type { ToolInfoInThought } from '../type'
 import Panel from './panel'
 import Loading02 from '@/app/components/base/icons/line/loading-02'
 import ChevronDown from '@/app/components/base/icons/line/arrows/chevron-down'
-import CheckCircle from '@/app/components/base/icons/solid/general/check-circle'
+import { CheckCircle } from '@/app/components/base/icons/solid/general/'
 import DataSetIcon from '@/app/components/base/icons/public/data-set'
 import type { Emoji } from '@/types/tools'
 import AppIcon from '@/app/components/base/app-icon'
@@ -50,7 +50,7 @@ const Tool: FC<Props> = ({
 }) => {
   const { t } = useTranslation()
   const { name, input, isFinished, output } = payload
-  const toolName = name.startsWith('dataset-') ? t('dataset.knowledge') : name
+  const toolName = name.startsWith('dataset_') ? t('dataset.knowledge') : name
   const [isShowDetail, setIsShowDetail] = useState(false)
   const icon = getIcon(toolName, allToolIcons) as any
   return (

@@ -330,11 +330,8 @@ const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: I
 }
 
 export const upload = (fetchOptions: any): Promise<any> => {
-  const urlPrefix = API_PREFIX
-  const urlWithPrefix = `${urlPrefix}/file-upload`
   const defaultOptions = {
     method: 'POST',
-    url: `${urlWithPrefix}`,
     data: {},
   }
   const options = {
@@ -351,9 +348,9 @@ export const upload = (fetchOptions: any): Promise<any> => {
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200)
-          resolve({ id: xhr.response })
-        else
-          reject(xhr)
+          resolve(JSON.parse(xhr.response))
+
+        else reject(xhr)
       }
     }
     xhr.upload.onprogress = options.onprogress
@@ -388,7 +385,6 @@ export const ssePost = (
   const { body } = options
   if (body)
     options.body = JSON.stringify(body)
-
   globalThis.fetch(urlWithPrefix, options)
     .then((res: any) => {
       if (!/^(2|3)\d{2}$/.test(res.status)) {

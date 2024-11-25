@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const { user } = getInfo(request)
     formData.append('user', user)
     const res = await client.fileUpload(formData)
-    return new Response(res.data.id as any)
+    return new Response(JSON.stringify(res.data) as any)
   }
   catch (e: any) {
     return new Response(e.message)

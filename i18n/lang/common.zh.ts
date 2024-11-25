@@ -4,6 +4,11 @@ const translation = {
     saved: '已保存',
     create: '已创建',
   },
+  voiceInput: {
+    speaking: '现在讲...',
+    converting: '正在转换为文本...',
+    notAllow: '麦克风未授权',
+  },
   operation: {
     confirm: '确认',
     cancel: '取消',
@@ -27,6 +32,20 @@ const translation = {
     pasteImageLinkInputPlaceholder: '将图像链接粘贴到此处',
     pasteImageLinkInvalid: '图片链接无效',
     imageUpload: '图片上传',
+  },
+  chat: {
+    renameConversation: '重命名会话',
+    conversationName: '会话名称',
+    conversationNamePlaceholder: '请输入会话名称',
+    conversationNameCanNotEmpty: '会话名称必填',
+    citation: {
+      title: '引用',
+      linkToDataset: '跳转至知识库',
+      characters: '字符：',
+      hitCount: '召回次数：',
+      vectorHash: '向量哈希：',
+      hitScore: '召回得分：',
+    },
   },
 }
 

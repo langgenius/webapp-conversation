@@ -55,6 +55,20 @@ export type MessageMore = {
   latency: number | string
 }
 
+export type CitationItem = {
+  content: string
+  data_source_type: string
+  dataset_name: string
+  dataset_id: string
+  document_id: string
+  document_name: string
+  hit_count: number
+  index_node_hash: string
+  segment_id: string
+  segment_position: number
+  score: number
+  word_count: number
+}
 export type IChatItem = {
   id: string
   content: string
@@ -85,6 +99,7 @@ export type IChatItem = {
   log?: { role: string; text: string }[]
   agent_thoughts?: ThoughtItem[]
   message_files?: VisionFile[]
+  citation?: CitationItem[]
 }
 
 export type ChatItem = IChatItem & {
@@ -100,6 +115,7 @@ export type ConversationItem = {
   name: string
   inputs: Record<string, any> | null
   introduction: string
+  suggestedQuestions?: string[]
 }
 
 export type AppInfo = {
