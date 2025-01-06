@@ -1,6 +1,8 @@
 .answerIcon {
   position: relative;
-  background: url(./icons/robot.svg);
+  /* background: url(https://control.gpt.ar/assets/41e5931c-660f-4e56-8ef0-0956eef31d08?key=system-small-cover); */
+  border-radius: 100%;
+  aspect-ratio: 1;
 }
 
 .typeingIcon {

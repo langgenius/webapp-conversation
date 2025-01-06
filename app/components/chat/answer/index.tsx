@@ -169,9 +169,19 @@ const Answer: FC<IAnswerProps> = ({
     <div key={id}>
       <div className='flex items-start'>
         <div className={`${s.answerIcon} w-10 h-10 shrink-0`}>
+          <img
+            src="https://control.gpt.ar/assets/41e5931c-660f-4e56-8ef0-0956eef31d08?key=system-small-cover"
+            alt="example"
+            style={{
+              borderRadius: '100%',
+              // width: '150px', // Ajusta el tamaño según tus necesidades
+              // height: '150px', // Asegúrate de que sea igual para un círculo perfecto
+              // objectFit: 'cover', // Mantiene el contenido ajustado
+            }}
+          />
           {isResponding
             && <div className={s.typeingIcon}>
-              <LoadingAnim type='avatar' />
+              {/* <LoadingAnim type='avatar' /> */}
             </div>
           }
         </div>
