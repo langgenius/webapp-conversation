@@ -17,7 +17,7 @@ export type Annotation = {
   created_at?: number
 }
 
-export const MessageRatings = ['like', 'dislike', null] as const
+export const MessageRatings = ['Me Gusta', 'No Me Gusta', null] as const
 export type MessageRating = typeof MessageRatings[number]
 
 export type MessageMore = {
