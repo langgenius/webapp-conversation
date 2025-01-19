@@ -10,7 +10,7 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
+import { fetchAppParams, fetchChatList, fetchConversations, fetchSetupConfig, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
 import type { ChatItem, ConversationItem, Feedbacktype, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod, WorkflowRunningStatus } from '@/types/app'
 import Chat from '@/app/components/chat'
@@ -19,7 +19,7 @@ import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import Loading from '@/app/components/base/loading'
 import { replaceVarWithValues, userInputsFormToPromptVariables } from '@/utils/prompt'
 import AppUnavailable from '@/app/components/app-unavailable'
-import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/config'
+import { APP_INFO, isShowPrompt, promptTemplate } from '@/config'
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
 
@@ -31,7 +31,6 @@ const Main: FC<IMainProps> = () => {
   const { t } = useTranslation()
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const hasSetAppConfig = APP_ID && API_KEY
 
   /*
   * app info
@@ -48,6 +47,8 @@ const Main: FC<IMainProps> = () => {
     detail: Resolution.low,
     transfer_methods: [TransferMethod.local_file],
   })
+  const [appId, setAppId] = useState<string | null>(null)
+  const [hasSetAppConfig, setHasSetAppConfig] = useState<boolean>(false)
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -165,7 +166,7 @@ const Main: FC<IMainProps> = () => {
       setConversationIdChangeBecauseOfNew(false)
     }
     // trigger handleConversationSwitch
-    setCurrConversationId(id, APP_ID)
+    setCurrConversationId(id, appId!)
     hideSidebar()
   }
 
@@ -218,11 +219,19 @@ const Main: FC<IMainProps> = () => {
 
   // init
   useEffect(() => {
-    if (!hasSetAppConfig) {
-      setAppUnavailable(true)
-      return
-    }
     (async () => {
+      await fetchSetupConfig().then((res: any) => {
+        const { APP_ID, hasSetAppConfig } = res
+        if (!hasSetAppConfig) {
+          setAppUnavailable(true)
+          return
+        }
+        setAppId(() => APP_ID)
+        setHasSetAppConfig(() => hasSetAppConfig)
+      }).catch(() => {
+        setAppUnavailable(true)
+      })
+
       try {
         const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
 
@@ -233,7 +242,7 @@ const Main: FC<IMainProps> = () => {
           throw new Error(error)
           return
         }
-        const _conversationId = getConversationIdFromStorage(APP_ID)
+        const _conversationId = getConversationIdFromStorage(appId!)
         const isNotNewConversation = conversations.some(item => item.id === _conversationId)
 
         // fetch new conversation info
@@ -255,7 +264,7 @@ const Main: FC<IMainProps> = () => {
         setConversationList(conversations as ConversationItem[])
 
         if (isNotNewConversation)
-          setCurrConversationId(_conversationId, APP_ID, false)
+          setCurrConversationId(_conversationId, appId!, false)
 
         setInited(true)
       }
@@ -434,7 +443,7 @@ const Main: FC<IMainProps> = () => {
         setConversationIdChangeBecauseOfNew(false)
         resetNewConversationInputs()
         setChatNotStarted()
-        setCurrConversationId(tempNewConversationId, APP_ID, true)
+        setCurrConversationId(tempNewConversationId, appId!, true)
         setRespondingFalse()
       },
       onFile(file) {
@@ -600,7 +609,7 @@ const Main: FC<IMainProps> = () => {
   }
 
   const renderSidebar = () => {
-    if (!APP_ID || !APP_INFO || !promptConfig)
+    if (!appId || !APP_INFO || !promptConfig)
       return null
     return (
       <Sidebar
@@ -615,7 +624,7 @@ const Main: FC<IMainProps> = () => {
   if (appUnavailable)
     return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
 
-  if (!APP_ID || !APP_INFO || !promptConfig)
+  if (!appId || !APP_INFO || !promptConfig)
     return <Loading type='app' />
 
   return (
