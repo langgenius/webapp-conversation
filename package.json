@@ -9,7 +9,9 @@
     "lint": "next lint",
     "fix": "next lint --fix",
     "eslint-fix": "eslint . --fix",
-    "prepare": "husky install ./.husky"
+    "prepare": "husky install ./.husky",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.2",
@@ -40,6 +42,7 @@
     "js-cookie": "^3.0.1",
     "katex": "^0.16.7",
     "lunar-javascript": "^1.6.13",
+    "lunar-typescript": "^1.7.6",
     "negotiator": "^0.6.3",
     "next": "^14.0.4",
     "rc-textarea": "^1.5.3",
@@ -52,7 +55,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-tooltip": "5.8.3",
     "rehype-katex": "^6.0.2",
-    "remark-breaks": "^3.0.2",
+    "remark-breaks": "^3.0.3",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "sass": "^1.61.0",
@@ -68,13 +71,16 @@
     "@antfu/eslint-config": "0.36.0",
     "@faker-js/faker": "^7.6.0",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/jest": "^29.5.14",
     "@types/js-cookie": "^3.0.3",
     "@types/negotiator": "^0.6.1",
     "autoprefixer": "^10.4.14",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.7.0",
     "lint-staged": "^13.2.2",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.2.7",
+    "ts-jest": "^29.2.5"
   },
   "lint-staged": {
     "**/*.js?(x)": [

@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Form, Radio, Select, Button, Card, message, Descriptions, Input, DatePicker, Checkbox } from 'antd'
-import type { PredictionForm, PredictionResult } from '@/types/prediction'
+import { Form, Radio, Select, Button, Card, message, Descriptions, Input, DatePicker, Checkbox, Alert } from 'antd'
+import type { PredictionForm, PredictionResult, LunarInfo } from '@/types/prediction'
 import { fetchPredict } from '@/service/predict'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 import locale from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
@@ -47,10 +49,7 @@ export default function PredictionPage() {
   const [calendarType, setCalendarType] = useState<'solar' | 'lunar'>('solar')
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [selectedMonth, setSelectedMonth] = useState(1)
-  const [lunarInfo, setLunarInfo] = useState<{
-    lunarDate: string
-    bazi: string
-  } | null>(null)
+  const [lunarInfo, setLunarInfo] = useState<LunarInfo | null>(null)
 
   // 生成年份选项：1900年至今年，倒序排列
   const currentYear = new Date().getFullYear()
@@ -93,17 +92,60 @@ export default function PredictionPage() {
     return slot?.name || '子时'
   }
 
-  // 实时计算农历和八字
-  const calculateLunarInfo = (year?: number, month?: number, day?: number, hour?: number) => {
+  // 实时计算农历和八字信息
+  const calculateLunarInfo = (year?: number, month?: number, day?: number, hour?: number): LunarInfo | null => {
     if (!year || !month || !day) return null
 
     try {
       const solar = Solar.fromYmd(year, month, day)
       const lunar = solar.getLunar()
+      const eightChar = lunar.getEightChar()
+
+      // 计算大运
+      const yun = eightChar.getYun(form.getFieldValue('gender') === 'male' ? 1 : 0)
+      const daYunArr = yun.getDaYun()
+
+      // 获取大运信息
+      const daYunInfo = daYunArr.slice(0, 8).map(daYun => ({
+        startYear: daYun.getStartYear(),
+        startAge: daYun.getStartAge(),
+        ganZhi: daYun.getGanZhi(),
+        liuNian: daYun.getLiuNian().map(liuNian => ({
+          year: liuNian.getYear(),
+          age: liuNian.getAge(),
+          ganZhi: liuNian.getGanZhi()
+        }))
+      }))
 
       return {
         lunarDate: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
-        bazi: `${lunar.getYearInGanZhi()} ${lunar.getMonthInGanZhi()} ${lunar.getDayInGanZhi()} ${hour ? lunar.getTimeZhi() : ''}`
+        bazi: `${eightChar.getYear()} ${eightChar.getMonth()} ${eightChar.getDay()} ${hour ? eightChar.getTime() : ''}`,
+        wuxing: {
+          year: eightChar.getYearWuXing(),
+          month: eightChar.getMonthWuXing(),
+          day: eightChar.getDayWuXing(),
+          time: hour ? eightChar.getTimeWuXing() : ''
+        },
+        nayin: {
+          year: eightChar.getYearNaYin(),
+          month: eightChar.getMonthNaYin(),
+          day: eightChar.getDayNaYin(),
+          time: hour ? eightChar.getTimeNaYin() : ''
+        },
+        shishen: {
+          yearGan: eightChar.getYearShiShenGan(),
+          monthGan: eightChar.getMonthShiShenGan(),
+          dayGan: eightChar.getDayShiShenGan(),
+          timeGan: hour ? eightChar.getTimeShiShenGan() : '',
+          yearZhi: eightChar.getYearShiShenZhi(),
+          monthZhi: eightChar.getMonthShiShenZhi(),
+          dayZhi: eightChar.getDayShiShenZhi(),
+          timeZhi: hour ? eightChar.getTimeShiShenZhi() : ''
+        },
+        yun: {
+          startInfo: `出生${yun.getStartYear()}年${yun.getStartMonth()}月${yun.getStartDay()}天后起运`,
+          daYun: daYunInfo
+        }
       }
     } catch (err) {
       console.error('Calculate lunar info error:', err)
@@ -126,18 +168,14 @@ export default function PredictionPage() {
   }, [form.getFieldValue('birthYear'), form.getFieldValue('birthMonth'),
   form.getFieldValue('birthDay'), form.getFieldValue('birthHour')])
 
-  const handleDateChange = (type: 'year' | 'month' | 'day' | 'hour', value: number) => {
-    if (type === 'year') setSelectedYear(value)
-    if (type === 'month') setSelectedMonth(value)
-
-    // 更新表单值后计算农历信息
+  const handleDateTimeChange = (type: 'year' | 'month' | 'day' | 'hour', value: number) => {
     const currentValues = form.getFieldsValue()
     const newValues = {
       ...currentValues,
-      [type === 'year' ? 'birthYear' : type === 'month' ? 'birthMonth' :
-        type === 'day' ? 'birthDay' : 'birthHour']: value
+      [`birth${type.charAt(0).toUpperCase() + type.slice(1)}`]: value
     }
 
+    form.setFieldsValue(newValues)
     if (newValues.birthYear && newValues.birthMonth && newValues.birthDay) {
       const info = calculateLunarInfo(
         newValues.birthYear,
@@ -173,7 +211,27 @@ export default function PredictionPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-8">未来变量观测</h1>
+      <h1 className="text-2xl font-bold text-center mb-4">命理分析</h1>
+
+      <Alert
+        message="免责声明"
+        description={
+          <div className="text-sm">
+            <p className="mb-2">本系统提供的命理分析和预测结果仅供参考，不构成任何形式的建议或指导：</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>分析结果基于传统命理学理论，不具有科学依据</li>
+              <li>系统不对任何个人决策负责，请谨慎参考预测结果</li>
+              <li>重要人生决策请以科学理性的态度进行判断</li>
+              <li>系统不收集、不存储任何个人隐私信息</li>
+              <li>如有任何疑问，请及时与我们联系</li>
+            </ul>
+            <p className="mt-2 text-gray-500">继续使用表示您已阅读并同意以上声明</p>
+          </div>
+        }
+        type="warning"
+        showIcon
+        className="mb-6"
+      />
 
       <Form
         form={form}
@@ -182,7 +240,8 @@ export default function PredictionPage() {
         initialValues={{
           calendarType: 'solar',
           birthDate: dayjs(),
-          birthTime: dayjs('12:00', 'HH:mm'),
+          birthHour: 12,
+          agreement: false
         }}
       >
         <Form.Item
@@ -219,7 +278,7 @@ export default function PredictionPage() {
           >
             <Select
               placeholder="年"
-              onChange={(value) => handleDateChange('year', value)}
+              onChange={(value) => handleDateTimeChange('year', value)}
               className="w-full"
             >
               {yearOptions.map(year => (
@@ -235,7 +294,7 @@ export default function PredictionPage() {
           >
             <Select
               placeholder="月"
-              onChange={(value) => handleDateChange('month', value)}
+              onChange={(value) => handleDateTimeChange('month', value)}
               className="w-full"
             >
               {monthOptions.map(month => (
@@ -300,6 +359,41 @@ export default function PredictionPage() {
               <Descriptions.Item label="八字" span={2}>
                 {lunarInfo.bazi}
               </Descriptions.Item>
+              <Descriptions.Item label="五行" span={2}>
+                年:{lunarInfo.wuxing.year} 月:{lunarInfo.wuxing.month} 日:{lunarInfo.wuxing.day} 时:{lunarInfo.wuxing.time}
+              </Descriptions.Item>
+              <Descriptions.Item label="纳音" span={2}>
+                年:{lunarInfo.nayin.year} 月:{lunarInfo.nayin.month} 日:{lunarInfo.nayin.day} 时:{lunarInfo.nayin.time}
+              </Descriptions.Item>
+              <Descriptions.Item label="干十神" span={2}>
+                年干:{lunarInfo.shishen.yearGan} 月干:{lunarInfo.shishen.monthGan} 日干:{lunarInfo.shishen.dayGan} 时干:{lunarInfo.shishen.timeGan}
+              </Descriptions.Item>
+              <Descriptions.Item label="支十神" span={2}>
+                年支:{lunarInfo.shishen.yearZhi} 月支:{lunarInfo.shishen.monthZhi} 日支:{lunarInfo.shishen.dayZhi} 时支:{lunarInfo.shishen.timeZhi}
+              </Descriptions.Item>
+              {lunarInfo.yun && (
+                <>
+                  <Descriptions.Item label="起运时间" span={2}>
+                    {lunarInfo.yun.startInfo}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="大运" span={2}>
+                    <div className="grid grid-cols-2 gap-2">
+                      {lunarInfo.yun.daYun.map((dayun, index) => (
+                        <div key={index} className="text-sm">
+                          {dayun.startYear}年 {dayun.startAge}岁 {dayun.ganZhi}
+                          <div className="text-xs text-gray-500 mt-1">
+                            {dayun.liuNian?.slice(0, 5).map((liuNian, idx) => (
+                              <div key={idx}>
+                                {liuNian.year}年 {liuNian.age}岁 {liuNian.ganZhi}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Descriptions.Item>
+                </>
+              )}
             </Descriptions>
           </div>
         )}
@@ -338,6 +432,23 @@ export default function PredictionPage() {
           </div>
         </Form.Item>
 
+        <Form.Item
+          name="agreement"
+          valuePropName="checked"
+          rules={[
+            {
+              validator: (_, value) =>
+                value
+                  ? Promise.resolve()
+                  : Promise.reject(new Error('请阅读并同意免责声明')),
+            },
+          ]}
+        >
+          <Checkbox>
+            我已阅读并同意<Button type="link" className="p-0" onClick={() => message.info('继续使用表示您同意免责声明')}>《免责声明》</Button>
+          </Checkbox>
+        </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"
@@ -361,10 +472,60 @@ export default function PredictionPage() {
       {result && (
         <Card className="mt-8 rounded-lg shadow-lg">
           <div className="text-sm text-gray-500 mb-2">
-            预测时间: {new Date(result.timestamp).toLocaleString()}
+            预测时间: {dayjs(result.timestamp).format('YYYY-MM-DD HH:mm:ss')}
           </div>
-          <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:my-4 prose-p:my-2">
-            <ReactMarkdown>{result.content}</ReactMarkdown>
+          <article className="prose prose-sm max-w-none dark:prose-invert">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              components={{
+                table: ({ node, ...props }) => (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200" {...props} />
+                  </div>
+                ),
+                th: ({ node, ...props }) => (
+                  <th className="px-3 py-2 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" {...props} />
+                ),
+                td: ({ node, ...props }) => (
+                  <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500" {...props} />
+                ),
+                h1: ({ node, ...props }) => (
+                  <h1 className="text-2xl font-bold mb-4" {...props} />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2 className="text-xl font-bold mb-3" {...props} />
+                ),
+                h3: ({ node, ...props }) => (
+                  <h3 className="text-lg font-bold mb-2" {...props} />
+                ),
+                p: ({ node, ...props }) => (
+                  <p className="mb-4 leading-relaxed" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul className="list-disc pl-5 mb-4" {...props} />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol className="list-decimal pl-5 mb-4" {...props} />
+                ),
+                li: ({ node, ...props }) => (
+                  <li className="mb-1" {...props} />
+                ),
+                blockquote: ({ node, ...props }) => (
+                  <blockquote className="border-l-4 border-gray-200 pl-4 italic" {...props} />
+                ),
+                code: ({ node, inline, ...props }) => (
+                  inline ? (
+                    <code className="px-1 py-0.5 bg-gray-100 rounded text-sm" {...props} />
+                  ) : (
+                    <pre className="p-4 bg-gray-100 rounded-lg overflow-x-auto">
+                      <code className="text-sm" {...props} />
+                    </pre>
+                  )
+                )
+              }}
+            >
+              {result.content}
+            </ReactMarkdown>
           </article>
         </Card>
       )}
