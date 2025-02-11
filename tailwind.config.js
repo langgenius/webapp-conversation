@@ -5,7 +5,6 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    typography: require('./typography'),
     extend: {
       colors: {
         gray: {
@@ -57,10 +56,106 @@ module.exports = {
         pc: '769px',
         // => @media (min-width: 769px) { ... }
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#374151',
+            h1: {
+              marginTop: '2rem',
+              marginBottom: '1rem',
+              color: '#111928',
+            },
+            h2: {
+              marginTop: '1.5rem',
+              marginBottom: '0.75rem',
+              color: '#1F2A37',
+            },
+            h3: {
+              marginTop: '1.25rem',
+              marginBottom: '0.75rem',
+              color: '#374151',
+            },
+            p: {
+              marginTop: '0.75rem',
+              marginBottom: '0.75rem',
+            },
+            'ul > li': {
+              marginTop: '0.375rem',
+              marginBottom: '0.375rem',
+            },
+            blockquote: {
+              fontWeight: '500',
+              fontStyle: 'italic',
+              borderLeftColor: '#1C64F2',
+              backgroundColor: '#F3F4F6',
+              padding: '1rem',
+              borderRadius: '0.375rem',
+            },
+            strong: {
+              color: '#1C64F2',
+              fontWeight: '600',
+            },
+            hr: {
+              marginTop: '2rem',
+              marginBottom: '2rem',
+              borderColor: '#E5E7EB',
+            },
+            pre: {
+              backgroundColor: '#F9FAFB',
+              padding: '1rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #E5E7EB',
+            },
+            code: {
+              color: '#1C64F2',
+              backgroundColor: '#F3F4F6',
+              padding: '0.25rem',
+              borderRadius: '0.25rem',
+              fontSize: '0.875rem',
+            },
+            table: {
+              width: '100%',
+              marginTop: '2rem',
+              marginBottom: '2rem',
+              borderCollapse: 'collapse',
+              fontSize: '0.875rem',
+              lineHeight: '1.5',
+            },
+            'thead th': {
+              verticalAlign: 'bottom',
+              borderBottomWidth: '2px',
+              borderBottomColor: '#E5E7EB',
+              padding: '0.75rem',
+              backgroundColor: '#F9FAFB',
+              color: '#374151',
+              fontWeight: '600',
+              textAlign: 'left',
+            },
+            'tbody td': {
+              padding: '0.75rem',
+              borderBottomWidth: '1px',
+              borderBottomColor: '#E5E7EB',
+              verticalAlign: 'top',
+            },
+            'tbody tr:hover': {
+              backgroundColor: '#F3F4F6',
+            },
+            'tbody tr:nth-child(odd)': {
+              backgroundColor: '#FAFAFA',
+            },
+            '@media (max-width: 640px)': {
+              table: {
+                display: 'block',
+                overflowX: 'auto',
+              },
+            },
+          },
+        },
+      },
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
   ],
 }
