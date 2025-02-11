@@ -1,7 +1,7 @@
-import { Lunar, EightChar, Yun, DaYun } from 'lunar-javascript'
+import { Solar, Lunar, EightChar, Yun, DaYun } from 'lunar-typescript'
 
 export interface PredictionForm {
-  gender: 'male' | 'female'
+  gender: 'male' | 'female' | 'other'
   calendarType: 'solar' | 'lunar'
   birthYear: number
   birthMonth: number
@@ -20,7 +20,6 @@ export interface BaziInfo {
   month: string        // 月柱
   day: string          // 日柱
   hour: string         // 时柱
-  currentBazi: string  // 当前时辰八字
 }
 
 export interface PredictionResult {

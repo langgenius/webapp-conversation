@@ -73,14 +73,15 @@ function calculateBazi(date: string, time: string, isLunar: boolean): BaziInfo {
 
   const solar = Solar.fromYmd(year, month, day)
   const lunar = solar.getLunar()
+  const eightChar = lunar.getEightChar()
 
   return {
     solarDate: `${year}-${month}-${day}`,
     lunarDate: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
-    year: lunar.getYearInGanZhi(),
-    month: lunar.getMonthInGanZhi(),
-    day: lunar.getDayInGanZhi(),
-    hour: lunar.getTimeZhi()
+    year: `${eightChar.getYearGan()}${eightChar.getYearZhi()}`,
+    month: `${eightChar.getMonthGan()}${eightChar.getMonthZhi()}`,
+    day: `${eightChar.getDayGan()}${eightChar.getDayZhi()}`,
+    hour: `${eightChar.getTimeGan()}${eightChar.getTimeZhi()}`
   }
 }
 
@@ -92,6 +93,34 @@ function calculateLunarInfo(year?: number, month?: number, day?: number, hour?: 
     const lunar = solar.getLunar()
     const eightChar = lunar.getEightChar()
 
+    // 计算五行属性
+    const wuxing = {
+      year: eightChar.getYearWuXing(),
+      month: eightChar.getMonthWuXing(),
+      day: eightChar.getDayWuXing(),
+      time: hour !== undefined ? eightChar.getTimeWuXing() : ''
+    }
+
+    // 计算纳音
+    const nayin = {
+      year: eightChar.getYearNaYin(),
+      month: eightChar.getMonthNaYin(),
+      day: eightChar.getDayNaYin(),
+      time: hour !== undefined ? eightChar.getTimeNaYin() : ''
+    }
+
+    // 计算十神
+    const shishen = {
+      yearGan: eightChar.getYearShiShenGan(),
+      monthGan: eightChar.getMonthShiShenGan(),
+      dayGan: eightChar.getDayShiShenGan(),
+      timeGan: hour !== undefined ? eightChar.getTimeShiShenGan() : '',
+      yearZhi: eightChar.getYearShiShenZhi(),
+      monthZhi: eightChar.getMonthShiShenZhi(),
+      dayZhi: eightChar.getDayShiShenZhi(),
+      timeZhi: hour !== undefined ? eightChar.getTimeShiShenZhi() : ''
+    }
+
     // 计算大运
     const yun = eightChar.getYun(1) // 默认阳男阴女
     const daYunArr = yun.getDaYun()
@@ -101,7 +130,7 @@ function calculateLunarInfo(year?: number, month?: number, day?: number, hour?: 
       startYear: daYun.getStartYear(),
       startAge: daYun.getStartAge(),
       ganZhi: daYun.getGanZhi(),
-      liuNian: daYun.getLiuNian().map(liuNian => ({
+      liuNian: daYun.getLiuNian().slice(0, 10).map(liuNian => ({
         year: liuNian.getYear(),
         age: liuNian.getAge(),
         ganZhi: liuNian.getGanZhi()
@@ -110,29 +139,10 @@ function calculateLunarInfo(year?: number, month?: number, day?: number, hour?: 
 
     return {
       lunarDate: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
-      bazi: `${eightChar.getYear()} ${eightChar.getMonth()} ${eightChar.getDay()} ${hour ? eightChar.getTime() : ''}`,
-      wuxing: {
-        year: eightChar.getYearWuXing() as string,
-        month: eightChar.getMonthWuXing() as string,
-        day: eightChar.getDayWuXing() as string,
-        time: hour ? eightChar.getTimeWuXing() as string : ''
-      },
-      nayin: {
-        year: eightChar.getYearNaYin() as string,
-        month: eightChar.getMonthNaYin() as string,
-        day: eightChar.getDayNaYin() as string,
-        time: hour ? eightChar.getTimeNaYin() as string : ''
-      },
-      shishen: {
-        yearGan: eightChar.getYearShiShenGan() as string,
-        monthGan: eightChar.getMonthShiShenGan() as string,
-        dayGan: eightChar.getDayShiShenGan() as string,
-        timeGan: hour ? eightChar.getTimeShiShenGan() as string : '',
-        yearZhi: eightChar.getYearShiShenZhi() as string,
-        monthZhi: eightChar.getMonthShiShenZhi() as string,
-        dayZhi: eightChar.getDayShiShenZhi() as string,
-        timeZhi: hour ? eightChar.getTimeShiShenZhi() as string : ''
-      },
+      bazi: `${eightChar.getYearGan()}${eightChar.getYearZhi()} ${eightChar.getMonthGan()}${eightChar.getMonthZhi()} ${eightChar.getDayGan()}${eightChar.getDayZhi()} ${hour !== undefined ? `${eightChar.getTimeGan()}${eightChar.getTimeZhi()}` : ''}`,
+      wuxing,
+      nayin,
+      shishen,
       yun: {
         startInfo: `出生${yun.getStartYear()}年${yun.getStartMonth()}月${yun.getStartDay()}天后起运`,
         daYun: daYunInfo
@@ -148,37 +158,45 @@ function generatePrompt(data: PredictionForm, bazi: BaziInfo, lunarInfo: LunarIn
   const directions = data.direction?.join('、') || ''
   const customDirs = data.customDirections ? `\n自定义方向：${data.customDirections}` : ''
 
-  return `用户信息：
-性别：${data.gender === 'male' ? '男' : data.gender === 'female' ? '女' : '其他'}
-出生时间：${data.birthDate} ${data.birthTime}
-农历日期：${bazi.lunarDate}
-八字：${bazi.year} ${bazi.month} ${bazi.day} ${bazi.hour}
-五行：
-  年柱：${lunarInfo?.wuxing?.year || ''}
-  月柱：${lunarInfo?.wuxing?.month || ''}
-  日柱：${lunarInfo?.wuxing?.day || ''}
-  时柱：${lunarInfo?.wuxing?.time || ''}
-纳音：
-  年柱：${lunarInfo?.nayin?.year || ''}
-  月柱：${lunarInfo?.nayin?.month || ''}
-  日柱：${lunarInfo?.nayin?.day || ''}
-  时柱：${lunarInfo?.nayin?.time || ''}
-十神：
-  年干：${lunarInfo?.shishen?.yearGan || ''}
-  月干：${lunarInfo?.shishen?.monthGan || ''}
-  日干：${lunarInfo?.shishen?.dayGan || ''}
-  时干：${lunarInfo?.shishen?.timeGan || ''}
-  年支：${lunarInfo?.shishen?.yearZhi || ''}
-  月支：${lunarInfo?.shishen?.monthZhi || ''}
-  日支：${lunarInfo?.shishen?.dayZhi || ''}
-  时支：${lunarInfo?.shishen?.timeZhi || ''}
-大运：${lunarInfo?.yun?.startInfo || ''}
-预测方向：${directions}${customDirs}
+  // 计算当前年柱
+  const today = new Date()
+  const currentYear = today.getFullYear()
+  const currentSolar = Solar.fromDate(today)
+  const currentLunar = currentSolar.getLunar()
+  const currentEightChar = currentLunar.getEightChar()
 
-请根据以上信息进行命理分析和预测。重点关注用户所选的预测方向，结合八字、五行、纳音和十神信息给出详细分析。分析内容应包括：
-1. 八字格局分析
-2. 五行喜忌
-3. 大运流年分析
-4. ${directions.split('、').filter(Boolean).map(dir => `关于${dir}的具体预测`).join('\n5. ')}
-${customDirs ? `6. 关于${customDirs}的具体预测` : ''}`
+  // 如果当前日期在2025年立春之后，使用2025年的年柱
+  const is2025AfterLiChun = currentYear >= 2025 &&
+    new Date() >= new Date(2025, 1, 4) // 2025年立春日期：2月4日
+  const yearGanZhi = is2025AfterLiChun ?
+    '乙巳' :  // 2025年的年柱
+    `${currentEightChar.getYearGan()}${currentEightChar.getYearZhi()}`
+
+  const formatSection = (title: string, content: string) => `## ${title}\n${content}\n`
+
+  const basicInfo = formatSection('基本信息', `
+- 性别：${data.gender === 'male' ? '男' : data.gender === 'female' ? '女' : '其他'}
+- 出生时间：${data.birthDate} ${data.birthTime}
+- 农历：${bazi.lunarDate}
+- 八字：${bazi.year} ${bazi.month} ${bazi.day} ${bazi.hour}
+- 五行：${lunarInfo?.wuxing.year} ${lunarInfo?.wuxing.month} ${lunarInfo?.wuxing.day} ${lunarInfo?.wuxing.time}
+- 纳音：${lunarInfo?.nayin.year} ${lunarInfo?.nayin.month} ${lunarInfo?.nayin.day} ${lunarInfo?.nayin.time}
+- 大运：${lunarInfo?.yun?.startInfo}
+- 当前年柱：${yearGanZhi}年`)
+
+  const predictionDirections = formatSection('预测方向', `
+主要方向：${directions}${customDirs}`)
+
+  return `# 命理分析预测
+
+${basicInfo}
+${predictionDirections}
+
+请根据以上信息进行命理分析和预测。分析内容应包括：
+
+1. 八字格局总论
+2. 五行喜忌分析
+3. 大运流年吉凶
+4. ${directions.split('、').filter(Boolean).map(dir => `${dir}运势分析`).join('\n5. ')}
+${customDirs ? `6. ${customDirs}运势分析` : ''}`
 } 

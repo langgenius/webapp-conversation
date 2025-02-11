@@ -1,6 +1,7 @@
 {
-  "name": "webapp-conversation",
-  "version": "0.1.0",
+  "name": "future-var-observatory",
+  "version": "1.0.0",
+  "description": "未来变量观测局 - 基于 Next.js 的现代命理预测平台",
   "private": true,
   "scripts": {
     "dev": "next dev",

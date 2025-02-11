@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Form, Radio, Select, Button, Card, message, Descriptions, Input, DatePicker, Checkbox, Alert } from 'antd'
+import { Form, Radio, Select, Button, Card, message, Descriptions, Input, DatePicker, Checkbox, Alert, Modal } from 'antd'
 import type { PredictionForm, PredictionResult, LunarInfo } from '@/types/prediction'
 import { fetchPredict } from '@/service/predict'
 import ReactMarkdown from 'react-markdown'
@@ -10,7 +10,7 @@ import remarkBreaks from 'remark-breaks'
 import locale from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
-import { Solar } from 'lunar-javascript'
+import { Solar } from 'lunar-typescript'
 
 dayjs.locale('zh-cn')
 
@@ -50,6 +50,7 @@ export default function PredictionPage() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [selectedMonth, setSelectedMonth] = useState(1)
   const [lunarInfo, setLunarInfo] = useState<LunarInfo | null>(null)
+  const [isDisclaimerVisible, setIsDisclaimerVisible] = useState(false)
 
   // 生成年份选项：1900年至今年，倒序排列
   const currentYear = new Date().getFullYear()
@@ -191,7 +192,7 @@ export default function PredictionPage() {
     const formData: PredictionForm = {
       ...values,
       birthDate: `${values.birthYear}-${String(values.birthMonth).padStart(2, '0')}-${String(values.birthDay).padStart(2, '0')}`,
-      birthTime: `${String(values.birthHour).padStart(2, '0')}:${String(values.birthMinute).padStart(2, '0')}`,
+      birthTime: `${String(values.birthHour).padStart(2, '0')}:00`,
     }
 
     setError('')
@@ -213,25 +214,25 @@ export default function PredictionPage() {
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-4">命理分析</h1>
 
-      <Alert
-        message="免责声明"
-        description={
-          <div className="text-sm">
-            <p className="mb-2">本系统提供的命理分析和预测结果仅供参考，不构成任何形式的建议或指导：</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>分析结果基于传统命理学理论，不具有科学依据</li>
-              <li>系统不对任何个人决策负责，请谨慎参考预测结果</li>
-              <li>重要人生决策请以科学理性的态度进行判断</li>
-              <li>系统不收集、不存储任何个人隐私信息</li>
-              <li>如有任何疑问，请及时与我们联系</li>
-            </ul>
-            <p className="mt-2 text-gray-500">继续使用表示您已阅读并同意以上声明</p>
-          </div>
-        }
-        type="warning"
-        showIcon
-        className="mb-6"
-      />
+      <Modal
+        title="免责声明"
+        open={isDisclaimerVisible}
+        onOk={() => setIsDisclaimerVisible(false)}
+        onCancel={() => setIsDisclaimerVisible(false)}
+        width={600}
+      >
+        <div className="text-sm">
+          <p className="mb-2">本系统提供的命理分析和预测结果仅供参考，不构成任何形式的建议或指导：</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>分析结果基于传统命理学理论，不具有科学依据</li>
+            <li>系统不对任何个人决策负责，请谨慎参考预测结果</li>
+            <li>重要人生决策请以科学理性的态度进行判断</li>
+            <li>系统不收集、不存储任何个人隐私信息</li>
+            <li>如有任何疑问，请及时与我们联系</li>
+          </ul>
+          <p className="mt-2 text-gray-500">继续使用表示您已阅读并同意以上声明</p>
+        </div>
+      </Modal>
 
       <Form
         form={form}
@@ -308,7 +309,11 @@ export default function PredictionPage() {
             name="birthDay"
             rules={[{ required: true, message: '请选择日期' }]}
           >
-            <Select placeholder="日" className="w-full">
+            <Select
+              placeholder="日"
+              onChange={(value) => handleDateTimeChange('day', value)}
+              className="w-full"
+            >
               {currentDayOptions.map(day => (
                 <Option key={day} value={day}>{day}日</Option>
               ))}
@@ -320,7 +325,11 @@ export default function PredictionPage() {
             name="birthHour"
             rules={[{ required: true, message: '请选择时辰' }]}
           >
-            <Select placeholder="时辰" className="w-full">
+            <Select
+              placeholder="时辰"
+              onChange={(value) => handleDateTimeChange('hour', value)}
+              className="w-full"
+            >
               {timeSlots.map((slot, index) => (
                 <Option
                   key={index}
@@ -328,18 +337,6 @@ export default function PredictionPage() {
                 >
                   {slot.name} ({String(slot.start).padStart(2, '0')}:00-{String(slot.end).padStart(2, '0')}:00)
                 </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="分钟"
-            name="birthMinute"
-            rules={[{ required: true, message: '请选择分钟' }]}
-          >
-            <Select placeholder="分" className="w-full">
-              {minuteOptions.map(minute => (
-                <Option key={minute} value={minute}>{minute}分</Option>
               ))}
             </Select>
           </Form.Item>
@@ -360,16 +357,36 @@ export default function PredictionPage() {
                 {lunarInfo.bazi}
               </Descriptions.Item>
               <Descriptions.Item label="五行" span={2}>
-                年:{lunarInfo.wuxing.year} 月:{lunarInfo.wuxing.month} 日:{lunarInfo.wuxing.day} 时:{lunarInfo.wuxing.time}
+                <div className="grid grid-cols-4 gap-2">
+                  <div>年柱: {lunarInfo.wuxing.year}</div>
+                  <div>月柱: {lunarInfo.wuxing.month}</div>
+                  <div>日柱: {lunarInfo.wuxing.day}</div>
+                  <div>时柱: {lunarInfo.wuxing.time}</div>
+                </div>
               </Descriptions.Item>
               <Descriptions.Item label="纳音" span={2}>
-                年:{lunarInfo.nayin.year} 月:{lunarInfo.nayin.month} 日:{lunarInfo.nayin.day} 时:{lunarInfo.nayin.time}
+                <div className="grid grid-cols-4 gap-2">
+                  <div>年柱: {lunarInfo.nayin.year}</div>
+                  <div>月柱: {lunarInfo.nayin.month}</div>
+                  <div>日柱: {lunarInfo.nayin.day}</div>
+                  <div>时柱: {lunarInfo.nayin.time}</div>
+                </div>
               </Descriptions.Item>
-              <Descriptions.Item label="干十神" span={2}>
-                年干:{lunarInfo.shishen.yearGan} 月干:{lunarInfo.shishen.monthGan} 日干:{lunarInfo.shishen.dayGan} 时干:{lunarInfo.shishen.timeGan}
-              </Descriptions.Item>
-              <Descriptions.Item label="支十神" span={2}>
-                年支:{lunarInfo.shishen.yearZhi} 月支:{lunarInfo.shishen.monthZhi} 日支:{lunarInfo.shishen.dayZhi} 时支:{lunarInfo.shishen.timeZhi}
+              <Descriptions.Item label="十神" span={2}>
+                <div className="space-y-2">
+                  <div className="grid grid-cols-4 gap-2">
+                    <div>年干: {lunarInfo.shishen.yearGan}</div>
+                    <div>月干: {lunarInfo.shishen.monthGan}</div>
+                    <div>日干: {lunarInfo.shishen.dayGan}</div>
+                    <div>时干: {lunarInfo.shishen.timeGan}</div>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    <div>年支: {lunarInfo.shishen.yearZhi}</div>
+                    <div>月支: {lunarInfo.shishen.monthZhi}</div>
+                    <div>日支: {lunarInfo.shishen.dayZhi}</div>
+                    <div>时支: {lunarInfo.shishen.timeZhi}</div>
+                  </div>
+                </div>
               </Descriptions.Item>
               {lunarInfo.yun && (
                 <>
@@ -377,14 +394,16 @@ export default function PredictionPage() {
                     {lunarInfo.yun.startInfo}
                   </Descriptions.Item>
                   <Descriptions.Item label="大运" span={2}>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-4">
                       {lunarInfo.yun.daYun.map((dayun, index) => (
-                        <div key={index} className="text-sm">
-                          {dayun.startYear}年 {dayun.startAge}岁 {dayun.ganZhi}
-                          <div className="text-xs text-gray-500 mt-1">
+                        <div key={index} className="bg-gray-50 p-3 rounded-lg">
+                          <div className="font-medium mb-2">
+                            {dayun.startYear}年 ({dayun.startAge}岁) {dayun.ganZhi}运
+                          </div>
+                          <div className="text-xs space-y-1">
                             {dayun.liuNian?.slice(0, 5).map((liuNian, idx) => (
-                              <div key={idx}>
-                                {liuNian.year}年 {liuNian.age}岁 {liuNian.ganZhi}
+                              <div key={idx} className="text-gray-600">
+                                {liuNian.year}年 ({liuNian.age}岁) - {liuNian.ganZhi}年
                               </div>
                             ))}
                           </div>
@@ -445,7 +464,10 @@ export default function PredictionPage() {
           ]}
         >
           <Checkbox>
-            我已阅读并同意<Button type="link" className="p-0" onClick={() => message.info('继续使用表示您同意免责声明')}>《免责声明》</Button>
+            我已阅读并同意
+            <Button type="link" className="p-0" onClick={() => setIsDisclaimerVisible(true)}>
+              《免责声明》
+            </Button>
           </Checkbox>
         </Form.Item>
 
