@@ -59,7 +59,8 @@
     "swr": "^2.1.0",
     "typescript": "4.9.5",
     "use-context-selector": "^1.4.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "webapp-conversation": "file:"
   },
   "devDependencies": {
     "@antfu/eslint-config": "0.36.0",
