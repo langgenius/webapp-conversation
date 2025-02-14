@@ -168,7 +168,8 @@ const Answer: FC<IAnswerProps> = ({
   return (
     <div key={id}>
       <div className='flex items-start'>
-        <div className={`${s.answerIcon} w-10 h-10 shrink-0`}>
+        <div className={`${s.answerIcon} w-10 h-10 shrink-0 flex items-center justify-center`}> {/* 添加 flex items-center justify-center 类，让 Emoji 居中 */}
+          <span style={{ fontSize: '2rem', lineHeight: '1rem' }}>😌</span> {/*  添加 Emoji 表情符号 😌, 并使用 inline style 调整大小和行高 */}
           {isResponding
             && <div className={s.typeingIcon}>
               <LoadingAnim type='avatar' />
