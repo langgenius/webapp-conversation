@@ -10,7 +10,7 @@ export const APP_INFO: AppInfo = {
   default_language: 'zh-Hans',
 }
 
-export const isShowPrompt = true
+export const isShowPrompt = false
 export const promptTemplate = '请输入问题'
 
 export const API_PREFIX = '/api'
