@@ -57,6 +57,12 @@ module.exports = {
         pc: '769px',
         // => @media (min-width: 769px) { ... }
       },
+      fontFamily: {
+        // 
+        'xiawu-wenkai': ['LXGW Bright', 'ui-sans-serif', 'system-ui', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
+        // 或者如果您想覆盖默认的 sans 字体
+        // 'sans': ['LXGW Bright', ... Tailwind 默认的 sans 字体 fallback 列表],
+      },
     },
   },
   plugins: [
