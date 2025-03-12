@@ -1,3 +1,4 @@
+@import("https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-SemiLight/result.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
