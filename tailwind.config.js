@@ -59,12 +59,6 @@ module.exports = {
         pc: '769px',
         // => @media (min-width: 769px) { ... }
       },
-      fontFamily: {
-         // 
-       'xiawu-wenkai': ['LXGW Bright', 'ui-sans-serif', 'system-ui', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
-         // 覆盖默认 sans 字体，将霞鹜文楷设为默认字体
-       'sans': ['LXGW Bright', ...defaultTheme.fontFamily.sans], // 关键修改
-       },
     },
   },
   plugins: [
