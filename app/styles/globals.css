@@ -1,4 +1,4 @@
-@import("https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Regular/result.css");
+@import("https://cdn.jsdelivr.net/npm/@chinese-fonts/lxgwwenkaibright@1.0.2/dist/LXGWBright-Regular/result.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -88,7 +88,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
-  font-family: 'LXGW Bright' !important;
+  font-family: 'LXGW Bright';
 }
 
 a {
