@@ -1,7 +1,8 @@
 @tailwind base;
+@import("https://cdn.jsdelivr.net/npm/@chinese-fonts/lxgwwenkaibright@1.0.2/dist/LXGWBright-Regular/result.css");
 @tailwind components;
 @tailwind utilities;
-@import("https://cdn.jsdelivr.net/npm/@chinese-fonts/lxgwwenkaibright@1.0.2/dist/LXGWBright-Regular/result.css");
+
 
 
 :root {
