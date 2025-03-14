@@ -14,7 +14,7 @@ const LocaleLayout = ({
       <head>
         {/* 引入 CDN Web 字体 */}
         <link
-          href="https://cdn.jsdelivr.net/npm/@chinese-fonts/lxgwwenkaibright@1.0.2/dist/LXGWBright-Regular/result.css"
+          href="https://cdn.jsdelivr.net/npm/@chinese-fonts/lxgwwenkaibright@1.0.2/dist/LXGWBright-Medium/result.css"
           rel="stylesheet"
         />
       </head>
