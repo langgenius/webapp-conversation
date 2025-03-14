@@ -89,7 +89,6 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
-  font-family: 'LXGW Bright', sans-serif; /* 使用 CDN 引入的字体 */
   }
 
 a {
