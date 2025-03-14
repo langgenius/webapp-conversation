@@ -17,10 +17,10 @@
 }
 
 
+/* 修改 .questionIcon，移除背景图像 */
 .questionIcon {
-  background: url(./icons/default-avatar.jpg);
-  background-size: contain;
-  border-radius: 50%;
+  background: transparent; /* 改为透明背景 */
+  border-radius: 50%; /* 保留圆形样式 */
 }
 
 .answer::before,
