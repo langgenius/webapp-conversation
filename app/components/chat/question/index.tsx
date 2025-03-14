@@ -34,7 +34,9 @@ const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar, imgSr
           </div>
         )
         : (
-          <div className={`${s.questionIcon} w-10 h-10 shrink-0 `}></div>
+          <div className={`${s.questionIcon} w-10 h-10 shrink-0 flex items-center justify-center`}> {/* 添加 flex items-center justify-center 类 */}
+            <span style={{ fontSize: '2rem', lineHeight: '1rem' }}>😊</span> {/* 添加 Emoji 😊 并调整大小 */}
+          </div>
         )}
     </div>
   )
