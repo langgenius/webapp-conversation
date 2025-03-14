@@ -29,7 +29,7 @@ const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar, imgSr
       </div>
       {useCurrentUserAvatar
         ? (
-          <div className='w-10 h-10 shrink-0 leading-10 text-center mr-2 rounded-full bg-primary-600 text-white'>
+          <div className='w-10 h-10 shrink-0 leading-10 text-center mr-2 rounded-full bg-transparent text-white'>
             {userName?.[0].toLocaleUpperCase()}
           </div>
         )
