@@ -18,7 +18,7 @@ export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] |
   useInputs.forEach((item: any) => {
     const [type, content] = (() => {
       const type = Object.keys(item)[0]
-      return [type, item[type]]
+      return [type === 'text-input' ? 'string' : type, item[type]]
     })()
 
     if (type === 'string' || type === 'paragraph' || type === 'file' || type === 'file-list') {
