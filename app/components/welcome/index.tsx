@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TemplateVarPanel, { PanelTitle, VarOpBtnGroup } from '../value-panel'
+import FileUploaderInAttachmentWrapper from '../base/file-uploader-in-attachment'
 import s from './style.module.css'
 import { AppInfoComp, ChatBtn, EditBtn, FootLogo, PromptTemplate } from './massive-component'
 import type { AppInfo, PromptConfig } from '@/types/app'
@@ -131,6 +132,25 @@ const Welcome: FC<IWelcomeProps> = ({
                 onChange={(e) => { onInputsChange({ ...inputs, [item.key]: e.target.value }) }}
               />
             )}
+
+            {
+              item.type === 'file' && (
+                <FileUploaderInAttachmentWrapper
+                  className='w-full'
+                  fileConfig={{
+                    allowed_file_types: ['image', 'video', 'audio', 'document'],
+                    allowed_file_extensions: ['jpg', 'jpeg', 'png', 'gif'],
+                    allowed_file_upload_methods: ['local_file', 'remote_url'],
+                    number_limits: 1,
+                    fileUploadConfig: {} as any,
+                  }}
+                  onChange={(files) => {
+                    setInputs({ ...inputs, [item.key]: files })
+                  }}
+                  value={inputs?.[item.key] || []}
+                />
+              )
+            }
           </div>
         ))}
       </div>
