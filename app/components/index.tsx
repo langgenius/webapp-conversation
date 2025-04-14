@@ -225,7 +225,6 @@ const Main: FC<IMainProps> = () => {
     (async () => {
       try {
         const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
-
         // handle current conversation id
         const { data: conversations, error } = conversationData as { data: ConversationItem[]; error: string }
         if (error) {
