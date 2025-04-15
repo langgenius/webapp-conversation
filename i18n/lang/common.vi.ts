@@ -28,6 +28,16 @@ const translation = {
     pasteImageLinkInvalid: 'Liên kết ảnh không hợp lệ',
     imageUpload: 'Tải ảnh lên',
   },
+  fileUploader: {
+    uploadFromComputer: 'Tải lên cục bộ',
+    pasteFileLink: 'Dán liên kết tệp',
+    pasteFileLinkInputPlaceholder: 'Nhập URL...',
+    uploadFromComputerLimit: 'Tải lên tệp không được vượt quá {{size}}',
+    fileExtensionNotSupport: 'Phần mở rộng tệp không được hỗ trợ',
+    pasteFileLinkInvalid: 'Liên kết tệp không hợp lệ',
+    uploadFromComputerUploadError: 'Tải lên tệp không thành công, vui lòng tải lên lại.',
+    uploadFromComputerReadError: 'Đọc tệp không thành công, vui lòng thử lại.',
+  },
 }
 
-export default translation;
+export default translation

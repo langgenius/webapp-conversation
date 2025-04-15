@@ -28,6 +28,16 @@ const translation = {
     pasteImageLinkInvalid: '無効な画像リンクです',
     imageUpload: '画像アップロード',
   },
+  fileUploader: {
+    uploadFromComputer: 'ローカルアップロード',
+    pasteFileLink: 'ファイルリンクの貼り付け',
+    pasteFileLinkInputPlaceholder: 'URLを入力...',
+    uploadFromComputerLimit: 'アップロードファイルは{{size}}を超えてはなりません',
+    uploadFromComputerUploadError: 'ファイルのアップロードに失敗しました。再度アップロードしてください。',
+    uploadFromComputerReadError: 'ファイルの読み取りに失敗しました。もう一度やり直してください。',
+    fileExtensionNotSupport: 'ファイル拡張子はサポートされていません',
+    pasteFileLinkInvalid: '無効なファイルリンク',
+  },
 }
 
 export default translation
