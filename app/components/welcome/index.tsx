@@ -37,6 +37,7 @@ const Welcome: FC<IWelcomeProps> = ({
   savedInputs,
   onInputsChange,
 }) => {
+  console.log(promptConfig)
   const { t } = useTranslation()
   const hasVar = promptConfig.prompt_variables.length > 0
   const [isFold, setIsFold] = useState<boolean>(true)
@@ -136,12 +137,28 @@ const Welcome: FC<IWelcomeProps> = ({
             {
               item.type === 'file' && (
                 <FileUploaderInAttachmentWrapper
-                  className='w-full'
                   fileConfig={{
-                    allowed_file_types: ['image', 'video', 'audio', 'document'],
-                    allowed_file_extensions: ['jpg', 'jpeg', 'png', 'gif'],
-                    allowed_file_upload_methods: ['local_file', 'remote_url'],
+                    allowed_file_types: item.allowed_file_types,
+                    allowed_file_extensions: item.allowed_file_extensions,
+                    allowed_file_upload_methods: item.allowed_file_upload_methods!,
                     number_limits: 1,
+                    fileUploadConfig: {} as any,
+                  }}
+                  onChange={(files) => {
+                    setInputs({ ...inputs, [item.key]: files[0] })
+                  }}
+                  value={inputs?.[item.key] || []}
+                />
+              )
+            }
+            {
+              item.type === 'file-list' && (
+                <FileUploaderInAttachmentWrapper
+                  fileConfig={{
+                    allowed_file_types: item.allowed_file_types,
+                    allowed_file_extensions: item.allowed_file_extensions,
+                    allowed_file_upload_methods: item.allowed_file_upload_methods!,
+                    number_limits: item.max_length,
                     fileUploadConfig: {} as any,
                   }}
                   onChange={(files) => {
