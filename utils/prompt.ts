@@ -16,18 +16,9 @@ export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] |
     return []
   const promptVariables: PromptVariable[] = []
   useInputs.forEach((item: any) => {
-    const isParagraph = !!item.paragraph
     const [type, content] = (() => {
-      if (isParagraph)
-        return ['paragraph', item.paragraph]
-
-      if (item['text-input'])
-        return ['string', item['text-input']]
-
-      if (item.number)
-        return ['number', item.number]
-
-      return ['select', item.select]
+      const type = Object.keys(item)[0]
+      return [type === 'text-input' ? 'string' : type, item[type]]
     })()
 
     if (type === 'string' || type === 'paragraph') {
@@ -46,6 +37,17 @@ export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] |
         name: content.label,
         required: content.required,
         type,
+        options: [],
+      })
+    }
+    else if (type === 'file' || type === 'file-list') {
+      promptVariables.push({
+        ...content,
+        key: content.variable,
+        name: content.label,
+        required: content.required,
+        type,
+        max_length: content.max_length,
         options: [],
       })
     }
