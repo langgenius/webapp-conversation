@@ -101,6 +101,7 @@ const Main: FC<IMainProps> = () => {
 
   const conversationName = currConversationInfo?.name || t('app.chat.newChatDefaultName') as string
   const conversationIntroduction = currConversationInfo?.introduction || ''
+  const suggestedQuestions = currConversationInfo?.suggested_questions || []
 
   const handleConversationSwitch = () => {
     if (!inited)
@@ -117,6 +118,7 @@ const Main: FC<IMainProps> = () => {
       setExistConversationInfo({
         name: item?.name || '',
         introduction: notSyncToStateIntroduction,
+        suggested_questions: suggestedQuestions,
       })
     }
     else {
@@ -192,6 +194,7 @@ const Main: FC<IMainProps> = () => {
         name: t('app.chat.newChatDefaultName'),
         inputs: newConversationInputs,
         introduction: conversationIntroduction,
+        suggested_questions: suggestedQuestions,
       })
     }))
   }
@@ -209,6 +212,7 @@ const Main: FC<IMainProps> = () => {
       isAnswer: true,
       feedbackDisabled: true,
       isOpeningStatement: isShowPrompt,
+      suggestedQuestions: suggestedQuestions,
     }
     if (calculatedIntroduction)
       return [openStatement]
@@ -233,15 +237,24 @@ const Main: FC<IMainProps> = () => {
           return
         }
         const _conversationId = getConversationIdFromStorage(APP_ID)
-        const isNotNewConversation = conversations.some(item => item.id === _conversationId)
+        const currentConversation = conversations.find(item => item.id === _conversationId)
+        const isNotNewConversation = !!currentConversation
 
         // fetch new conversation info
-        const { user_input_form, opening_statement: introduction, file_upload, system_parameters }: any = appParams
+        const { user_input_form, opening_statement: introduction, file_upload, system_parameters, suggested_questions = [] }: any = appParams
         setLocaleOnClient(APP_INFO.default_language, true)
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
           introduction,
+          suggested_questions
         })
+        if (isNotNewConversation) {
+          setExistConversationInfo({
+            name: currentConversation.name || t('app.chat.newChatDefaultName'),
+            introduction,
+            suggested_questions
+          })
+        }
         const prompt_variables = userInputsFormToPromptVariables(user_input_form)
         setPromptConfig({
           prompt_template: promptTemplate,

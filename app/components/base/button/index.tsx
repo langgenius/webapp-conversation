@@ -21,6 +21,9 @@ const Button: FC<IButtonProps> = ({
 }) => {
   let style = 'cursor-pointer'
   switch (type) {
+    case 'link':
+      style = disabled ? 'border-solid border border-gray-200 bg-gray-200 cursor-not-allowed text-gray-800' : 'border-solid border border-gray-200 cursor-pointer text-blue-600 bg-white hover:shadow-sm hover:border-gray-300'
+      break
     case 'primary':
       style = (disabled || loading) ? 'bg-primary-600/75 cursor-not-allowed text-white' : 'bg-primary-600 hover:bg-primary-600/75 hover:shadow-md cursor-pointer text-white hover:shadow-sm'
       break

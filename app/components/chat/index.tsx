@@ -52,9 +52,12 @@ const Chat: FC<IChatProps> = ({
   const isUseInputMethod = useRef(false)
 
   const [query, setQuery] = React.useState('')
+  const queryRef = useRef('')
+
   const handleContentChange = (e: any) => {
     const value = e.target.value
     setQuery(value)
+    queryRef.current = value
   }
 
   const logError = (message: string) => {
@@ -62,16 +65,19 @@ const Chat: FC<IChatProps> = ({
   }
 
   const valid = () => {
+    const query = queryRef.current
     if (!query || query.trim() === '') {
-      logError('Message cannot be empty')
+      logError(t('app.errorMessage.valueOfVarRequired'))
       return false
     }
     return true
   }
 
   useEffect(() => {
-    if (controlClearQuery)
+    if (controlClearQuery) {
       setQuery('')
+      queryRef.current = ''
+    }
   }, [controlClearQuery])
   const {
     files,
@@ -86,7 +92,7 @@ const Chat: FC<IChatProps> = ({
   const handleSend = () => {
     if (!valid() || (checkCanSend && !checkCanSend()))
       return
-    onSend(query, files.filter(file => file.progress !== -1).map(fileItem => ({
+    onSend(queryRef.current, files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,
       url: fileItem.url,
@@ -95,8 +101,10 @@ const Chat: FC<IChatProps> = ({
     if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
       if (files.length)
         onClear()
-      if (!isResponding)
+      if (!isResponding) {
         setQuery('')
+        queryRef.current = ''
+      }
     }
   }
 
@@ -112,9 +120,17 @@ const Chat: FC<IChatProps> = ({
   const handleKeyDown = (e: any) => {
     isUseInputMethod.current = e.nativeEvent.isComposing
     if (e.code === 'Enter' && !e.shiftKey) {
-      setQuery(query.replace(/\n$/, ''))
+      const result = query.replace(/\n$/, '')
+      setQuery(result)
+      queryRef.current = result
       e.preventDefault()
     }
+  }
+
+  const suggestionClick = (suggestion: string) => {
+    setQuery(suggestion)
+    queryRef.current = suggestion
+    handleSend()
   }
 
   return (
@@ -130,6 +146,7 @@ const Chat: FC<IChatProps> = ({
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
               isResponding={isResponding && isLast}
+              suggestionClick={suggestionClick}
             />
           }
           return (
