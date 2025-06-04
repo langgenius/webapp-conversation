@@ -6,15 +6,18 @@ import commonEs from './lang/common.es'
 import commonZh from './lang/common.zh'
 import commonVi from './lang/common.vi'
 import commonJa from './lang/common.ja'
+import commonFr from './lang/common.fr'
 import appEn from './lang/app.en'
 import appEs from './lang/app.es'
 import appZh from './lang/app.zh'
 import appVi from './lang/app.vi'
 import appJa from './lang/app.ja'
+import appFr from './lang/app.fr'
 import toolsEn from './lang/tools.en'
 import toolsZh from './lang/tools.zh'
 import toolsVi from './lang/tools.vi'
 import toolsJa from './lang/tools.ja'
+import toolsFr from './lang/tools.fr'
 
 import type { Locale } from '.'
 
@@ -55,6 +58,14 @@ const resources = {
       app: appJa,
       // tools
       tools: toolsJa,
+    },
+  },
+  'fr': {
+    translation: {
+      common: commonFr,
+      app: appFr,
+      // tools
+      tools: toolsFr,
     },
   },
 }
