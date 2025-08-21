@@ -343,7 +343,7 @@ const Main: FC<IMainProps> = () => {
       type: 'image',
       transfer_method: fileItem.transferMethod,
       url: fileItem.url,
-      upload_file_id: fileItem.id,
+      upload_file_id: fileItem.uploadedId,
     }
   }
 
