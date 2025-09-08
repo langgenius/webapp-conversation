@@ -1,0 +1,10 @@
+---
+description: i18n usage and locale resolution
+---
+
+### i18n
+
+- Server locale: `getLocaleOnServer()` reads cookie or negotiates from headers: `[i18n/server.ts](mdc:i18n/server.ts)`.
+- Client locale: use `getLocaleOnClient()` / `setLocaleOnClient()` in `[i18n/client.ts](mdc:i18n/client.ts)`; uses `LOCALE_COOKIE_NAME` from config.
+- Place translations in `i18n/lang/**`. Keep keys synchronized across locales.
+- Render `<html lang>` using the resolved locale in `[app/layout.tsx](mdc:app/layout.tsx)`.
