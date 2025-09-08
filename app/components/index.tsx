@@ -12,6 +12,7 @@ import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
 import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
 import type { ChatItem, ConversationItem, Feedbacktype, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
+import type { FileUpload } from '@/app/components/base/file-uploader-in-attachment/types'
 import { Resolution, TransferMethod, WorkflowRunningStatus } from '@/types/app'
 import Chat from '@/app/components/chat'
 import { setLocaleOnClient } from '@/i18n/client'
@@ -48,6 +49,7 @@ const Main: FC<IMainProps> = () => {
     detail: Resolution.low,
     transfer_methods: [TransferMethod.local_file],
   })
+  const [fileConfig, setFileConfig] = useState<FileUpload | undefined>()
 
   useEffect(() => {
     if (APP_INFO?.title)
@@ -260,9 +262,19 @@ const Main: FC<IMainProps> = () => {
           prompt_template: promptTemplate,
           prompt_variables,
         } as PromptConfig)
+        const outerFileUploadEnabled = !!file_upload?.enabled
         setVisionConfig({
           ...file_upload?.image,
+          enabled: !!(outerFileUploadEnabled && file_upload?.image?.enabled),
           image_file_size_limit: system_parameters?.system_parameters || 0,
+        })
+        setFileConfig({
+          enabled: outerFileUploadEnabled,
+          allowed_file_types: file_upload?.allowed_file_types,
+          allowed_file_extensions: file_upload?.allowed_file_extensions,
+          allowed_file_upload_methods: file_upload?.allowed_file_upload_methods,
+          number_limits: file_upload?.number_limits,
+          fileUploadConfig: file_upload?.fileUploadConfig,
         })
         setConversationList(conversations as ConversationItem[])
 
@@ -373,7 +385,7 @@ const Main: FC<IMainProps> = () => {
       conversation_id: isNewConversation ? null : currConversationId,
     }
 
-    if (visionConfig?.enabled && files && files?.length > 0) {
+    if (files && files?.length > 0) {
       data.files = files.map((item) => {
         if (item.transfer_method === TransferMethod.local_file) {
           return {
@@ -391,7 +403,7 @@ const Main: FC<IMainProps> = () => {
       id: questionId,
       content: message,
       isAnswer: false,
-      message_files: files,
+      message_files: (files || []).filter((f: any) => f.type === 'image'),
     }
 
     const placeholderAnswerId = `answer-placeholder-${Date.now()}`
@@ -700,6 +712,7 @@ const Main: FC<IMainProps> = () => {
                     isResponding={isResponding}
                     checkCanSend={checkCanSend}
                     visionConfig={visionConfig}
+                    fileConfig={fileConfig}
                   />
                 </div>
               </div>)
