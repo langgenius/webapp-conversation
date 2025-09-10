@@ -9,6 +9,7 @@
     "lint": "next lint",
     "fix": "eslint . --fix",
     "eslint-fix": "eslint . --fix",
+    "lint-staged": "lint-staged",
     "prepare": "husky"
   },
   "dependencies": {
