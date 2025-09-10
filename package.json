@@ -51,7 +51,7 @@
     "react-i18next": "^12.2.0",
     "react-markdown": "^8.0.6",
     "react-syntax-highlighter": "^15.5.0",
-    "react-tooltip": "~5.8.3",
+    "react-tooltip": "~5.29.1",
     "rehype-katex": "^7.0.1",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
