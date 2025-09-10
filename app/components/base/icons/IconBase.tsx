@@ -2,12 +2,12 @@ import { forwardRef } from 'react'
 import { generate } from './utils'
 import type { AbstractNode } from './utils'
 
-export type IconData = {
+export interface IconData {
   name: string
   icon: AbstractNode
 }
 
-export type IconBaseProps = {
+export interface IconBaseProps {
   data: IconData
   className?: string
   onClick?: React.MouseEventHandler<SVGElement>

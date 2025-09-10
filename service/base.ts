@@ -22,7 +22,7 @@ const baseOptions = {
   redirect: 'follow',
 }
 
-export type WorkflowStartedResponse = {
+export interface WorkflowStartedResponse {
   task_id: string
   workflow_run_id: string
   event: string
@@ -34,7 +34,7 @@ export type WorkflowStartedResponse = {
   }
 }
 
-export type WorkflowFinishedResponse = {
+export interface WorkflowFinishedResponse {
   task_id: string
   workflow_run_id: string
   event: string
@@ -52,7 +52,7 @@ export type WorkflowFinishedResponse = {
   }
 }
 
-export type NodeStartedResponse = {
+export interface NodeStartedResponse {
   task_id: string
   workflow_run_id: string
   event: string
@@ -68,7 +68,7 @@ export type NodeStartedResponse = {
   }
 }
 
-export type NodeFinishedResponse = {
+export interface NodeFinishedResponse {
   task_id: string
   workflow_run_id: string
   event: string
@@ -93,7 +93,7 @@ export type NodeFinishedResponse = {
   }
 }
 
-export type IOnDataMoreInfo = {
+export interface IOnDataMoreInfo {
   conversationId?: string
   taskId?: string
   messageId: string
@@ -114,7 +114,7 @@ export type IOnWorkflowFinished = (workflowFinished: WorkflowFinishedResponse) =
 export type IOnNodeStarted = (nodeStarted: NodeStartedResponse) => void
 export type IOnNodeFinished = (nodeFinished: NodeFinishedResponse) => void
 
-type IOtherOptions = {
+interface IOtherOptions {
   isPublicAPI?: boolean
   bodyStringify?: boolean
   needAllResponseContent?: boolean
@@ -152,8 +152,7 @@ const handleStream = (
   onNodeStarted?: IOnNodeStarted,
   onNodeFinished?: IOnNodeFinished,
 ) => {
-  if (!response.ok)
-    throw new Error('Network response was not ok')
+  if (!response.ok) { throw new Error('Network response was not ok') }
 
   const reader = response.body?.getReader()
   const decoder = new TextDecoder('utf-8')
@@ -241,8 +240,7 @@ const handleStream = (
         onCompleted?.(true)
         return
       }
-      if (!hasError)
-        read()
+      if (!hasError) { read() }
     })
   }
   read()
@@ -262,17 +260,14 @@ const baseFetch = (url: string, fetchOptions: any, { needAllResponseContent }: I
     Object.keys(params).forEach(key =>
       paramsArray.push(`${key}=${encodeURIComponent(params[key])}`),
     )
-    if (urlWithPrefix.search(/\?/) === -1)
-      urlWithPrefix += `?${paramsArray.join('&')}`
+    if (urlWithPrefix.search(/\?/) === -1) { urlWithPrefix += `?${paramsArray.join('&')}` }
 
-    else
-      urlWithPrefix += `&${paramsArray.join('&')}`
+    else { urlWithPrefix += `&${paramsArray.join('&')}` }
 
     delete options.params
   }
 
-  if (body)
-    options.body = JSON.stringify(body)
+  if (body) { options.body = JSON.stringify(body) }
 
   // Handle timeout
   return Promise.race([
@@ -344,16 +339,13 @@ export const upload = (fetchOptions: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     const xhr = options.xhr
     xhr.open(options.method, options.url)
-    for (const key in options.headers)
-      xhr.setRequestHeader(key, options.headers[key])
+    for (const key in options.headers) { xhr.setRequestHeader(key, options.headers[key]) }
 
     xhr.withCredentials = true
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200)
-          resolve({ id: xhr.response })
-        else
-          reject(xhr)
+        if (xhr.status === 200) { resolve({ id: xhr.response }) }
+        else { reject(xhr) }
       }
     }
     xhr.upload.onprogress = options.onprogress
@@ -386,8 +378,7 @@ export const ssePost = (
   const urlWithPrefix = `${urlPrefix}${url.startsWith('/') ? url : `/${url}`}`
 
   const { body } = options
-  if (body)
-    options.body = JSON.stringify(body)
+  if (body) { options.body = JSON.stringify(body) }
 
   globalThis.fetch(urlWithPrefix, options)
     .then((res: any) => {
@@ -410,7 +401,8 @@ export const ssePost = (
       }, () => {
         onCompleted?.()
       }, onThought, onMessageEnd, onMessageReplace, onFile, onWorkflowStarted, onWorkflowFinished, onNodeStarted, onNodeFinished)
-    }).catch((e) => {
+    })
+    .catch((e) => {
       Toast.notify({ type: 'error', message: e })
       onError?.(e)
     })

@@ -17,7 +17,7 @@ import {
 
 import type { OffsetOptions, Placement } from '@floating-ui/react'
 
-type PortalToFollowElemOptions = {
+interface PortalToFollowElemOptions {
   /*
   * top, bottom, left, right
   * start, end. Default is middle
@@ -85,8 +85,7 @@ const PortalToFollowElemContext = React.createContext<ContextType>(null)
 export function usePortalToFollowElemContext() {
   const context = React.useContext(PortalToFollowElemContext)
 
-  if (context == null)
-    throw new Error('PortalToFollowElem components must be wrapped in <PortalToFollowElem />')
+  if (context == null) { throw new Error('PortalToFollowElem components must be wrapped in <PortalToFollowElem />') }
 
   return context
 }
@@ -106,7 +105,7 @@ export function PortalToFollowElem({
 }
 
 export const PortalToFollowElemTrigger = React.forwardRef<
-HTMLElement,
+  HTMLElement,
 React.HTMLProps<HTMLElement> & { asChild?: boolean }
 >(({ children, asChild = false, ...props }, propRef) => {
   const context = usePortalToFollowElemContext()
@@ -141,14 +140,13 @@ React.HTMLProps<HTMLElement> & { asChild?: boolean }
 PortalToFollowElemTrigger.displayName = 'PortalToFollowElemTrigger'
 
 export const PortalToFollowElemContent = React.forwardRef<
-HTMLDivElement,
-React.HTMLProps<HTMLDivElement>
+  HTMLDivElement,
+  React.HTMLProps<HTMLDivElement>
 >(({ style, ...props }, propRef) => {
   const context = usePortalToFollowElemContext()
   const ref = useMergeRefs([context.refs.setFloating, propRef])
 
-  if (!context.open)
-    return null
+  if (!context.open) { return null }
 
   return (
     <FloatingPortal>

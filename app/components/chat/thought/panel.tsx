@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-type Props = {
+interface Props {
   isRequest: boolean
   toolName: string
   content: string

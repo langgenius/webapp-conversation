@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-type IAppUnavailableProps = {
+interface IAppUnavailableProps {
   isUnknownReason: boolean
   errMessage?: string
 }
@@ -14,8 +14,7 @@ const AppUnavailable: FC<IAppUnavailableProps> = ({
 }) => {
   const { t } = useTranslation()
   let message = errMessage
-  if (!errMessage)
-    message = (isUnknownReason ? t('app.common.appUnkonwError') : t('app.common.appUnavailable')) as string
+  if (!errMessage) { message = (isUnknownReason ? t('app.common.appUnkonwError') : t('app.common.appUnavailable')) as string }
 
   return (
     <div className='flex items-center justify-center w-screen h-screen'>

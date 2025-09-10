@@ -9,7 +9,7 @@ import './style.css'
 // load file from local instead of cdn https://github.com/suren-atoyan/monaco-react/issues/482
 loader.config({ paths: { vs: '/vs' } })
 
-type Props = {
+interface Props {
   value?: string | object
   onChange?: (value: string) => void
   title: JSX.Element
@@ -72,8 +72,7 @@ const CodeEditor: FC<Props> = ({
   }
 
   const outPutValue = (() => {
-    if (!isJSONStringifyBeauty)
-      return value as string
+    if (!isJSONStringifyBeauty) { return value as string }
     try {
       return JSON.stringify(value as object, null, 2)
     }

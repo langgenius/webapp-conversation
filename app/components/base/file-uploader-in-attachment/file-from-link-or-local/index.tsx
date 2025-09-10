@@ -17,7 +17,7 @@ import {
 import Button from '@/app/components/base/button'
 import cn from '@/utils/classnames'
 
-type FileFromLinkOrLocalProps = {
+interface FileFromLinkOrLocalProps {
   showFromLink?: boolean
   showFromLocal?: boolean
   trigger: (open: boolean) => React.ReactNode
@@ -38,8 +38,7 @@ const FileFromLinkOrLocal = ({
   const disabled = !!fileConfig.number_limits && files.length >= fileConfig.number_limits
 
   const handleSaveUrl = () => {
-    if (!url)
-      return
+    if (!url) { return }
 
     if (!FILE_URL_REGEX.test(url)) {
       setShowError(true)

@@ -9,10 +9,10 @@ export enum AuthType {
   apiKey = 'api_key',
 }
 
-export type Credential = {
-  'auth_type': AuthType
-  'api_key_header'?: string
-  'api_key_value'?: string
+export interface Credential {
+  auth_type: AuthType
+  api_key_header?: string
+  api_key_value?: string
 }
 
 export enum CollectionType {
@@ -21,12 +21,12 @@ export enum CollectionType {
   custom = 'api',
 }
 
-export type Emoji = {
+export interface Emoji {
   background: string
   content: string
 }
 
-export type Collection = {
+export interface Collection {
   id: string
   name: string
   author: string
@@ -39,7 +39,7 @@ export type Collection = {
   allow_delete: boolean
 }
 
-export type ToolParameter = {
+export interface ToolParameter {
   name: string
   label: TypeWithI18N
   human_description: TypeWithI18N
@@ -52,14 +52,14 @@ export type ToolParameter = {
   }[]
 }
 
-export type Tool = {
+export interface Tool {
   name: string
   label: TypeWithI18N
   description: any
   parameters: ToolParameter[]
 }
 
-export type ToolCredential = {
+export interface ToolCredential {
   name: string
   label: TypeWithI18N
   help: TypeWithI18N
@@ -73,7 +73,7 @@ export type ToolCredential = {
   }[]
 }
 
-export type CustomCollectionBackend = {
+export interface CustomCollectionBackend {
   provider: string
   original_provider?: string
   credentials: Credential
@@ -84,7 +84,7 @@ export type CustomCollectionBackend = {
   tools?: ParamItem[]
 }
 
-export type ParamItem = {
+export interface ParamItem {
   name: string
   label: TypeWithI18N
   human_description: TypeWithI18N
@@ -99,7 +99,7 @@ export type ParamItem = {
   }[]
 }
 
-export type CustomParamSchema = {
+export interface CustomParamSchema {
   operation_id: string // name
   summary: string
   server_url: string
