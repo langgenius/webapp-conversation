@@ -677,18 +677,16 @@ const Main: FC<IMainProps> = () => {
 
           {
             hasSetInputs && (
-              <div className='relative grow h-[200px] pc:w-[794px] max-w-full mobile:w-full pb-[120px] mx-auto mb-3.5 overflow-hidden'>
-                <div className='h-full overflow-y-auto' ref={chatListDomRef}>
-                  <Chat
-                    chatList={chatList}
-                    onSend={handleSend}
-                    onFeedback={handleFeedback}
-                    isResponding={isResponding}
-                    checkCanSend={checkCanSend}
-                    visionConfig={visionConfig}
-                    fileConfig={fileConfig}
-                  />
-                </div>
+              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[180px] mx-auto mb-3.5' ref={chatListDomRef}>
+                <Chat
+                  chatList={chatList}
+                  onSend={handleSend}
+                  onFeedback={handleFeedback}
+                  isResponding={isResponding}
+                  checkCanSend={checkCanSend}
+                  visionConfig={visionConfig}
+                  fileConfig={fileConfig}
+                />
               </div>)
           }
         </div>
