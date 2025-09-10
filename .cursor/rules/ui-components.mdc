@@ -1,0 +1,11 @@
+---
+description: UI components and styling conventions
+---
+
+### UI Components
+
+- Component folders under `app/components/**`; keep base primitives in `base/**` (buttons, icons, inputs, uploader, etc.).
+- Larger features (chat, workflow) live in their own folders with `index.tsx` and submodules.
+- Prefer colocated `style.module.css` or Tailwind classes. Global styles in `app/styles/**`.
+- Use `app/components/base/toast` for error/display notifications.
+- Avoid unnecessary client components; mark with `'use client'` only when needed (state, effects, browser APIs).

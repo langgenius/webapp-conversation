@@ -15,6 +15,9 @@ import Toast from '@/app/components/base/toast'
 import ChatImageUploader from '@/app/components/base/image-uploader/chat-image-uploader'
 import ImageList from '@/app/components/base/image-uploader/image-list'
 import { useImageFiles } from '@/app/components/base/image-uploader/hooks'
+import FileUploaderInAttachmentWrapper from '@/app/components/base/file-uploader-in-attachment'
+import type { FileEntity, FileUpload } from '@/app/components/base/file-uploader-in-attachment/types'
+import { getProcessedFiles } from '@/app/components/base/file-uploader-in-attachment/utils'
 
 export type IChatProps = {
   chatList: ChatItem[]
@@ -33,6 +36,7 @@ export type IChatProps = {
   isResponding?: boolean
   controlClearQuery?: number
   visionConfig?: VisionSettings
+  fileConfig?: FileUpload
 }
 
 const Chat: FC<IChatProps> = ({
@@ -46,6 +50,7 @@ const Chat: FC<IChatProps> = ({
   isResponding,
   controlClearQuery,
   visionConfig,
+  fileConfig,
 }) => {
   const { t } = useTranslation()
   const { notify } = Toast
@@ -89,15 +94,20 @@ const Chat: FC<IChatProps> = ({
     onClear,
   } = useImageFiles()
 
+  const [attachmentFiles, setAttachmentFiles] = React.useState<FileEntity[]>([])
+
   const handleSend = () => {
     if (!valid() || (checkCanSend && !checkCanSend()))
       return
-    onSend(queryRef.current, files.filter(file => file.progress !== -1).map(fileItem => ({
+    const imageFiles: VisionFile[] = files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,
       url: fileItem.url,
       upload_file_id: fileItem.fileId,
-    })))
+    }))
+    const docAndOtherFiles: VisionFile[] = getProcessedFiles(attachmentFiles)
+    const combinedFiles: VisionFile[] = [...imageFiles, ...docAndOtherFiles]
+    onSend(queryRef.current, combinedFiles)
     if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
       if (files.length)
         onClear()
@@ -106,6 +116,8 @@ const Chat: FC<IChatProps> = ({
         queryRef.current = ''
       }
     }
+    if (!attachmentFiles.find(item => item.transferMethod === TransferMethod.local_file && !item.uploadedId))
+      setAttachmentFiles([])
   }
 
   const handleKeyUp = (e: any) => {
@@ -185,6 +197,17 @@ const Chat: FC<IChatProps> = ({
                       />
                     </div>
                   </>
+                )
+              }
+              {
+                fileConfig?.enabled && (
+                  <div className={`${visionConfig?.enabled ? 'pl-[52px]' : ''} mb-1`}>
+                    <FileUploaderInAttachmentWrapper
+                      fileConfig={fileConfig}
+                      value={attachmentFiles}
+                      onChange={setAttachmentFiles}
+                    />
+                  </div>
                 )
               }
               <Textarea

@@ -1,0 +1,20 @@
+---
+globs: *.ts,*.tsx
+---
+
+### TypeScript/React Conventions
+
+- **Strict TS**: `strict: true` in `tsconfig.json`. Avoid `any`. Prefer explicit function signatures for exports.
+- **Paths**: Use `@/*` alias (tsconfig `paths`) for absolute imports.
+- **React 18**: Prefer function components. Use `React.memo` only for measurable perf wins.
+- **Hooks**: Co-locate hooks under `hooks/**`. Keep hook names prefixed with `use`.
+- **App Router**: Server components by default. Mark client components with `'use client'` when needed.
+- **Styling**: Tailwind-first; SCSS only where necessary.
+- **Classnames**: Use `classnames` or `tailwind-merge` for conditional classes.
+- **Control Flow**: Early returns, handle edge cases first; avoid deep nesting.
+
+### Next.js Notes
+
+- Route handlers belong in `app/api/**/route.ts`.
+- Do not import server-only modules into client components.
+- Keep environment access to server files; avoid exposing secrets.
