@@ -174,8 +174,15 @@ const Main: FC<IMainProps> = () => {
   const [chatList, setChatList, getChatList] = useGetState<ChatItem[]>([])
   const chatListDomRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    // scroll to bottom
-    if (chatListDomRef.current) { chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight }
+    // scroll to bottom with page-level scrolling
+    if (chatListDomRef.current) {
+      setTimeout(() => {
+        chatListDomRef.current?.scrollIntoView({
+          behavior: 'auto',
+          block: 'end',
+        })
+      }, 50)
+    }
   }, [chatList, currConversationId])
   // user can not edit inputs if user had send message
   const canEditInputs = !chatList.some(item => item.isAnswer === false) && isNewConversation
