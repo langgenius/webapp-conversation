@@ -12,7 +12,7 @@ import Loading02 from '@/app/components/base/icons/line/loading-02'
 import ChevronRight from '@/app/components/base/icons/line/chevron-right'
 import { WorkflowRunningStatus } from '@/types/app'
 
-type WorkflowProcessProps = {
+interface WorkflowProcessProps {
   data: WorkflowProcess
   grayBg?: boolean
   expand?: boolean
@@ -30,14 +30,11 @@ const WorkflowProcessItem = ({
   const failed = data.status === WorkflowRunningStatus.Failed || data.status === WorkflowRunningStatus.Stopped
 
   const background = useMemo(() => {
-    if (running && !collapse)
-      return 'linear-gradient(180deg, #E1E4EA 0%, #EAECF0 100%)'
+    if (running && !collapse) { return 'linear-gradient(180deg, #E1E4EA 0%, #EAECF0 100%)' }
 
-    if (succeeded && !collapse)
-      return 'linear-gradient(180deg, #ECFDF3 0%, #F6FEF9 100%)'
+    if (succeeded && !collapse) { return 'linear-gradient(180deg, #ECFDF3 0%, #F6FEF9 100%)' }
 
-    if (failed && !collapse)
-      return 'linear-gradient(180deg, #FEE4E2 0%, #FEF3F2 100%)'
+    if (failed && !collapse) { return 'linear-gradient(180deg, #FEE4E2 0%, #FEF3F2 100%)' }
   }, [running, succeeded, failed, collapse])
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import cn from '@/utils/classnames'
 
-type ProgressCircleProps = {
+interface ProgressCircleProps {
   className?: string
   percentage?: number
   size?: number

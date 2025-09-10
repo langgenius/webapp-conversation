@@ -10,7 +10,7 @@ import type { ImageFile } from '@/types/app'
 import { TransferMethod } from '@/types/app'
 import ImagePreview from '@/app/components/base/image-uploader/image-preview'
 
-type ImageListProps = {
+interface ImageListProps {
   list: ImageFile[]
   readonly?: boolean
   onRemove?: (imageFileId: string) => void
@@ -31,12 +31,10 @@ const ImageList: FC<ImageListProps> = ({
   const [imagePreviewUrl, setImagePreviewUrl] = useState('')
 
   const handleImageLinkLoadSuccess = (item: ImageFile) => {
-    if (item.type === TransferMethod.remote_url && onImageLinkLoadSuccess && item.progress !== -1)
-      onImageLinkLoadSuccess(item._id)
+    if (item.type === TransferMethod.remote_url && onImageLinkLoadSuccess && item.progress !== -1) { onImageLinkLoadSuccess(item._id) }
   }
   const handleImageLinkLoadError = (item: ImageFile) => {
-    if (item.type === TransferMethod.remote_url && onImageLinkLoadError)
-      onImageLinkLoadError(item._id)
+    if (item.type === TransferMethod.remote_url && onImageLinkLoadError) { onImageLinkLoadError(item._id) }
   }
 
   return (

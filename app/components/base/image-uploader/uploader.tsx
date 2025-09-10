@@ -8,7 +8,7 @@ import type { ImageFile } from '@/types/app'
 import { TransferMethod } from '@/types/app'
 import Toast from '@/app/components/base/toast'
 
-type UploaderProps = {
+interface UploaderProps {
   children: (hovering: boolean) => JSX.Element
   onUpload: (imageFile: ImageFile) => void
   limit?: number
@@ -28,8 +28,7 @@ const Uploader: FC<UploaderProps> = ({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
 
-    if (!file)
-      return
+    if (!file) { return }
 
     if (limit && file.size > limit * 1024 * 1024) {
       notify({ type: 'error', message: t('common.imageUploader.uploadFromComputerLimit', { size: limit }) })

@@ -16,7 +16,7 @@ function classNames(...classes: any[]) {
 
 const MAX_CONVERSATION_LENTH = 20
 
-export type ISidebarProps = {
+export interface ISidebarProps {
   copyRight: string
   currentId: string
   onCurrentIdChange: (id: string) => void
@@ -38,7 +38,8 @@ const Sidebar: FC<ISidebarProps> = ({
         <div className="flex flex-shrink-0 p-4 !pb-0">
           <Button
             onClick={() => { onCurrentIdChange('-1') }}
-            className="group block w-full flex-shrink-0 !justify-start !h-9 text-primary-600 items-center text-sm">
+            className="group block w-full flex-shrink-0 !justify-start !h-9 text-primary-600 items-center text-sm"
+          >
             <PencilSquareIcon className="mr-2 h-4 w-4" /> {t('app.chat.newChat')}
           </Button>
         </div>
