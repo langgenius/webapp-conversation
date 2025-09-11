@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server'
 import { client, getInfo } from '@/app/api/utils/common'
 
 export async function POST(request: NextRequest, { params }: {
-  params: { conversationId: string }
+  params: Promise<{ conversationId: string }>
 }) {
   const body = await request.json()
   const {
     auto_generate,
     name,
   } = body
-  const { conversationId } = params
+  const { conversationId } = await params
   const { user } = getInfo(request)
 
   // auto generate name
