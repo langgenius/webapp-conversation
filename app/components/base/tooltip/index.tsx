@@ -1,9 +1,8 @@
 'use client'
 import classNames from 'classnames'
 import type { FC } from 'react'
-import React from 'react'
-import { Tooltip as ReactTooltip } from 'react-tooltip' // fixed version to 5.8.3 https://github.com/ReactTooltip/react-tooltip/issues/972
-import 'react-tooltip/dist/react-tooltip.css'
+import React, { useState } from 'react'
+import { PortalToFollowElem, PortalToFollowElemContent, PortalToFollowElemTrigger } from '@/app/components/base/portal-to-follow-elem'
 
 type TooltipProps = {
   selector: string
@@ -15,6 +14,10 @@ type TooltipProps = {
   children: React.ReactNode
 }
 
+const arrow = (
+  <svg className="absolute text-white h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"></polygon></svg>
+)
+
 const Tooltip: FC<TooltipProps> = ({
   selector,
   content,
@@ -24,22 +27,31 @@ const Tooltip: FC<TooltipProps> = ({
   className,
   clickable,
 }) => {
+  const [open, setOpen] = useState(false)
+  const triggerMethod = clickable ? 'click' : 'hover'
+
   return (
-    <div className='tooltip-container'>
-      {React.cloneElement(children as React.ReactElement, {
-        'data-tooltip-id': selector,
-      })
-      }
-      <ReactTooltip
-        id={selector}
-        content={content}
-        className={classNames('!bg-white !text-xs !font-normal !text-gray-700 !shadow-lg !opacity-100', className)}
-        place={position}
-        clickable={clickable}
+    <PortalToFollowElem
+      open={open}
+      onOpenChange={setOpen}
+      placement={position}
+      offset={10}
+    >
+      <PortalToFollowElemTrigger
+        data-selector={selector}
+        onClick={() => triggerMethod === 'click' && setOpen(v => !v)}
+        onMouseEnter={() => triggerMethod === 'hover' && setOpen(true)}
+        onMouseLeave={() => triggerMethod === 'hover' && setOpen(false)}
       >
-        {htmlContent && htmlContent}
-      </ReactTooltip>
-    </div>
+        {children}
+      </PortalToFollowElemTrigger>
+      <PortalToFollowElemContent className="z-[999]">
+        <div className={classNames('relative px-3 py-2 text-xs font-normal text-gray-700 bg-white rounded-md shadow-lg', className)}>
+          {htmlContent ?? content}
+          {arrow}
+        </div>
+      </PortalToFollowElemContent>
+    </PortalToFollowElem>
   )
 }
 
