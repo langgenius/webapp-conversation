@@ -4,8 +4,7 @@
  * @example formatNumber(1234567.89) will return '1,234,567.89'
  */
 export const formatNumber = (num: number | string) => {
-  if (!num)
-    return num
+  if (!num) { return num }
   const parts = num.toString().split('.')
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return parts.join('.')
@@ -18,8 +17,7 @@ export const formatNumber = (num: number | string) => {
  * @example formatFileSize(1024 * 1024) will return '1.00MB'
  */
 export const formatFileSize = (fileSize: number) => {
-  if (!fileSize)
-    return fileSize
+  if (!fileSize) { return fileSize }
   const units = ['', 'K', 'M', 'G', 'T', 'P']
   let index = 0
   while (fileSize >= 1024 && index < units.length) {
@@ -35,8 +33,7 @@ export const formatFileSize = (fileSize: number) => {
  * @example formatTime(60 * 60) will return '1.00 h'
  */
 export const formatTime = (seconds: number) => {
-  if (!seconds)
-    return seconds
+  if (!seconds) { return seconds }
   const units = ['sec', 'min', 'h']
   let index = 0
   while (seconds >= 60 && index < units.length) {
@@ -46,7 +43,7 @@ export const formatTime = (seconds: number) => {
   return `${seconds.toFixed(2)} ${units[index]}`
 }
 
-export const downloadFile = ({ data, fileName }: { data: Blob; fileName: string }) => {
+export const downloadFile = ({ data, fileName }: { data: Blob, fileName: string }) => {
   const url = window.URL.createObjectURL(data)
   const a = document.createElement('a')
   a.href = url

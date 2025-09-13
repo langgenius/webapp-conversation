@@ -13,7 +13,7 @@ import {
 import Upload03 from '@/app/components/base/icons/line/upload-03'
 import type { ImageFile, VisionSettings } from '@/types/app'
 
-type UploadOnlyFromLocalProps = {
+interface UploadOnlyFromLocalProps {
   onUpload: (imageFile: ImageFile) => void
   disabled?: boolean
   limit?: number
@@ -39,7 +39,7 @@ const UploadOnlyFromLocal: FC<UploadOnlyFromLocalProps> = ({
   )
 }
 
-type UploaderButtonProps = {
+interface UploaderButtonProps {
   methods: VisionSettings['transfer_methods']
   onUpload: (imageFile: ImageFile) => void
   disabled?: boolean
@@ -62,8 +62,7 @@ const UploaderButton: FC<UploaderButtonProps> = ({
   }
 
   const handleToggle = () => {
-    if (disabled)
-      return
+    if (disabled) { return }
 
     setOpen(v => !v)
   }
@@ -115,7 +114,7 @@ const UploaderButton: FC<UploaderButtonProps> = ({
   )
 }
 
-type ChatImageUploaderProps = {
+interface ChatImageUploaderProps {
   settings: VisionSettings
   onUpload: (imageFile: ImageFile) => void
   disabled?: boolean

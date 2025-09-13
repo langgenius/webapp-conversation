@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import React from 'react'
 import s from './style.module.css'
 
-export type ILoaidingAnimProps = {
+export interface ILoaidingAnimProps {
   type: 'text' | 'avatar'
 }
 

@@ -2,7 +2,7 @@
 
 import { upload } from '@/service/base'
 
-type ImageUploadParams = {
+interface ImageUploadParams {
   file: File
   onProgressCallback: (progress: number) => void
   onSuccessCallback: (res: { id: string }) => void

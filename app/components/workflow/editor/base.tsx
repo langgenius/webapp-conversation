@@ -8,7 +8,7 @@ import ToggleExpandBtn from './toggle-expand-btn'
 import useToggleExpend from './use-toggle-expend'
 import { Clipboard, ClipboardCheck } from '@/app/components/base/icons/line/files'
 
-type Props = {
+interface Props {
   className?: string
   title: JSX.Element | string
   headerRight?: JSX.Element

@@ -4,7 +4,7 @@ import React from 'react'
 import type { IChatItem } from '../type'
 import s from '../style.module.css'
 
-import { Markdown } from '@/app/components/base/markdown'
+import StreamdownMarkdown from '@/app/components/base/streamdown-markdown'
 import ImageGallery from '@/app/components/base/image-gallery'
 
 type IQuestionProps = Pick<IChatItem, 'id' | 'content' | 'useCurrentUserAvatar'> & {
@@ -23,7 +23,7 @@ const Question: FC<IQuestionProps> = ({ id, content, useCurrentUserAvatar, imgSr
             {imgSrcs && imgSrcs.length > 0 && (
               <ImageGallery srcs={imgSrcs} />
             )}
-            <Markdown content={content} />
+            <StreamdownMarkdown content={content} />
           </div>
         </div>
       </div>

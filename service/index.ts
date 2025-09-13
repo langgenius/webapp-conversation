@@ -53,7 +53,7 @@ export const fetchAppParams = async () => {
   return get('parameters')
 }
 
-export const updateFeedback = async ({ url, body }: { url: string; body: Feedbacktype }) => {
+export const updateFeedback = async ({ url, body }: { url: string, body: Feedbacktype }) => {
   return post(url, { body })
 }
 

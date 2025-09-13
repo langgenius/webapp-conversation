@@ -4,7 +4,7 @@ import React, { useCallback } from 'react'
 import Expand04 from '@/app/components/base/icons/solid/expand-04'
 import Collapse04 from '@/app/components/base/icons/line/arrows/collapse-04'
 
-type Props = {
+interface Props {
   isExpand: boolean
   onExpandChange: (isExpand: boolean) => void
 }

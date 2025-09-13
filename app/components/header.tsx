@@ -5,7 +5,7 @@ import {
   PencilSquareIcon,
 } from '@heroicons/react/24/solid'
 import AppIcon from '@/app/components/base/app-icon'
-export type IHeaderProps = {
+export interface IHeaderProps {
   title: string
   isMobile?: boolean
   onShowSideBar?: () => void
@@ -35,9 +35,7 @@ const Header: FC<IHeaderProps> = ({
       </div>
       {isMobile
         ? (
-          <div className='flex items-center justify-center h-8 w-8 cursor-pointer'
-            onClick={() => onCreateNewChat?.()}
-          >
+          <div className='flex items-center justify-center h-8 w-8 cursor-pointer' onClick={() => onCreateNewChat?.()} >
             <PencilSquareIcon className="h-4 w-4 text-gray-500" />
           </div>)
         : <div></div>}

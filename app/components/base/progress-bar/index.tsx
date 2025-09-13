@@ -1,4 +1,4 @@
-type ProgressBarProps = {
+interface ProgressBarProps {
   percent: number
 }
 const ProgressBar = ({

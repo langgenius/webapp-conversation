@@ -30,8 +30,7 @@ function useConversation() {
   // input can be updated by user
   const [newConversationInputs, setNewConversationInputs] = useState<Record<string, any> | null>(null)
   const resetNewConversationInputs = () => {
-    if (!newConversationInputs)
-      return
+    if (!newConversationInputs) { return }
     setNewConversationInputs(produce(newConversationInputs, (draft) => {
       Object.keys(draft).forEach((key) => {
         draft[key] = ''

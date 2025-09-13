@@ -1,6 +1,6 @@
 import React from 'react'
 
-export type AbstractNode = {
+export interface AbstractNode {
   name: string
   attributes: {
     [key: string]: string
@@ -8,7 +8,7 @@ export type AbstractNode = {
   children?: AbstractNode[]
 }
 
-export type Attrs = {
+export interface Attrs {
   [key: string]: string
 }
 

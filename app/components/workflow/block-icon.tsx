@@ -16,11 +16,11 @@ import {
 } from '@/app/components/base/icons/workflow'
 import AppIcon from '@/app/components/base/app-icon'
 
-type BlockIconProps = {
+interface BlockIconProps {
   type: BlockEnum
   size?: string
   className?: string
-  toolIcon?: string | { content: string; background: string }
+  toolIcon?: string | { content: string, background: string }
 }
 const ICON_CONTAINER_CLASSNAME_SIZE_MAP: Record<string, string> = {
   xs: 'w-4 h-4 rounded-[5px] shadow-xs',

@@ -148,8 +148,7 @@ export const useFile = (fileConfig: FileUpload) => {
     const newFiles = produce(files, (draft) => {
       const index = draft.findIndex(file => file.id === newFile.id)
 
-      if (index > -1)
-        draft[index] = newFile
+      if (index > -1) { draft[index] = newFile }
     })
     setFiles(newFiles)
   }, [fileStore])
@@ -198,10 +197,8 @@ export const useFile = (fileConfig: FileUpload) => {
       const files = fileStore.getState().files
       const file = files.find(file => file.id === fileId)
 
-      if (file && file.progress < 80 && file.progress >= 0)
-        handleUpdateFile({ ...file, progress: file.progress + 20 })
-      else
-        clearTimeout(timer)
+      if (file && file.progress < 80 && file.progress >= 0) { handleUpdateFile({ ...file, progress: file.progress + 20 }) }
+      else { clearTimeout(timer) }
     }, 200)
   }, [fileStore, handleUpdateFile])
   const handleLoadFileFromLink = useCallback((url: string) => {
@@ -235,10 +232,8 @@ export const useFile = (fileConfig: FileUpload) => {
         notify({ type: 'error', message: t('common.fileUploader.fileExtensionNotSupport') })
         handleRemoveFile(uploadingFile.id)
       }
-      if (!checkSizeLimit(newFile.supportFileType, newFile.size))
-        handleRemoveFile(uploadingFile.id)
-      else
-        handleUpdateFile(newFile)
+      if (!checkSizeLimit(newFile.supportFileType, newFile.size)) { handleRemoveFile(uploadingFile.id) }
+      else { handleUpdateFile(newFile) }
     }).catch(() => {
       notify({ type: 'error', message: t('common.fileUploader.pasteFileLinkInvalid') })
       handleRemoveFile(uploadingFile.id)
@@ -263,8 +258,7 @@ export const useFile = (fileConfig: FileUpload) => {
     }
     const allowedFileTypes = fileConfig.allowed_file_types
     const fileType = getSupportFileType(file.name, file.type, allowedFileTypes?.includes(SupportUploadFileTypes.custom))
-    if (!checkSizeLimit(fileType, file.size))
-      return
+    if (!checkSizeLimit(fileType, file.size)) { return }
 
     const reader = new FileReader()
     const isImage = file.type.startsWith('image')
@@ -344,8 +338,7 @@ export const useFile = (fileConfig: FileUpload) => {
 
     const file = e.dataTransfer.files[0]
 
-    if (file)
-      handleLocalFileUpload(file)
+    if (file) { handleLocalFileUpload(file) }
   }, [handleLocalFileUpload])
 
   return {

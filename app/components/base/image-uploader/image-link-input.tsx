@@ -5,7 +5,7 @@ import Button from '@/app/components/base/button'
 import type { ImageFile } from '@/types/app'
 import { TransferMethod } from '@/types/app'
 
-type ImageLinkInputProps = {
+interface ImageLinkInputProps {
   onUpload: (imageFile: ImageFile) => void
 }
 const regex = /^(https?|ftp):\/\//

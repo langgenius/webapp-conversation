@@ -4,7 +4,7 @@ import type { FC } from 'react'
 import { useDebounceFn } from 'ahooks'
 import cn from 'classnames'
 
-type Props = {
+interface Props {
   className?: string
   height: number
   minHeight: number
@@ -40,14 +40,12 @@ const PromptEditorHeightResizeWrap: FC<Props> = ({
   }, [prevUserSelectStyle])
 
   const { run: didHandleResize } = useDebounceFn((e) => {
-    if (!isResizing)
-      return
+    if (!isResizing) { return }
 
     const offset = e.clientY - clientY
     let newHeight = height + offset
     setClientY(e.clientY)
-    if (newHeight < minHeight)
-      newHeight = minHeight
+    if (newHeight < minHeight) { newHeight = minHeight }
     onHeightChange(newHeight)
   }, {
     wait: 0,
@@ -85,7 +83,8 @@ const PromptEditorHeightResizeWrap: FC<Props> = ({
       {!hideResize && (
         <div
           className='absolute bottom-0 left-0 w-full flex justify-center h-2 cursor-row-resize'
-          onMouseDown={handleStartResize}>
+          onMouseDown={handleStartResize}
+        >
           <div className='w-5 h-[3px] rounded-sm bg-gray-300'></div>
         </div>
       )}

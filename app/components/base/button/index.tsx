@@ -2,7 +2,7 @@ import type { FC, MouseEventHandler } from 'react'
 import React from 'react'
 import Spinner from '@/app/components/base/spinner'
 
-export type IButtonProps = {
+export interface IButtonProps {
   type?: string
   className?: string
   disabled?: boolean

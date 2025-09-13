@@ -17,7 +17,7 @@ export enum FileAppearanceTypeEnum {
 
 export type FileAppearanceType = keyof typeof FileAppearanceTypeEnum
 
-export type FileEntity = {
+export interface FileEntity {
   id: string
   name: string
   size: number
@@ -32,7 +32,7 @@ export type FileEntity = {
   isRemote?: boolean
 }
 
-export type EnabledOrDisabled = {
+export interface EnabledOrDisabled {
   enabled?: boolean
 }
 
@@ -41,7 +41,7 @@ export enum Resolution {
   high = 'high',
 }
 
-export type FileUploadConfigResponse = {
+export interface FileUploadConfigResponse {
   batch_count_limit: number
   image_file_size_limit?: number | string // default is 10MB
   file_size_limit: number // default is 15MB
@@ -71,7 +71,7 @@ export enum SupportUploadFileTypes {
   custom = 'custom',
 }
 
-export type FileResponse = {
+export interface FileResponse {
   related_id: string
   extension: string
   filename: string

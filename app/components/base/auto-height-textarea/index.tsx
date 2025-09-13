@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef } from 'react'
 import cn from 'classnames'
 
-type IProps = {
+interface IProps {
   placeholder?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
@@ -36,19 +36,16 @@ const AutoHeightTextarea = forwardRef(
         let hasFocus = false
         const runId = setInterval(() => {
           hasFocus = doFocus()
-          if (hasFocus)
-            clearInterval(runId)
+          if (hasFocus) { clearInterval(runId) }
         }, 100)
       }
     }
 
     useEffect(() => {
-      if (autoFocus)
-        focus()
+      if (autoFocus) { focus() }
     }, [])
     useEffect(() => {
-      if (controlFocus)
-        focus()
+      if (controlFocus) { focus() }
     }, [controlFocus])
 
     return (

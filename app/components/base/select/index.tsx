@@ -15,12 +15,12 @@ const defaultItems = [
   { value: 7, name: 'option7' },
 ]
 
-export type Item = {
+export interface Item {
   value: number | string
   name: string
 }
 
-export type ISelectProps = {
+export interface ISelectProps {
   className?: string
   items?: Item[]
   defaultValue?: number | string
@@ -45,8 +45,7 @@ const Select: FC<ISelectProps> = ({
   useEffect(() => {
     let defaultSelect = null
     const existed = items.find((item: Item) => item.value === defaultValue)
-    if (existed)
-      defaultSelect = existed
+    if (existed) { defaultSelect = existed }
 
     setSelectedItem(defaultSelect)
   }, [defaultValue])
@@ -77,23 +76,20 @@ const Select: FC<ISelectProps> = ({
             ? <Combobox.Input
               className={`w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10 shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200 cursor-not-allowed`}
               onChange={(event) => {
-                if (!disabled)
-                  setQuery(event.target.value)
+                if (!disabled) { setQuery(event.target.value) }
               }}
               displayValue={(item: Item) => item?.name}
             />
             : <Combobox.Button onClick={
               () => {
-                if (!disabled)
-                  setOpen(!open)
+                if (!disabled) { setOpen(!open) }
               }
             } className={`flex items-center h-9 w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10 shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200`}>
               {selectedItem?.name}
             </Combobox.Button>}
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none group-hover:bg-gray-200" onClick={
             () => {
-              if (!disabled)
-                setOpen(!open)
+              if (!disabled) { setOpen(!open) }
             }
           }>
             {open ? <ChevronUpIcon className="h-5 w-5" /> : <ChevronDownIcon className="h-5 w-5" />}
@@ -147,8 +143,7 @@ const SimpleSelect: FC<ISelectProps> = ({
   useEffect(() => {
     let defaultSelect = null
     const existed = items.find((item: Item) => item.value === defaultValue)
-    if (existed)
-      defaultSelect = existed
+    if (existed) { defaultSelect = existed }
 
     setSelectedItem(defaultSelect)
   }, [defaultValue])

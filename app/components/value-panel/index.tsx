@@ -7,7 +7,7 @@ import s from './style.module.css'
 import { StarIcon } from '@/app/components//welcome/massive-component'
 import Button from '@/app/components/base/button'
 
-export type ITemplateVarPanelProps = {
+export interface ITemplateVarPanelProps {
   className?: string
   header: ReactNode
   children?: ReactNode | null
@@ -38,7 +38,7 @@ const TemplateVarPanel: FC<ITemplateVarPanelProps> = ({
   )
 }
 
-export const PanelTitle: FC<{ title: string; className?: string }> = ({
+export const PanelTitle: FC<{ title: string, className?: string }> = ({
   title,
   className,
 }) => {
@@ -50,7 +50,7 @@ export const PanelTitle: FC<{ title: string; className?: string }> = ({
   )
 }
 
-export const VarOpBtnGroup: FC<{ className?: string; onConfirm: () => void; onCancel: () => void }> = ({
+export const VarOpBtnGroup: FC<{ className?: string, onConfirm: () => void, onCancel: () => void }> = ({
   className,
   onConfirm,
   onCancel,

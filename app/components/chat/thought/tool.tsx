@@ -13,17 +13,15 @@ import DataSetIcon from '@/app/components/base/icons/public/data-set'
 import type { Emoji } from '@/types/tools'
 import AppIcon from '@/app/components/base/app-icon'
 
-type Props = {
+interface Props {
   payload: ToolInfoInThought
   allToolIcons?: Record<string, string | Emoji>
 }
 
 const getIcon = (toolName: string, allToolIcons: Record<string, string | Emoji>) => {
-  if (toolName.startsWith('dataset-'))
-    return <DataSetIcon className='shrink-0'></DataSetIcon>
+  if (toolName.startsWith('dataset-')) { return <DataSetIcon className='shrink-0'></DataSetIcon> }
   const icon = allToolIcons[toolName]
-  if (!icon)
-    return null
+  if (!icon) { return null }
   return (
     typeof icon === 'string'
       ? (
@@ -87,12 +85,14 @@ const Tool: FC<Props> = ({
             <Panel
               isRequest={true}
               toolName={toolName}
-              content={input} />
+              content={input}
+            />
             {output && (
               <Panel
                 isRequest={false}
                 toolName={toolName}
-                content={output as string} />
+                content={output as string}
+              />
             )}
           </div>
         )}

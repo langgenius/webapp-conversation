@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type Params = {
+interface Params {
   ref: React.RefObject<HTMLDivElement>
   hasFooter?: boolean
 }

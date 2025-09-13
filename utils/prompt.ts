@@ -3,8 +3,7 @@ import type { PromptVariable, UserInputFormItem } from '@/types/app'
 export function replaceVarWithValues(str: string, promptVariables: PromptVariable[], inputs: Record<string, any>) {
   return str.replace(/\{\{([^}]+)\}\}/g, (match, key) => {
     const name = inputs[key]
-    if (name)
-      return name
+    if (name) { return name }
 
     const valueObj: PromptVariable | undefined = promptVariables.find(v => v.key === key)
     return valueObj ? `{{${valueObj.key}}}` : match
@@ -12,8 +11,7 @@ export function replaceVarWithValues(str: string, promptVariables: PromptVariabl
 }
 
 export const userInputsFormToPromptVariables = (useInputs: UserInputFormItem[] | null) => {
-  if (!useInputs)
-    return []
+  if (!useInputs) { return [] }
   const promptVariables: PromptVariable[] = []
   useInputs.forEach((item: any) => {
     const [type, content] = (() => {

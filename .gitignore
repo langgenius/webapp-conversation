@@ -47,5 +47,5 @@ package-lock.json
 yarn.lock
 .yarnrc.yml
 
-# pmpm
-pnpm-lock.yaml
+# mcp
+.serena

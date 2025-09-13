@@ -9,7 +9,7 @@ import Loading02 from '@/app/components/base/icons/line/loading-02'
 import CheckCircle from '@/app/components/base/icons/line/check-circle'
 import type { NodeTracing } from '@/types/app'
 
-type Props = {
+interface Props {
   nodeInfo: NodeTracing
   hideInfo?: boolean
 }
@@ -18,20 +18,15 @@ const NodePanel: FC<Props> = ({ nodeInfo, hideInfo = false }) => {
   const [collapseState, setCollapseState] = useState<boolean>(true)
 
   const getTime = (time: number) => {
-    if (time < 1)
-      return `${(time * 1000).toFixed(3)} ms`
-    if (time > 60)
-      return `${parseInt(Math.round(time / 60).toString())} m ${(time % 60).toFixed(3)} s`
+    if (time < 1) { return `${(time * 1000).toFixed(3)} ms` }
+    if (time > 60) { return `${parseInt(Math.round(time / 60).toString())} m ${(time % 60).toFixed(3)} s` }
     return `${time.toFixed(3)} s`
   }
 
   const getTokenCount = (tokens: number) => {
-    if (tokens < 1000)
-      return tokens
-    if (tokens >= 1000 && tokens < 1000000)
-      return `${parseFloat((tokens / 1000).toFixed(3))}K`
-    if (tokens >= 1000000)
-      return `${parseFloat((tokens / 1000000).toFixed(3))}M`
+    if (tokens < 1000) { return tokens }
+    if (tokens >= 1000 && tokens < 1000000) { return `${parseFloat((tokens / 1000).toFixed(3))}K` }
+    if (tokens >= 1000000) { return `${parseFloat((tokens / 1000000).toFixed(3))}M` }
   }
 
   useEffect(() => {

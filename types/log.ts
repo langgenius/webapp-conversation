@@ -1,4 +1,4 @@
-export type LogAnnotation = {
+export interface LogAnnotation {
   content: string
   account: {
     id: string
@@ -8,7 +8,7 @@ export type LogAnnotation = {
   created_at: number
 }
 
-export type Annotation = {
+export interface Annotation {
   id: string
   authorName: string
   logAnnotation?: LogAnnotation

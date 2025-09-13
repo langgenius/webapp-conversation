@@ -24,7 +24,7 @@ import cn from '@/utils/classnames'
 import ReplayLine from '@/app/components/base/icons/other/ReplayLine'
 import ImagePreview from '@/app/components/base/image-uploader/image-preview'
 
-type FileInAttachmentItemProps = {
+interface FileInAttachmentItemProps {
   file: FileEntity
   showDeleteAction?: boolean
   showDownloadAction?: boolean
