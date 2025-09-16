@@ -32,12 +32,15 @@ const ImageGallery: FC<Props> = ({
 }) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState('')
 
-  const imgNum = srcs.length
+  const validSrcs = srcs.filter(src => src && src.trim() !== '')
+  const imgNum = validSrcs.length
   const imgStyle = getWidthStyle(imgNum)
+
+  if (imgNum === 0) { return null }
+
   return (
     <div className={cn(s[`img-${imgNum}`], 'flex flex-wrap')}>
-      {/* TODO: support preview */}
-      {srcs.map((src, index) => (
+      {validSrcs.map((src, index) => (
         <img
           key={index}
           className={s.item}
