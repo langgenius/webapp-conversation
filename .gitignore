@@ -49,3 +49,5 @@ yarn.lock
 
 # mcp
 .serena
+# pmpm
+pnpm-lock.yaml

@@ -4,7 +4,7 @@ import type { FileUpload } from './types'
 import { FILE_EXTS } from './constants'
 import { SupportUploadFileTypes } from './types'
 
-type FileInputProps = {
+interface FileInputProps {
   fileConfig: FileUpload
 }
 const FileInput = ({
@@ -18,8 +18,7 @@ const FileInput = ({
     if (targetFiles) {
       if (fileConfig.number_limits) {
         for (let i = 0; i < targetFiles.length; i++) {
-          if (i + 1 + files.length <= fileConfig.number_limits)
-            handleLocalFileUpload(targetFiles[i])
+          if (i + 1 + files.length <= fileConfig.number_limits) { handleLocalFileUpload(targetFiles[i]) }
         }
       }
       else {

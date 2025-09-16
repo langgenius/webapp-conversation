@@ -19,12 +19,12 @@ import Button from '@/app/components/base/button'
 import cn from '@/utils/classnames'
 import { TransferMethod } from '@/types/app'
 
-type Option = {
+interface Option {
   value: string
   label: string
   icon: JSX.Element
 }
-type FileUploaderInAttachmentProps = {
+interface FileUploaderInAttachmentProps {
   fileConfig: FileUpload
 }
 const FileUploaderInAttachment = ({
@@ -71,8 +71,7 @@ const FileUploaderInAttachment = ({
     return (open: boolean) => renderButton(option, open)
   }, [renderButton])
   const renderOption = useCallback((option: Option) => {
-    if (option.value === TransferMethod.local_file && fileConfig?.allowed_file_upload_methods?.includes(TransferMethod.local_file))
-      return renderButton(option)
+    if (option.value === TransferMethod.local_file && fileConfig?.allowed_file_upload_methods?.includes(TransferMethod.local_file)) { return renderButton(option) }
 
     if (option.value === TransferMethod.remote_url && fileConfig?.allowed_file_upload_methods?.includes(TransferMethod.remote_url)) {
       return (
@@ -109,7 +108,7 @@ const FileUploaderInAttachment = ({
   )
 }
 
-type FileUploaderInAttachmentWrapperProps = {
+interface FileUploaderInAttachmentWrapperProps {
   value?: FileEntity[]
   onChange: (files: FileEntity[]) => void
   fileConfig: FileUpload

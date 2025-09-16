@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 'use client'
 import type { FC } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -24,7 +23,7 @@ import { API_KEY, APP_ID, APP_INFO, isShowPrompt, promptTemplate } from '@/confi
 import type { Annotation as AnnotationType } from '@/types/log'
 import { addFileInfos, sortAgentSorts } from '@/utils/tools'
 
-export type IMainProps = {
+export interface IMainProps {
   params: any
 }
 
@@ -52,8 +51,7 @@ const Main: FC<IMainProps> = () => {
   const [fileConfig, setFileConfig] = useState<FileUpload | undefined>()
 
   useEffect(() => {
-    if (APP_INFO?.title)
-      document.title = `${APP_INFO.title} - Powered by Dify`
+    if (APP_INFO?.title) { document.title = `${APP_INFO.title} - Powered by Dify` }
   }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
@@ -95,8 +93,7 @@ const Main: FC<IMainProps> = () => {
     setChatList(generateNewChatListWithOpenStatement('', inputs))
   }
   const hasSetInputs = (() => {
-    if (!isNewConversation)
-      return true
+    if (!isNewConversation) { return true }
 
     return isChatStarted
   })()
@@ -106,8 +103,7 @@ const Main: FC<IMainProps> = () => {
   const suggestedQuestions = currConversationInfo?.suggested_questions || []
 
   const handleConversationSwitch = () => {
-    if (!inited)
-      return
+    if (!inited) { return }
 
     // update inputs of current conversation
     let notSyncToStateIntroduction = ''
@@ -155,8 +151,7 @@ const Main: FC<IMainProps> = () => {
       })
     }
 
-    if (isNewConversation && isChatStarted)
-      setChatList(generateNewChatListWithOpenStatement())
+    if (isNewConversation && isChatStarted) { setChatList(generateNewChatListWithOpenStatement()) }
   }
   useEffect(handleConversationSwitch, [currConversationId, inited])
 
@@ -180,15 +175,13 @@ const Main: FC<IMainProps> = () => {
   const chatListDomRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // scroll to bottom
-    if (chatListDomRef.current)
-      chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight
+    if (chatListDomRef.current) { chatListDomRef.current.scrollTop = chatListDomRef.current.scrollHeight }
   }, [chatList, currConversationId])
   // user can not edit inputs if user had send message
   const canEditInputs = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
     // if new chat is already exist, do not create new chat
-    if (conversationList.some(item => item.id === '-1'))
-      return
+    if (conversationList.some(item => item.id === '-1')) { return }
 
     setConversationList(produce(conversationList, (draft) => {
       draft.unshift({
@@ -205,8 +198,7 @@ const Main: FC<IMainProps> = () => {
   const generateNewChatListWithOpenStatement = (introduction?: string, inputs?: Record<string, any> | null) => {
     let calculatedIntroduction = introduction || conversationIntroduction || ''
     const calculatedPromptVariables = inputs || currInputs || null
-    if (calculatedIntroduction && calculatedPromptVariables)
-      calculatedIntroduction = replaceVarWithValues(calculatedIntroduction, promptConfig?.prompt_variables || [], calculatedPromptVariables)
+    if (calculatedIntroduction && calculatedPromptVariables) { calculatedIntroduction = replaceVarWithValues(calculatedIntroduction, promptConfig?.prompt_variables || [], calculatedPromptVariables) }
 
     const openStatement = {
       id: `${Date.now()}`,
@@ -214,10 +206,9 @@ const Main: FC<IMainProps> = () => {
       isAnswer: true,
       feedbackDisabled: true,
       isOpeningStatement: isShowPrompt,
-      suggestedQuestions: suggestedQuestions,
+      suggestedQuestions,
     }
-    if (calculatedIntroduction)
-      return [openStatement]
+    if (calculatedIntroduction) { return [openStatement] }
 
     return []
   }
@@ -232,7 +223,7 @@ const Main: FC<IMainProps> = () => {
       try {
         const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
         // handle current conversation id
-        const { data: conversations, error } = conversationData as { data: ConversationItem[]; error: string }
+        const { data: conversations, error } = conversationData as { data: ConversationItem[], error: string }
         if (error) {
           Toast.notify({ type: 'error', message: error })
           throw new Error(error)
@@ -248,13 +239,13 @@ const Main: FC<IMainProps> = () => {
         setNewConversationInfo({
           name: t('app.chat.newChatDefaultName'),
           introduction,
-          suggested_questions
+          suggested_questions,
         })
         if (isNotNewConversation) {
           setExistConversationInfo({
             name: currentConversation.name || t('app.chat.newChatDefaultName'),
             introduction,
-            suggested_questions
+            suggested_questions,
           })
         }
         const prompt_variables = userInputsFormToPromptVariables(user_input_form)
@@ -278,8 +269,7 @@ const Main: FC<IMainProps> = () => {
         })
         setConversationList(conversations as ConversationItem[])
 
-        if (isNotNewConversation)
-          setCurrConversationId(_conversationId, APP_ID, false)
+        if (isNotNewConversation) { setCurrConversationId(_conversationId, APP_ID, false) }
 
         setInited(true)
       }
@@ -303,11 +293,9 @@ const Main: FC<IMainProps> = () => {
   }
 
   const checkCanSend = () => {
-    if (currConversationId !== '-1')
-      return true
+    if (currConversationId !== '-1') { return true }
 
-    if (!currInputs || !promptConfig?.prompt_variables)
-      return true
+    if (!currInputs || !promptConfig?.prompt_variables) { return true }
 
     const inputLens = Object.values(currInputs).length
     const promptVariablesLens = promptConfig.prompt_variables.length
@@ -342,11 +330,11 @@ const Main: FC<IMainProps> = () => {
     const newListWithAnswer = produce(
       getChatList().filter(item => item.id !== responseItem.id && item.id !== placeholderAnswerId),
       (draft) => {
-        if (!draft.find(item => item.id === questionId))
-          draft.push({ ...questionItem })
+        if (!draft.find(item => item.id === questionId)) { draft.push({ ...questionItem }) }
 
         draft.push({ ...responseItem })
-      })
+      },
+    )
     setChatList(newListWithAnswer)
   }
 
@@ -368,14 +356,11 @@ const Main: FC<IMainProps> = () => {
     if (currInputs) {
       Object.keys(currInputs).forEach((key) => {
         const value = currInputs[key]
-        if (value.supportFileType)
-          toServerInputs[key] = transformToServerFile(value)
+        if (value.supportFileType) { toServerInputs[key] = transformToServerFile(value) }
 
-        else if (value[0]?.supportFileType)
-          toServerInputs[key] = value.map((item: any) => transformToServerFile(item))
+        else if (value[0]?.supportFileType) { toServerInputs[key] = value.map((item: any) => transformToServerFile(item)) }
 
-        else
-          toServerInputs[key] = value
+        else { toServerInputs[key] = value }
       })
     }
 
@@ -442,16 +427,14 @@ const Main: FC<IMainProps> = () => {
         }
         else {
           const lastThought = responseItem.agent_thoughts?.[responseItem.agent_thoughts?.length - 1]
-          if (lastThought)
-            lastThought.thought = lastThought.thought + message // need immer setAutoFreeze
+          if (lastThought) { lastThought.thought = lastThought.thought + message } // need immer setAutoFreeze
         }
         if (messageId && !hasSetResponseId) {
           responseItem.id = messageId
           hasSetResponseId = true
         }
 
-        if (isFirstMessage && newConversationId)
-          tempNewConversationId = newConversationId
+        if (isFirstMessage && newConversationId) { tempNewConversationId = newConversationId }
 
         setMessageTaskId(taskId)
         // has switched to other conversation
@@ -467,8 +450,7 @@ const Main: FC<IMainProps> = () => {
         })
       },
       async onCompleted(hasError?: boolean) {
-        if (hasError)
-          return
+        if (hasError) { return }
 
         if (getConversationIdChangeBecauseOfNew()) {
           const { data: allConversations }: any = await fetchConversations()
@@ -487,8 +469,7 @@ const Main: FC<IMainProps> = () => {
       },
       onFile(file) {
         const lastThought = responseItem.agent_thoughts?.[responseItem.agent_thoughts?.length - 1]
-        if (lastThought)
-          lastThought.message_files = [...(lastThought as any).message_files, { ...file }]
+        if (lastThought) { lastThought.message_files = [...(lastThought as any).message_files, { ...file }] }
 
         updateCurrentQA({
           responseItem,
@@ -543,13 +524,13 @@ const Main: FC<IMainProps> = () => {
           const newListWithAnswer = produce(
             getChatList().filter(item => item.id !== responseItem.id && item.id !== placeholderAnswerId),
             (draft) => {
-              if (!draft.find(item => item.id === questionId))
-                draft.push({ ...questionItem })
+              if (!draft.find(item => item.id === questionId)) { draft.push({ ...questionItem }) }
 
               draft.push({
                 ...responseItem,
               })
-            })
+            },
+          )
           setChatList(newListWithAnswer)
           return
         }
@@ -558,11 +539,11 @@ const Main: FC<IMainProps> = () => {
         const newListWithAnswer = produce(
           getChatList().filter(item => item.id !== responseItem.id && item.id !== placeholderAnswerId),
           (draft) => {
-            if (!draft.find(item => item.id === questionId))
-              draft.push({ ...questionItem })
+            if (!draft.find(item => item.id === questionId)) { draft.push({ ...questionItem }) }
 
             draft.push({ ...responseItem })
-          })
+          },
+        )
         setChatList(newListWithAnswer)
       },
       onMessageReplace: (messageReplace) => {
@@ -571,8 +552,7 @@ const Main: FC<IMainProps> = () => {
           (draft) => {
             const current = draft.find(item => item.id === messageReplace.id)
 
-            if (current)
-              current.content = messageReplace.answer
+            if (current) { current.content = messageReplace.answer }
           },
         ))
       },
@@ -648,8 +628,7 @@ const Main: FC<IMainProps> = () => {
   }
 
   const renderSidebar = () => {
-    if (!APP_ID || !APP_INFO || !promptConfig)
-      return null
+    if (!APP_ID || !APP_INFO || !promptConfig) { return null }
     return (
       <Sidebar
         list={conversationList}
@@ -660,11 +639,9 @@ const Main: FC<IMainProps> = () => {
     )
   }
 
-  if (appUnavailable)
-    return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
+  if (appUnavailable) { return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} /> }
 
-  if (!APP_ID || !APP_INFO || !promptConfig)
-    return <Loading type='app' />
+  if (!APP_ID || !APP_INFO || !promptConfig) { return <Loading type='app' /> }
 
   return (
     <div className='bg-gray-100'>
@@ -678,10 +655,7 @@ const Main: FC<IMainProps> = () => {
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
-          <div className='fixed inset-0 z-50'
-            style={{ backgroundColor: 'rgba(35, 56, 118, 0.2)' }}
-            onClick={hideSidebar}
-          >
+          <div className='fixed inset-0 z-50' style={{ backgroundColor: 'rgba(35, 56, 118, 0.2)' }} onClick={hideSidebar} >
             <div className='inline-block' onClick={e => e.stopPropagation()}>
               {renderSidebar()}
             </div>

@@ -100,4 +100,4 @@ const translation = {
   notAuthorized: 'Công cụ chưa được ủy quyền',
 }
 
-export default translation;
+export default translation

@@ -5,7 +5,7 @@ import React from 'react'
 import { Tooltip as ReactTooltip } from 'react-tooltip' // fixed version to 5.8.3 https://github.com/ReactTooltip/react-tooltip/issues/972
 import 'react-tooltip/dist/react-tooltip.css'
 
-type TooltipProps = {
+interface TooltipProps {
   selector: string
   content?: string
   htmlContent?: React.ReactNode
