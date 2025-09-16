@@ -19,7 +19,7 @@ import FileUploaderInAttachmentWrapper from '@/app/components/base/file-uploader
 import type { FileEntity, FileUpload } from '@/app/components/base/file-uploader-in-attachment/types'
 import { getProcessedFiles } from '@/app/components/base/file-uploader-in-attachment/utils'
 
-export type IChatProps = {
+export interface IChatProps {
   chatList: ChatItem[]
   /**
    * Whether to display the editing area and rating status
@@ -97,8 +97,7 @@ const Chat: FC<IChatProps> = ({
   const [attachmentFiles, setAttachmentFiles] = React.useState<FileEntity[]>([])
 
   const handleSend = () => {
-    if (!valid() || (checkCanSend && !checkCanSend()))
-      return
+    if (!valid() || (checkCanSend && !checkCanSend())) { return }
     const imageFiles: VisionFile[] = files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,
@@ -109,23 +108,20 @@ const Chat: FC<IChatProps> = ({
     const combinedFiles: VisionFile[] = [...imageFiles, ...docAndOtherFiles]
     onSend(queryRef.current, combinedFiles)
     if (!files.find(item => item.type === TransferMethod.local_file && !item.fileId)) {
-      if (files.length)
-        onClear()
+      if (files.length) { onClear() }
       if (!isResponding) {
         setQuery('')
         queryRef.current = ''
       }
     }
-    if (!attachmentFiles.find(item => item.transferMethod === TransferMethod.local_file && !item.uploadedId))
-      setAttachmentFiles([])
+    if (!attachmentFiles.find(item => item.transferMethod === TransferMethod.local_file && !item.uploadedId)) { setAttachmentFiles([]) }
   }
 
   const handleKeyUp = (e: any) => {
     if (e.code === 'Enter') {
       e.preventDefault()
       // prevent send message when using input method enter
-      if (!e.shiftKey && !isUseInputMethod.current)
-        handleSend()
+      if (!e.shiftKey && !isUseInputMethod.current) { handleSend() }
     }
   }
 
@@ -212,7 +208,7 @@ const Chat: FC<IChatProps> = ({
               }
               <Textarea
                 className={`
-                  block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-sm text-gray-700 outline-none appearance-none resize-none
+                  block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-base text-gray-700 outline-none appearance-none resize-none
                   ${visionConfig?.enabled && 'pl-12'}
                 `}
                 value={query}

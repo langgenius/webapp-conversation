@@ -14,7 +14,7 @@ import { DEFAULT_VALUE_MAX_LEN } from '@/config'
 // regex to match the {{}} and replace it with a span
 const regex = /\{\{([^}]+)\}\}/g
 
-export type IWelcomeProps = {
+export interface IWelcomeProps {
   conversationName: string
   hasSetInputs: boolean
   isPublicVersion: boolean
@@ -41,8 +41,7 @@ const Welcome: FC<IWelcomeProps> = ({
   const hasVar = promptConfig.prompt_variables.length > 0
   const [isFold, setIsFold] = useState<boolean>(true)
   const [inputs, setInputs] = useState<Record<string, any>>((() => {
-    if (hasSetInputs)
-      return savedInputs
+    if (hasSetInputs) { return savedInputs }
 
     const res: Record<string, any> = {}
     if (promptConfig) {
@@ -68,8 +67,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }, [savedInputs])
 
   const highLightPromoptTemplate = (() => {
-    if (!promptConfig)
-      return ''
+    if (!promptConfig) { return '' }
     const res = promptConfig.prompt_template.replace(regex, (match, p1) => {
       return `<span class='text-gray-800 font-bold'>${inputs?.[p1] ? inputs?.[p1] : match}</span>`
     })
@@ -188,8 +186,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const handleChat = () => {
-    if (!canChat())
-      return
+    if (!canChat()) { return }
 
     onStartChat(inputs)
   }
@@ -250,8 +247,7 @@ const Welcome: FC<IWelcomeProps> = ({
     return (
       <VarOpBtnGroup
         onConfirm={() => {
-          if (!canChat())
-            return
+          if (!canChat()) { return }
 
           onInputsChange(inputs)
           setIsFold(true)
@@ -308,8 +304,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const renderHasSetInputsPrivate = () => {
-    if (!canEditInputs || !hasVar)
-      return null
+    if (!canEditInputs || !hasVar) { return null }
 
     return (
       <TemplateVarPanel
@@ -332,8 +327,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const renderHasSetInputs = () => {
-    if ((!isPublicVersion && !canEditInputs) || !hasVar)
-      return null
+    if ((!isPublicVersion && !canEditInputs) || !hasVar) { return null }
 
     return (
       <div
@@ -374,7 +368,8 @@ const Welcome: FC<IWelcomeProps> = ({
                 <a
                   className='text-gray-500'
                   href={siteInfo.privacy_policy}
-                  target='_blank'>{t('app.chat.privacyPolicyMiddle')}</a>
+                  target='_blank'
+                >{t('app.chat.privacyPolicyMiddle')}</a>
                 {t('app.chat.privacyPolicyRight')}
               </div>
               : <div>
