@@ -11,14 +11,14 @@ import {
 } from '@heroicons/react/20/solid'
 import { createContext, useContext } from 'use-context-selector'
 
-export type IToastProps = {
+export interface IToastProps {
   type?: 'success' | 'error' | 'warning' | 'info'
   duration?: number
   message: string
   children?: ReactNode
   onClose?: () => void
 }
-type IToastContext = {
+interface IToastContext {
   notify: (props: IToastProps) => void
 }
 const defaultDuring = 3000
@@ -33,8 +33,7 @@ const Toast = ({
   children,
 }: IToastProps) => {
   // sometimes message is react node array. Not handle it.
-  if (typeof message !== 'string')
-    return null
+  if (typeof message !== 'string') { return null }
 
   return <div className={classNames(
     'fixed rounded-md p-4 my-4 mx-8 z-50',
@@ -124,8 +123,7 @@ Toast.notify = ({
     root.render(<Toast type={type} message={message} duration={duration} />)
     document.body.appendChild(holder)
     setTimeout(() => {
-      if (holder)
-        holder.remove()
+      if (holder) { holder.remove() }
     }, duration || defaultDuring)
   }
 }

@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import React from 'react'
 
-type Props = {
+interface Props {
   loading?: boolean
   className?: string
   children?: React.ReactNode | string

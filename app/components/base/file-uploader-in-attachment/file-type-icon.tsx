@@ -67,7 +67,7 @@ const FILE_TYPE_ICON_MAP = {
     color: 'text-[#00B2EA]',
   },
 }
-type FileTypeIconProps = {
+interface FileTypeIconProps {
   type: FileAppearanceType
   size?: 'sm' | 'lg' | 'md'
   className?: string

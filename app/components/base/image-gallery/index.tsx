@@ -5,7 +5,7 @@ import cn from 'classnames'
 import s from './style.module.css'
 import ImagePreview from '@/app/components/base/image-uploader/image-preview'
 
-type Props = {
+interface Props {
   srcs: string[]
 }
 
@@ -65,9 +65,9 @@ export const ImageGalleryTest = () => {
   const imgGallerySrcs = (() => {
     const srcs = []
     for (let i = 0; i < 6; i++)
-      // srcs.push('https://placekitten.com/640/360')
-      // srcs.push('https://placekitten.com/360/640')
-      srcs.push('https://placekitten.com/360/360')
+    // srcs.push('https://placekitten.com/640/360')
+    // srcs.push('https://placekitten.com/360/640')
+    { srcs.push('https://placekitten.com/360/360') }
 
     return srcs
   })()

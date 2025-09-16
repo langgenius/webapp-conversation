@@ -5,7 +5,7 @@ import type { ThoughtItem, ToolInfoInThought } from '../type'
 import Tool from './tool'
 import type { Emoji } from '@/types/tools'
 
-export type IThoughtProps = {
+export interface IThoughtProps {
   thought: ThoughtItem
   allToolIcons: Record<string, string | Emoji>
   isFinished: boolean
@@ -29,8 +29,7 @@ const Thought: FC<IThoughtProps> = ({
 }) => {
   const [toolNames, isValueArray]: [string[], boolean] = (() => {
     try {
-      if (Array.isArray(JSON.parse(thought.tool)))
-        return [JSON.parse(thought.tool), true]
+      if (Array.isArray(JSON.parse(thought.tool))) { return [JSON.parse(thought.tool), true] }
     }
     catch (e) {
     }

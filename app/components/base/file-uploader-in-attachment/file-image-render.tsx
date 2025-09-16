@@ -1,6 +1,6 @@
 import cn from '@/utils/classnames'
 
-type FileImageRenderProps = {
+interface FileImageRenderProps {
   imageUrl: string
   className?: string
   alt?: string

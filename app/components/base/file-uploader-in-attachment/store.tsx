@@ -11,7 +11,7 @@ import type {
   FileEntity,
 } from './types'
 
-type Shape = {
+interface Shape {
   files: FileEntity[]
   setFiles: (files: FileEntity[]) => void
 }
@@ -34,8 +34,7 @@ export const FileContext = createContext<FileStore | null>(null)
 
 export function useStore<T>(selector: (state: Shape) => T): T {
   const store = useContext(FileContext)
-  if (!store)
-    throw new Error('Missing FileContext.Provider in the tree')
+  if (!store) { throw new Error('Missing FileContext.Provider in the tree') }
 
   return useZustandStore(store, selector)
 }
@@ -44,7 +43,7 @@ export const useFileStore = () => {
   return useContext(FileContext)!
 }
 
-type FileProviderProps = {
+interface FileProviderProps {
   children: React.ReactNode
   value?: FileEntity[]
   onChange?: (files: FileEntity[]) => void
@@ -56,8 +55,7 @@ export const FileContextProvider = ({
 }: FileProviderProps) => {
   const storeRef = useRef<FileStore | undefined>(undefined)
 
-  if (!storeRef.current)
-    storeRef.current = createFileStore(value, onChange)
+  if (!storeRef.current) { storeRef.current = createFileStore(value, onChange) }
 
   return (
     <FileContext.Provider value={storeRef.current}>

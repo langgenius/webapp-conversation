@@ -5,7 +5,7 @@ import { FILE_EXTS } from './constants'
 import { upload } from '@/service/base'
 import { TransferMethod } from '@/types/app'
 
-type FileUploadParams = {
+interface FileUploadParams {
   file: File
   onProgressCallback: (progress: number) => void
   onSuccessCallback: (res: { id: string }) => void
@@ -42,21 +42,17 @@ export const fileUpload: FileUpload = ({
 
 export const getFileExtension = (fileName: string, fileMimetype: string, isRemote?: boolean) => {
   let extension = ''
-  if (fileMimetype)
-    extension = mime.getExtension(fileMimetype) || ''
+  if (fileMimetype) { extension = mime.getExtension(fileMimetype) || '' }
 
   if (fileName && !extension) {
     const fileNamePair = fileName.split('.')
     const fileNamePairLength = fileNamePair.length
 
-    if (fileNamePairLength > 1)
-      extension = fileNamePair[fileNamePairLength - 1]
-    else
-      extension = ''
+    if (fileNamePairLength > 1) { extension = fileNamePair[fileNamePairLength - 1] }
+    else { extension = '' }
   }
 
-  if (isRemote)
-    extension = ''
+  if (isRemote) { extension = '' }
 
   return extension
 }
@@ -64,50 +60,37 @@ export const getFileExtension = (fileName: string, fileMimetype: string, isRemot
 export const getFileAppearanceType = (fileName: string, fileMimetype: string) => {
   const extension = getFileExtension(fileName, fileMimetype)
 
-  if (extension === 'gif')
-    return FileAppearanceTypeEnum.gif
+  if (extension === 'gif') { return FileAppearanceTypeEnum.gif }
 
-  if (FILE_EXTS.image.includes(extension.toUpperCase()))
-    return FileAppearanceTypeEnum.image
+  if (FILE_EXTS.image.includes(extension.toUpperCase())) { return FileAppearanceTypeEnum.image }
 
-  if (FILE_EXTS.video.includes(extension.toUpperCase()))
-    return FileAppearanceTypeEnum.video
+  if (FILE_EXTS.video.includes(extension.toUpperCase())) { return FileAppearanceTypeEnum.video }
 
-  if (FILE_EXTS.audio.includes(extension.toUpperCase()))
-    return FileAppearanceTypeEnum.audio
+  if (FILE_EXTS.audio.includes(extension.toUpperCase())) { return FileAppearanceTypeEnum.audio }
 
-  if (extension === 'html')
-    return FileAppearanceTypeEnum.code
+  if (extension === 'html') { return FileAppearanceTypeEnum.code }
 
-  if (extension === 'pdf')
-    return FileAppearanceTypeEnum.pdf
+  if (extension === 'pdf') { return FileAppearanceTypeEnum.pdf }
 
-  if (extension === 'md' || extension === 'markdown' || extension === 'mdx')
-    return FileAppearanceTypeEnum.markdown
+  if (extension === 'md' || extension === 'markdown' || extension === 'mdx') { return FileAppearanceTypeEnum.markdown }
 
-  if (extension === 'xlsx' || extension === 'xls')
-    return FileAppearanceTypeEnum.excel
+  if (extension === 'xlsx' || extension === 'xls') { return FileAppearanceTypeEnum.excel }
 
-  if (extension === 'docx' || extension === 'doc')
-    return FileAppearanceTypeEnum.word
+  if (extension === 'docx' || extension === 'doc') { return FileAppearanceTypeEnum.word }
 
-  if (extension === 'pptx' || extension === 'ppt')
-    return FileAppearanceTypeEnum.ppt
+  if (extension === 'pptx' || extension === 'ppt') { return FileAppearanceTypeEnum.ppt }
 
-  if (FILE_EXTS.document.includes(extension.toUpperCase()))
-    return FileAppearanceTypeEnum.document
+  if (FILE_EXTS.document.includes(extension.toUpperCase())) { return FileAppearanceTypeEnum.document }
 
   return FileAppearanceTypeEnum.custom
 }
 
 export const getSupportFileType = (fileName: string, fileMimetype: string, isCustom?: boolean) => {
-  if (isCustom)
-    return SupportUploadFileTypes.custom
+  if (isCustom) { return SupportUploadFileTypes.custom }
 
   const extension = getFileExtension(fileName, fileMimetype)
   for (const key in FILE_EXTS) {
-    if ((FILE_EXTS[key]).includes(extension.toUpperCase()))
-      return key
+    if ((FILE_EXTS[key]).includes(extension.toUpperCase())) { return key }
   }
 
   return ''
@@ -144,8 +127,7 @@ export const getFileNameFromUrl = (url: string) => {
 }
 
 export const getSupportFileExtensionList = (allowFileTypes: string[], allowFileExtensions: string[]) => {
-  if (allowFileTypes.includes(SupportUploadFileTypes.custom))
-    return allowFileExtensions.map(item => item.slice(1).toUpperCase())
+  if (allowFileTypes.includes(SupportUploadFileTypes.custom)) { return allowFileExtensions.map(item => item.slice(1).toUpperCase()) }
 
   return allowFileTypes.map(type => FILE_EXTS[type]).flat()
 }
@@ -174,11 +156,9 @@ export const getFilesInLogs = (rawData: any) => {
 }
 
 export const fileIsUploaded = (file: FileEntity) => {
-  if (file.uploadedId)
-    return true
+  if (file.uploadedId) { return true }
 
-  if (file.transferMethod === TransferMethod.remote_url && file.progress === 100)
-    return true
+  if (file.transferMethod === TransferMethod.remote_url && file.progress === 100) { return true }
 }
 
 export const downloadFile = (url: string, filename: string) => {

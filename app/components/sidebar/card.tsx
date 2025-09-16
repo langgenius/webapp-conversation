@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import s from './card.module.css'
 
-type PropType = {
+interface PropType {
   children: React.ReactNode
   text?: string
 }
