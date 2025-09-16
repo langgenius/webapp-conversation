@@ -38,6 +38,10 @@ const translation = {
     uploadFromComputerUploadError: 'Tải lên tệp không thành công, vui lòng tải lên lại.',
     uploadFromComputerReadError: 'Đọc tệp không thành công, vui lòng thử lại.',
   },
+  thinkTag: {
+    showReasoning: 'Hiển thị lý do',
+    hideReasoning: 'Ẩn lý do',
+  },
 }
 
 export default translation

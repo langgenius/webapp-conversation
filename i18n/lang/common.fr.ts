@@ -28,6 +28,10 @@ const translation = {
     pasteImageLinkInvalid: 'Lien d\'image invalide',
     imageUpload: 'Téléchargement d\'image',
   },
+  thinkTag: {
+    showReasoning: 'Afficher le raisonnement',
+    hideReasoning: 'Masquer le raisonnement',
+  },
 }
 
 export default translation

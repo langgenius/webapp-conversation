@@ -38,6 +38,10 @@ const translation = {
     fileExtensionNotSupport: 'ファイル拡張子はサポートされていません',
     pasteFileLinkInvalid: '無効なファイルリンク',
   },
+  thinkTag: {
+    showReasoning: '推論を表示',
+    hideReasoning: '推論を非表示',
+  },
 }
 
 export default translation

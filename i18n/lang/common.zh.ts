@@ -38,6 +38,10 @@ const translation = {
     pasteFileLinkInvalid: '文件链接无效',
     fileExtensionNotSupport: '文件类型不支持',
   },
+  thinkTag: {
+    showReasoning: '显示推理',
+    hideReasoning: '隐藏推理',
+  },
 }
 
 export default translation

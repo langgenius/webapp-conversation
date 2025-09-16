@@ -38,6 +38,10 @@ const translation = {
     pasteFileLinkInputPlaceholder: 'Introduzca la URL...',
     uploadFromComputerLimit: 'El archivo de carga no puede exceder {{size}}',
   },
+  thinkTag: {
+    showReasoning: 'Mostrar razonamiento',
+    hideReasoning: 'Ocultar razonamiento',
+  },
 }
 
 export default translation
