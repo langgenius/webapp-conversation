@@ -1,5 +1,5 @@
 'use client'
-import { Streamdown } from 'streamdown'
+import { Streamdown } from '@mixtint/streamdown'
 import 'katex/dist/katex.min.css'
 
 interface StreamdownMarkdownProps {
