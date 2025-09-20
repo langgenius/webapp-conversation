@@ -19,7 +19,7 @@ const translation = {
     ok: 'OK',
     thinking: 'Thinking...',
     stopped: 'Stopped',
-    completed: 'Thought for',
+    completed: 'Thought completed',
   },
   imageUploader: {
     uploadFromComputer: 'Upload from Computer',

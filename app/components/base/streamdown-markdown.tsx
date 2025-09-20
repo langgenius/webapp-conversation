@@ -11,6 +11,9 @@ interface StreamdownMarkdownProps {
   isStreaming?: boolean
 }
 
+// Maximum characters allowed before think/details block
+const MAX_CHARS_BEFORE_BLOCK = 10
+
 const extractThinkContent = (
   rawContent: string,
 ): {
@@ -26,12 +29,12 @@ const extractThinkContent = (
   // Check for <think> tag
   const thinkStartIndex = rawContent.indexOf(thinkStartTag)
   if (thinkStartIndex !== -1) {
-    // Allow up to 10 characters before <think>
+    // Allow limited characters before <think>
     const contentBeforeThink = rawContent.substring(0, thinkStartIndex).trim()
     const isThinkAtEffectiveStart
       = thinkStartIndex === 0
         || contentBeforeThink.length === 0
-        || contentBeforeThink.length <= 10
+        || contentBeforeThink.length <= MAX_CHARS_BEFORE_BLOCK
 
     if (isThinkAtEffectiveStart) {
       const thinkContentStart = thinkStartIndex + thinkStartTag.length
@@ -69,7 +72,7 @@ const extractThinkContent = (
     const isDetailsAtEffectiveStart
       = detailsStartIndex === 0
         || contentBeforeDetails.length === 0
-        || contentBeforeDetails.length <= 10
+        || contentBeforeDetails.length <= MAX_CHARS_BEFORE_BLOCK
 
     if (isDetailsAtEffectiveStart) {
       const detailsStartTag = detailsMatch[0]
