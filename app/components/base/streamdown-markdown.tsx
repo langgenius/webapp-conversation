@@ -37,14 +37,31 @@ const rehypeThinkToSummary = () => (tree: unknown) => {
 
 export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdownProps) {
   const [showReasoning, setShowReasoning] = useState(false)
-  const hasReasoning = useMemo(() => {
-    if (!content) { return false }
+
+  const { hasReasoning, shouldShowReasoning } = useMemo(() => {
+    if (!content) { return { hasReasoning: false, shouldShowReasoning: false } }
+
     const lower = content.toLowerCase()
-    return lower.includes('<think') || lower.includes('<summary')
+    const hasReasoningContent = lower.includes('<think') || lower.includes('<summary')
+
+    // Check if we have complete reasoning blocks (with closing tags)
+    const hasCompleteThink = lower.includes('<think') && lower.includes('</think>')
+    const hasCompleteSummary = lower.includes('<summary') && lower.includes('</summary>')
+
+    // Show reasoning by default if we don't have complete closing tags yet (streaming in progress)
+    const shouldAutoShow = hasReasoningContent && !hasCompleteThink && !hasCompleteSummary
+
+    return {
+      hasReasoning: hasReasoningContent,
+      shouldShowReasoning: shouldAutoShow,
+    }
   }, [content])
 
+  // Auto-show reasoning when streaming and no closing tags found
+  const effectiveShowReasoning = showReasoning || shouldShowReasoning
+
   return (
-    <div className={`streamdown-markdown ${className}`} data-reasoning-visible={showReasoning ? '1' : '0'}>
+    <div className={`streamdown-markdown ${className}`} data-reasoning-visible={effectiveShowReasoning ? '1' : '0'}>
       {hasReasoning && (
         <div className='mb-2'>
           <Button
@@ -52,7 +69,7 @@ export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdo
             className='!h-7 !px-2 !py-1 !text-xs'
             onClick={() => setShowReasoning(v => !v)}
           >
-            {showReasoning ? 'Hide reasoning' : 'Show reasoning'}
+            {effectiveShowReasoning ? 'Hide reasoning' : 'Show reasoning'}
           </Button>
         </div>
       )}
