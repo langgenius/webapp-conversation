@@ -17,6 +17,9 @@ const translation = {
     like: 'thích',
     dislike: 'không thích',
     ok: 'OK',
+    thinking: 'Đang suy nghĩ...',
+    stopped: 'Đã dừng',
+    completed: 'Hoàn thành suy nghĩ',
   },
   imageUploader: {
     uploadFromComputer: 'Tải lên từ máy tính',

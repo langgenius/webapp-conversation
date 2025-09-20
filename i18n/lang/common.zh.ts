@@ -17,6 +17,9 @@ const translation = {
     like: '赞同',
     dislike: '反对',
     ok: '好的',
+    thinking: '思考中...',
+    stopped: '已停止',
+    completed: '思考完成',
   },
   imageUploader: {
     uploadFromComputer: '从本地上传',

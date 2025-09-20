@@ -17,6 +17,9 @@ const translation = {
     like: 'いいね',
     dislike: 'よくないね',
     ok: 'OK',
+    thinking: '考え中...',
+    stopped: '停止しました',
+    completed: '思考完了',
   },
   imageUploader: {
     uploadFromComputer: 'コンピューターからアップロード',
