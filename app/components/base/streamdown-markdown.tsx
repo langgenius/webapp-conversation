@@ -9,32 +9,6 @@ interface StreamdownMarkdownProps {
   className?: string
 }
 
-// Rehype plugin to convert <think> tags to <summary>
-const rehypeThinkToSummary = () => (tree: unknown) => {
-  const visitNode = (node: unknown): void => {
-    if (typeof node !== 'object' || node === null) { return }
-    const record = node as Record<string, unknown>
-
-    const typeValue = record.type
-    const tagNameValue = record.tagName
-
-    if (
-      typeValue === 'element'
-      && typeof tagNameValue === 'string'
-      && tagNameValue.toLowerCase() === 'think'
-    ) {
-      record.tagName = 'summary'
-    }
-
-    const children = record.children
-    if (Array.isArray(children)) {
-      for (const child of children) { visitNode(child) }
-    }
-  }
-
-  visitNode(tree)
-}
-
 export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdownProps) {
   const [showReasoning, setShowReasoning] = useState(false)
 
@@ -42,14 +16,13 @@ export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdo
     if (!content) { return { hasReasoning: false, shouldShowReasoning: false } }
 
     const lower = content.toLowerCase()
-    const hasReasoningContent = lower.includes('<think') || lower.includes('<summary')
+    const hasReasoningContent = lower.includes('<think')
 
     // Check if we have complete reasoning blocks (with closing tags)
     const hasCompleteThink = lower.includes('<think') && lower.includes('</think>')
-    const hasCompleteSummary = lower.includes('<summary') && lower.includes('</summary>')
 
     // Show reasoning by default if we don't have complete closing tags yet (streaming in progress)
-    const shouldAutoShow = hasReasoningContent && !hasCompleteThink && !hasCompleteSummary
+    const shouldAutoShow = hasReasoningContent && !hasCompleteThink
 
     return {
       hasReasoning: hasReasoningContent,
@@ -73,11 +46,7 @@ export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdo
           </Button>
         </div>
       )}
-      <Streamdown
-        rehypePlugins={[
-          rehypeThinkToSummary,
-        ]}
-      >
+      <Streamdown>
         {content}
       </Streamdown>
       <style jsx global>{`
