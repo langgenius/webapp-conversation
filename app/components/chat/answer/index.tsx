@@ -156,7 +156,7 @@ const Answer: FC<IAnswerProps> = ({
       {agent_thoughts?.map((item, index) => (
         <div key={index}>
           {item.thought && (
-            <StreamdownMarkdown content={item.thought} />
+            <StreamdownMarkdown content={item.thought} isStreaming={isResponding && !item.observation} />
           )}
           {/* {item.tool} */}
           {/* perhaps not use tool */}
@@ -202,7 +202,7 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <StreamdownMarkdown content={content} />
+                    <StreamdownMarkdown content={content} isStreaming={isResponding} />
                   ))}
               {suggestedQuestions.length > 0 && (
                 <div className="mt-3">
