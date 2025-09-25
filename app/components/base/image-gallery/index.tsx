@@ -5,7 +5,7 @@ import cn from 'classnames'
 import s from './style.module.css'
 import ImagePreview from '@/app/components/base/image-uploader/image-preview'
 
-type Props = {
+interface Props {
   srcs: string[]
 }
 
@@ -32,12 +32,15 @@ const ImageGallery: FC<Props> = ({
 }) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState('')
 
-  const imgNum = srcs.length
+  const validSrcs = srcs.filter(src => src && src.trim() !== '')
+  const imgNum = validSrcs.length
   const imgStyle = getWidthStyle(imgNum)
+
+  if (imgNum === 0) { return null }
+
   return (
     <div className={cn(s[`img-${imgNum}`], 'flex flex-wrap')}>
-      {/* TODO: support preview */}
-      {srcs.map((src, index) => (
+      {validSrcs.map((src, index) => (
         <img
           key={index}
           className={s.item}
@@ -65,9 +68,9 @@ export const ImageGalleryTest = () => {
   const imgGallerySrcs = (() => {
     const srcs = []
     for (let i = 0; i < 6; i++)
-      // srcs.push('https://placekitten.com/640/360')
-      // srcs.push('https://placekitten.com/360/640')
-      srcs.push('https://placekitten.com/360/360')
+    // srcs.push('https://placekitten.com/640/360')
+    // srcs.push('https://placekitten.com/360/640')
+    { srcs.push('https://placekitten.com/360/360') }
 
     return srcs
   })()

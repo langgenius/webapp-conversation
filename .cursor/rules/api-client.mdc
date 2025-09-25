@@ -1,0 +1,16 @@
+---
+description: API client usage and streaming
+---
+
+### API Client
+
+- Use domain functions in `[service/index.ts](mdc:service/index.ts)` for app features.
+- Prefer `get/post/put/del` from `[service/base.ts](mdc:service/base.ts)`; they apply base options, timeout, and error toasts.
+- Set request bodies via `options.body`; it will be JSON-stringified automatically.
+- Add query via `options.params` on GET.
+- Downloads: set `Content-type` header to `application/octet-stream`.
+
+### SSE Streaming
+
+- For streaming responses, use `ssePost` from `[service/base.ts](mdc:service/base.ts)` and supply callbacks: `onData`, `onCompleted`, `onThought`, `onFile`, `onMessageEnd`, `onMessageReplace`, `onWorkflowStarted`, `onNodeStarted`, `onNodeFinished`, `onWorkflowFinished`, `onError`.
+- Chat messages helper: `sendChatMessage` in `[service/index.ts](mdc:service/index.ts)` preconfigures streaming.

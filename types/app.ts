@@ -2,7 +2,7 @@ import type { Annotation } from './log'
 import type { Locale } from '@/i18n'
 import type { ThoughtItem } from '@/app/components/chat/type'
 
-export type PromptVariable = {
+export interface PromptVariable {
   key: string
   name: string
   type: string
@@ -10,21 +10,24 @@ export type PromptVariable = {
   options?: string[]
   max_length?: number
   required: boolean
+  allowed_file_extensions?: string[]
+  allowed_file_types?: string[]
+  allowed_file_upload_methods?: TransferMethod[]
 }
 
-export type PromptConfig = {
+export interface PromptConfig {
   prompt_template: string
   prompt_variables: PromptVariable[]
 }
 
-export type TextTypeFormItem = {
+export interface TextTypeFormItem {
   label: string
   variable: string
   required: boolean
   max_length: number
 }
 
-export type SelectTypeFormItem = {
+export interface SelectTypeFormItem {
   label: string
   variable: string
   required: boolean
@@ -36,24 +39,26 @@ export type SelectTypeFormItem = {
 export type UserInputFormItem = {
   'text-input': TextTypeFormItem
 } | {
-  'select': SelectTypeFormItem
+  select: SelectTypeFormItem
+} | {
+  paragraph: TextTypeFormItem
 }
 
 export const MessageRatings = ['like', 'dislike', null] as const
 export type MessageRating = typeof MessageRatings[number]
 
-export type Feedbacktype = {
+export interface Feedbacktype {
   rating: MessageRating
   content?: string | null
 }
 
-export type MessageMore = {
+export interface MessageMore {
   time: string
   tokens: number
   latency: number | string
 }
 
-export type IChatItem = {
+export interface IChatItem {
   id: string
   content: string
   /**
@@ -80,7 +85,7 @@ export type IChatItem = {
   useCurrentUserAvatar?: boolean
   isOpeningStatement?: boolean
   suggestedQuestions?: string[]
-  log?: { role: string; text: string }[]
+  log?: { role: string, text: string }[]
   agent_thoughts?: ThoughtItem[]
   message_files?: VisionFile[]
 }
@@ -91,21 +96,23 @@ export type ChatItem = IChatItem & {
   workflowProcess?: WorkflowProcess
 }
 
-export type ResponseHolder = {}
+export interface ResponseHolder {}
 
-export type ConversationItem = {
+export interface ConversationItem {
   id: string
   name: string
   inputs: Record<string, any> | null
   introduction: string
+  suggested_questions?: string[]
 }
 
-export type AppInfo = {
+export interface AppInfo {
   title: string
   description: string
   default_language: Locale
   copyright?: string
   privacy_policy?: string
+  disable_session_same_site?: boolean
 }
 
 export enum Resolution {
@@ -119,7 +126,7 @@ export enum TransferMethod {
   remote_url = 'remote_url',
 }
 
-export type VisionSettings = {
+export interface VisionSettings {
   enabled: boolean
   number_limits: number
   detail: Resolution
@@ -127,7 +134,7 @@ export type VisionSettings = {
   image_file_size_limit?: number | string
 }
 
-export type ImageFile = {
+export interface ImageFile {
   type: TransferMethod
   _id: string
   fileId: string
@@ -138,7 +145,7 @@ export type ImageFile = {
   deleted?: boolean
 }
 
-export type VisionFile = {
+export interface VisionFile {
   id?: string
   type: string
   transfer_method: TransferMethod
@@ -162,7 +169,7 @@ export enum BlockEnum {
   Tool = 'tool',
 }
 
-export type NodeTracing = {
+export interface NodeTracing {
   id: string
   index: number
   predecessor_node_id: string
@@ -207,7 +214,7 @@ export enum WorkflowRunningStatus {
   Stopped = 'stopped',
 }
 
-export type WorkflowProcess = {
+export interface WorkflowProcess {
   status: WorkflowRunningStatus
   tracing: NodeTracing[]
   expand?: boolean // for UI

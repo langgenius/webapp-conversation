@@ -2,7 +2,7 @@ import React from 'react'
 
 import './style.css'
 
-type ILoadingProps = {
+interface ILoadingProps {
   type?: 'area' | 'app'
 }
 const Loading = (

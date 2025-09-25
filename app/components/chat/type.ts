@@ -1,6 +1,6 @@
 import type { VisionFile } from '@/types/app'
 
-export type LogAnnotation = {
+export interface LogAnnotation {
   content: string
   account: {
     id: string
@@ -10,7 +10,7 @@ export type LogAnnotation = {
   created_at: number
 }
 
-export type Annotation = {
+export interface Annotation {
   id: string
   authorName: string
   logAnnotation?: LogAnnotation
@@ -20,13 +20,13 @@ export type Annotation = {
 export const MessageRatings = ['like', 'dislike', null] as const
 export type MessageRating = typeof MessageRatings[number]
 
-export type MessageMore = {
+export interface MessageMore {
   time: string
   tokens: number
   latency: number | string
 }
 
-export type Feedbacktype = {
+export interface Feedbacktype {
   rating: MessageRating
   content?: string | null
 }
@@ -36,14 +36,14 @@ export type SubmitAnnotationFunc = (messageId: string, content: string) => Promi
 
 export type DisplayScene = 'web' | 'console'
 
-export type ToolInfoInThought = {
+export interface ToolInfoInThought {
   name: string
   input: string
   output: string
   isFinished: boolean
 }
 
-export type ThoughtItem = {
+export interface ThoughtItem {
   id: string
   tool: string // plugin or dataset. May has multi.
   thought: string
@@ -55,7 +55,7 @@ export type ThoughtItem = {
   message_files?: VisionFile[]
 }
 
-export type CitationItem = {
+export interface CitationItem {
   content: string
   data_source_type: string
   dataset_name: string
@@ -70,7 +70,7 @@ export type CitationItem = {
   word_count: number
 }
 
-export type IChatItem = {
+export interface IChatItem {
   id: string
   content: string
   citation?: CitationItem[]
@@ -98,12 +98,12 @@ export type IChatItem = {
   useCurrentUserAvatar?: boolean
   isOpeningStatement?: boolean
   suggestedQuestions?: string[]
-  log?: { role: string; text: string }[]
+  log?: { role: string, text: string }[]
   agent_thoughts?: ThoughtItem[]
   message_files?: VisionFile[]
 }
 
-export type MessageEnd = {
+export interface MessageEnd {
   id: string
   metadata: {
     retriever_resources?: CitationItem[]
@@ -117,14 +117,14 @@ export type MessageEnd = {
   }
 }
 
-export type MessageReplace = {
+export interface MessageReplace {
   id: string
   task_id: string
   answer: string
   conversation_id: string
 }
 
-export type AnnotationReply = {
+export interface AnnotationReply {
   id: string
   task_id: string
   answer: string

@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+---
+
+### Project Structure Overview
+
+- **App Router (Next.js 14)**: Entry is `app/layout.tsx` and `app/page.tsx`.
+- **API Routes**: Located under `app/api/**`. Server handlers live in `route.ts` files per folder.
+- **Components**: UI under `app/components/**` with feature folders (e.g., `chat`, `workflow`, `base`).
+- **Services (API client)**: Client-side HTTP/SSE utilities in `[service/base.ts](mdc:service/base.ts)` and domain methods in `[service/index.ts](mdc:service/index.ts)`.
+- **Config**: Global config in `[config/index.ts](mdc:config/index.ts)` and Next config in `[next.config.js](mdc:next.config.js)`.
+- **i18n**: Client/server helpers in `[i18n/client.ts](mdc:i18n/client.ts)` and `[i18n/server.ts](mdc:i18n/server.ts)`, with resources in `i18n/lang/**`.
+- **Styles**: Tailwind setup `[tailwind.config.js](mdc:tailwind.config.js)`, global styles under `app/styles/**`.
+
+Key entrypoints:
+
+- Layout: `[app/layout.tsx](mdc:app/layout.tsx)`
+- Home page: `[app/page.tsx](mdc:app/page.tsx)`
+- HTTP utilities: `[service/base.ts](mdc:service/base.ts)`
+- API domain functions: `[service/index.ts](mdc:service/index.ts)`
+- Internationalization: `[i18n/server.ts](mdc:i18n/server.ts)`, `[i18n/client.ts](mdc:i18n/client.ts)`

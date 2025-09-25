@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import classNames from 'classnames'
 import style from './style.module.css'
 
-export type AppIconProps = {
+export interface AppIconProps {
   size?: 'xs' | 'tiny' | 'small' | 'medium' | 'large'
   rounded?: boolean
   icon?: string

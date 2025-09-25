@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TemplateVarPanel, { PanelTitle, VarOpBtnGroup } from '../value-panel'
+import FileUploaderInAttachmentWrapper from '../base/file-uploader-in-attachment'
 import s from './style.module.css'
 import { AppInfoComp, ChatBtn, EditBtn, FootLogo, PromptTemplate } from './massive-component'
 import type { AppInfo, PromptConfig } from '@/types/app'
@@ -13,7 +14,7 @@ import { DEFAULT_VALUE_MAX_LEN } from '@/config'
 // regex to match the {{}} and replace it with a span
 const regex = /\{\{([^}]+)\}\}/g
 
-export type IWelcomeProps = {
+export interface IWelcomeProps {
   conversationName: string
   hasSetInputs: boolean
   isPublicVersion: boolean
@@ -40,8 +41,7 @@ const Welcome: FC<IWelcomeProps> = ({
   const hasVar = promptConfig.prompt_variables.length > 0
   const [isFold, setIsFold] = useState<boolean>(true)
   const [inputs, setInputs] = useState<Record<string, any>>((() => {
-    if (hasSetInputs)
-      return savedInputs
+    if (hasSetInputs) { return savedInputs }
 
     const res: Record<string, any> = {}
     if (promptConfig) {
@@ -67,8 +67,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }, [savedInputs])
 
   const highLightPromoptTemplate = (() => {
-    if (!promptConfig)
-      return ''
+    if (!promptConfig) { return '' }
     const res = promptConfig.prompt_template.replace(regex, (match, p1) => {
       return `<span class='text-gray-800 font-bold'>${inputs?.[p1] ? inputs?.[p1] : match}</span>`
     })
@@ -122,6 +121,50 @@ const Welcome: FC<IWelcomeProps> = ({
                 onChange={(e) => { setInputs({ ...inputs, [item.key]: e.target.value }) }}
               />
             )}
+            {item.type === 'number' && (
+              <input
+                type="number"
+                className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                placeholder={`${item.name}${!item.required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
+                value={inputs[item.key]}
+                onChange={(e) => { onInputsChange({ ...inputs, [item.key]: e.target.value }) }}
+              />
+            )}
+
+            {
+              item.type === 'file' && (
+                <FileUploaderInAttachmentWrapper
+                  fileConfig={{
+                    allowed_file_types: item.allowed_file_types,
+                    allowed_file_extensions: item.allowed_file_extensions,
+                    allowed_file_upload_methods: item.allowed_file_upload_methods!,
+                    number_limits: 1,
+                    fileUploadConfig: {} as any,
+                  }}
+                  onChange={(files) => {
+                    setInputs({ ...inputs, [item.key]: files[0] })
+                  }}
+                  value={inputs?.[item.key] || []}
+                />
+              )
+            }
+            {
+              item.type === 'file-list' && (
+                <FileUploaderInAttachmentWrapper
+                  fileConfig={{
+                    allowed_file_types: item.allowed_file_types,
+                    allowed_file_extensions: item.allowed_file_extensions,
+                    allowed_file_upload_methods: item.allowed_file_upload_methods!,
+                    number_limits: item.max_length,
+                    fileUploadConfig: {} as any,
+                  }}
+                  onChange={(files) => {
+                    setInputs({ ...inputs, [item.key]: files })
+                  }}
+                  value={inputs?.[item.key] || []}
+                />
+              )
+            }
           </div>
         ))}
       </div>
@@ -129,25 +172,35 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const canChat = () => {
-    let emptyRequiredInput = false
-    promptConfig.prompt_variables.forEach((item) => {
-      if (item.required && !inputs[item.key])
-        emptyRequiredInput = true
-    })
-    if (emptyRequiredInput) {
-      logError(t('app.errorMessage.valueOfVarRequired'))
-      return false
+    const vars = promptConfig?.prompt_variables ?? [];
+
+    const hasEmptyRequired = vars.some(v => {
+      const isRequired = v?.required ?? true;
+      if (!isRequired) return false;
+
+      const val = inputs?.[v.key];
+
+      if (typeof val === 'string') return val.trim() === '';
+
+      return val === undefined || val === null;
+    });
+
+    if (hasEmptyRequired) {
+      logError(t('app.errorMessage.valueOfVarRequired'));
+      return false;
     }
-    return true
-  }
+
+    return true;
+  };
 
   const handleChat = () => {
-    if (!canChat())
-      return
+    if (!canChat()) { return }
+
     Object.keys(inputs).forEach((key) => {
       if (!inputs[key])
         delete inputs[key]
     })
+
     onStartChat(inputs)
   }
 
@@ -207,8 +260,7 @@ const Welcome: FC<IWelcomeProps> = ({
     return (
       <VarOpBtnGroup
         onConfirm={() => {
-          if (!canChat())
-            return
+          if (!canChat()) { return }
 
           onInputsChange(inputs)
           setIsFold(true)
@@ -265,8 +317,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const renderHasSetInputsPrivate = () => {
-    if (!canEditInputs || !hasVar)
-      return null
+    if (!canEditInputs || !hasVar) { return null }
 
     return (
       <TemplateVarPanel
@@ -289,8 +340,7 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const renderHasSetInputs = () => {
-    if ((!isPublicVersion && !canEditInputs) || !hasVar)
-      return null
+    if ((!isPublicVersion && !canEditInputs) || !hasVar) { return null }
 
     return (
       <div
@@ -331,7 +381,8 @@ const Welcome: FC<IWelcomeProps> = ({
                 <a
                   className='text-gray-500'
                   href={siteInfo.privacy_policy}
-                  target='_blank'>{t('app.chat.privacyPolicyMiddle')}</a>
+                  target='_blank'
+                >{t('app.chat.privacyPolicyMiddle')}</a>
                 {t('app.chat.privacyPolicyRight')}
               </div>
               : <div>
