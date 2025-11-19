@@ -173,7 +173,7 @@ const Main: FC<IMainProps> = () => {
   * chat info. chat is under conversation.
   */
   const [chatList, setChatList, getChatList] = useGetState<ChatItem[]>([])
-  const { scrollRef, listRef, handleScroll } = useScrollToBottom(chatList)
+  const { scrollRef, listRef, handleScroll, scrollToBottom } = useScrollToBottom(chatList)
 
   // user can not edit inputs if user had send message
   const canEditInputs = !chatList.some(item => item.isAnswer === false) && isNewConversation
@@ -398,6 +398,7 @@ const Main: FC<IMainProps> = () => {
 
     const newList = [...getChatList(), questionItem, placeholderAnswerItem]
     setChatList(newList)
+    scrollToBottom()
 
     let isAgentMode = false
 

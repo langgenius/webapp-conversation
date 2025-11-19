@@ -11,8 +11,22 @@ export const useScrollToBottom = <T>(dependency: T) => {
       return
     }
     const { scrollTop, scrollHeight, clientHeight } = e.target
-    const isBottom = scrollHeight - scrollTop - clientHeight < 20
+    const isBottom = scrollHeight - scrollTop - clientHeight < 50
     setIsAutoScroll(isBottom)
+  }
+
+  const scrollToBottom = () => {
+    setIsAutoScroll(true)
+    isScrolledByCode.current = true
+    if (listRef.current) {
+      listRef.current.scrollIntoView({
+        behavior: 'auto',
+        block: 'end',
+      })
+    }
+    setTimeout(() => {
+      isScrolledByCode.current = false
+    }, 100)
   }
 
   useEffect(() => {
@@ -38,6 +52,7 @@ export const useScrollToBottom = <T>(dependency: T) => {
     scrollRef,
     listRef,
     handleScroll,
+    scrollToBottom,
     isAutoScroll,
     setIsAutoScroll,
   }
