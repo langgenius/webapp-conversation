@@ -1,10 +1,11 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import produce, { setAutoFreeze } from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
 import useConversation from '@/hooks/use-conversation'
+import { useScrollToBottom } from '@/hooks/use-scroll-to-bottom'
 import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
@@ -172,39 +173,8 @@ const Main: FC<IMainProps> = () => {
   * chat info. chat is under conversation.
   */
   const [chatList, setChatList, getChatList] = useGetState<ChatItem[]>([])
-  const chatListDomRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [isAutoScroll, setIsAutoScroll] = useState(true)
-  const isScrolledByCode = useRef(false)
+  const { scrollRef, listRef, handleScroll } = useScrollToBottom(chatList)
 
-  const handleScroll = (e: any) => {
-    if (isScrolledByCode.current) {
-      return
-    }
-    const { scrollTop, scrollHeight, clientHeight } = e.target
-    const isBottom = scrollHeight - scrollTop - clientHeight < 20
-    setIsAutoScroll(isBottom)
-  }
-  useEffect(() => {
-    // scroll to bottom with page-level scrolling
-    if (chatListDomRef.current && isAutoScroll) {
-      isScrolledByCode.current = true
-      const timeoutId = setTimeout(() => {
-        if (chatListDomRef.current) {
-          chatListDomRef.current.scrollIntoView({
-            behavior: 'auto',
-            block: 'end',
-          })
-        }
-        // Reset the flag after scroll animation is likely finished
-        // A small delay ensures the scroll event triggered by scrollIntoView is ignored
-        setTimeout(() => {
-          isScrolledByCode.current = false
-        }, 100)
-      }, 50)
-      return () => clearTimeout(timeoutId)
-    }
-  }, [chatList, currConversationId, isAutoScroll])
   // user can not edit inputs if user had send message
   const canEditInputs = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
@@ -690,7 +660,7 @@ const Main: FC<IMainProps> = () => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto' ref={scrollContainerRef} onScroll={handleScroll}>
+        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto' ref={scrollRef} onScroll={handleScroll}>
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
@@ -705,7 +675,7 @@ const Main: FC<IMainProps> = () => {
 
           {
             hasSetInputs && (
-              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[180px] mx-auto mb-3.5' ref={chatListDomRef}>
+              <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[180px] mx-auto mb-3.5' ref={listRef}>
                 <Chat
                   chatList={chatList}
                   onSend={handleSend}
