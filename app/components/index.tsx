@@ -173,17 +173,38 @@ const Main: FC<IMainProps> = () => {
   */
   const [chatList, setChatList, getChatList] = useGetState<ChatItem[]>([])
   const chatListDomRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [isAutoScroll, setIsAutoScroll] = useState(true)
+  const isScrolledByCode = useRef(false)
+
+  const handleScroll = (e: any) => {
+    if (isScrolledByCode.current) {
+      return
+    }
+    const { scrollTop, scrollHeight, clientHeight } = e.target
+    const isBottom = scrollHeight - scrollTop - clientHeight < 20
+    setIsAutoScroll(isBottom)
+  }
   useEffect(() => {
     // scroll to bottom with page-level scrolling
-    if (chatListDomRef.current) {
-      setTimeout(() => {
-        chatListDomRef.current?.scrollIntoView({
-          behavior: 'auto',
-          block: 'end',
-        })
+    if (chatListDomRef.current && isAutoScroll) {
+      isScrolledByCode.current = true
+      const timeoutId = setTimeout(() => {
+        if (chatListDomRef.current) {
+          chatListDomRef.current.scrollIntoView({
+            behavior: 'auto',
+            block: 'end',
+          })
+        }
+        // Reset the flag after scroll animation is likely finished
+        // A small delay ensures the scroll event triggered by scrollIntoView is ignored
+        setTimeout(() => {
+          isScrolledByCode.current = false
+        }, 100)
       }, 50)
+      return () => clearTimeout(timeoutId)
     }
-  }, [chatList, currConversationId])
+  }, [chatList, currConversationId, isAutoScroll])
   // user can not edit inputs if user had send message
   const canEditInputs = !chatList.some(item => item.isAnswer === false) && isNewConversation
   const createNewChat = () => {
@@ -669,7 +690,7 @@ const Main: FC<IMainProps> = () => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto'>
+        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto' ref={scrollContainerRef} onScroll={handleScroll}>
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
