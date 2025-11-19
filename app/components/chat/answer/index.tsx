@@ -15,6 +15,34 @@ import ImageGallery from '../../base/image-gallery'
 import LoadingAnim from '../loading-anim'
 import s from '../style.module.css'
 import Thought from '../thought'
+import ThinkBlock from './think-block'
+
+interface ContentPart {
+  type: 'text' | 'think'
+  content: string
+  closed?: boolean
+}
+
+const parseThinkTags = (content: string): ContentPart[] => {
+  const regex = /<think>([\s\S]*?)(?:(<\/think>)|$)/g
+  const parts: ContentPart[] = []
+  let lastIndex = 0
+  let match = regex.exec(content)
+  while (match !== null) {
+    if (match.index > lastIndex) {
+      parts.push({ type: 'text', content: content.slice(lastIndex, match.index) })
+    }
+    parts.push({ type: 'think', content: match[1], closed: !!match[2] })
+    lastIndex = regex.lastIndex
+    match = regex.exec(content)
+  }
+
+  if (lastIndex < content.length) {
+    parts.push({ type: 'text', content: content.slice(lastIndex) })
+  }
+
+  return parts
+}
 
 function OperationBtn({ innerContent, onClick, className }: { innerContent: React.ReactNode, onClick?: () => void, className?: string }) {
   return (
@@ -202,7 +230,21 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <StreamdownMarkdown content={content} />
+                    <div>
+                      {parseThinkTags(content).map((part, index) => (
+                        part.type === 'think'
+                          ? (
+                            <ThinkBlock
+                              key={index}
+                              content={part.content}
+                              isStreaming={isResponding && !part.closed}
+                            />
+                          )
+                          : (
+                            <StreamdownMarkdown key={index} content={part.content} />
+                          )
+                      ))}
+                    </div>
                   ))}
               {suggestedQuestions.length > 0 && (
                 <div className="mt-3">
