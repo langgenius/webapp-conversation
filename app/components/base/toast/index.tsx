@@ -42,14 +42,14 @@ const Toast = ({
     type === 'success' ? 'bg-green-50' : '',
     type === 'error' ? 'bg-red-50' : '',
     type === 'warning' ? 'bg-yellow-50' : '',
-    type === 'info' ? 'bg-blue-50' : '',
+    type === 'info' ? 'bg-purple-50' : '',
   )}>
     <div className="flex">
       <div className="flex-shrink-0">
         {type === 'success' && <CheckCircleIcon className="w-5 h-5 text-green-400" aria-hidden="true" />}
         {type === 'error' && <XCircleIcon className="w-5 h-5 text-red-400" aria-hidden="true" />}
         {type === 'warning' && <ExclamationTriangleIcon className="w-5 h-5 text-yellow-400" aria-hidden="true" />}
-        {type === 'info' && <InformationCircleIcon className="w-5 h-5 text-blue-400" aria-hidden="true" />}
+        {type === 'info' && <InformationCircleIcon className="w-5 h-5 text-purple-400" aria-hidden="true" />}
       </div>
       <div className="ml-3">
         <h3 className={
@@ -58,7 +58,7 @@ const Toast = ({
             type === 'success' ? 'text-green-800' : '',
             type === 'error' ? 'text-red-800' : '',
             type === 'warning' ? 'text-yellow-800' : '',
-            type === 'info' ? 'text-blue-800' : '',
+            type === 'info' ? 'text-purple-800' : '',
           )
         }>{message}</h3>
         {children && <div className={
@@ -67,7 +67,7 @@ const Toast = ({
             type === 'success' ? 'text-green-700' : '',
             type === 'error' ? 'text-red-700' : '',
             type === 'warning' ? 'text-yellow-700' : '',
-            type === 'info' ? 'text-blue-700' : '',
+            type === 'info' ? 'text-purple-700' : '',
           )
         }>
           {children}

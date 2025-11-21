@@ -28,5 +28,8 @@
     "i18n",
     "i18n/lang",
     "app/api/messages"
-  ]
+  ],
+  "search.exclude": {
+    "**/bower_components": false
+  }
 }

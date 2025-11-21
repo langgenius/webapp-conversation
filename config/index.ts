@@ -3,16 +3,16 @@ export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
 export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const APP_INFO: AppInfo = {
-  title: 'Chat APP',
-  description: '',
+  title: '货当当-AI客服',
+  description: '货当当司机端智能客服，解答司机日常问题',
   copyright: '',
   privacy_policy: '',
-  default_language: 'en',
+  default_language: 'zh-Hans',
   disable_session_same_site: false, // set it to true if you want to embed the chatbot in an iframe
 }
 
-export const isShowPrompt = false
-export const promptTemplate = 'I want you to act as a javascript console.'
+export const isShowPrompt = true
+export const promptTemplate = '请输入您的手机号码'
 
 export const API_PREFIX = '/api'
 

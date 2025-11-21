@@ -15,8 +15,7 @@ export const getInfo = (request: NextRequest) => {
 }
 
 export const setSession = (sessionId: string) => {
-  if (APP_INFO.disable_session_same_site)
-  { return { 'Set-Cookie': `session_id=${sessionId}; SameSite=None; Secure` } }
+  if (APP_INFO.disable_session_same_site) { return { 'Set-Cookie': `session_id=${sessionId}; SameSite=None; Secure` } }
 
   return { 'Set-Cookie': `session_id=${sessionId}` }
 }

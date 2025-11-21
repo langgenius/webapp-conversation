@@ -51,7 +51,7 @@ const Main: FC<IMainProps> = () => {
   const [fileConfig, setFileConfig] = useState<FileUpload | undefined>()
 
   useEffect(() => {
-    if (APP_INFO?.title) { document.title = `${APP_INFO.title} - Powered by Dify` }
+    if (APP_INFO?.title) { document.title = `${APP_INFO.title}` }
   }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
@@ -662,7 +662,7 @@ const Main: FC<IMainProps> = () => {
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
-          <div className='fixed inset-0 z-50' style={{ backgroundColor: 'rgba(35, 56, 118, 0.2)' }} onClick={hideSidebar} >
+          <div className='fixed inset-0 z-50' style={{ backgroundColor: 'rgba(147, 51, 234, 0.2)' }} onClick={hideSidebar} >
             <div className='inline-block' onClick={e => e.stopPropagation()}>
               {renderSidebar()}
             </div>

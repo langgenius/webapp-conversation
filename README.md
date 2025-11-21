@@ -1,8 +1,11 @@
 # Conversation Web App Template
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Config App
+
 Create a file named `.env.local` in the current directory and copy the contents from `.env.example`. Setting the following content:
+
 ```
 # APP ID: This is the unique identifier for your app. You can find it in the app's detail page URL. 
 # For example, in the URL `https://cloud.dify.ai/app/xxx/workflow`, the value `xxx` is your APP ID.
@@ -16,7 +19,8 @@ NEXT_PUBLIC_APP_KEY=
 NEXT_PUBLIC_API_URL=
 ```
 
-Config more in `config/index.ts` file:   
+Config more in `config/index.ts` file:
+
 ```js
 export const APP_INFO: AppInfo = {
   title: 'Chat APP',
@@ -31,7 +35,9 @@ export const promptTemplate = ''
 ```
 
 ## Getting Started
+
 First, install dependencies:
+
 ```bash
 npm install
 # or
@@ -49,6 +55,7 @@ yarn dev
 # or
 pnpm dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Using Docker
@@ -73,7 +80,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ## Deploy on Vercel
 
 > ⚠️ If you are using [Vercel Hobby](https://vercel.com/pricing), your message will be truncated due to the limitation of vercel.
-
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
