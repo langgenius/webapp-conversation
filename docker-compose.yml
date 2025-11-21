@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  ai-web:
+    image: registry.cn-huhehaote.aliyuncs.com/hdd_images/ai-web:latest
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+
