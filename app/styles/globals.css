@@ -16,10 +16,10 @@
   --background-end-rgb: 255, 255, 255;
 
   --primary-glow: conic-gradient(from 180deg at 50% 50%,
-      #16abff33 0deg,
-      #0885ff33 55deg,
-      #54d6ff33 120deg,
-      #0071ff33 160deg,
+      #9333ea33 0deg,
+      #7e22ce33 55deg,
+      #a78bfa33 120deg,
+      #9333ea33 160deg,
       transparent 360deg);
   --secondary-glow: radial-gradient(rgba(255, 255, 255, 1),
       rgba(255, 255, 255, 0));
@@ -46,11 +46,11 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
 
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+    --primary-glow: radial-gradient(rgba(147, 51, 234, 0.4), rgba(147, 51, 234, 0));
     --secondary-glow: linear-gradient(to bottom right,
-        rgba(1, 65, 255, 0),
-        rgba(1, 65, 255, 0),
-        rgba(1, 65, 255, 0.3));
+        rgba(147, 51, 234, 0),
+        rgba(147, 51, 234, 0),
+        rgba(147, 51, 234, 0.3));
 
     --tile-start-rgb: 2, 13, 46;
     --tile-end-rgb: 2, 5, 19;
@@ -118,11 +118,11 @@ a {
 }
 
 .link {
-  @apply text-blue-600 cursor-pointer hover:opacity-80 transition-opacity duration-200 ease-in-out;
+  @apply text-purple-600 cursor-pointer hover:opacity-80 transition-opacity duration-200 ease-in-out;
 }
 
 .text-gradient {
-  background: linear-gradient(91.58deg, #2250F2 -29.55%, #0EBCF3 75.22%);
+  background: linear-gradient(91.58deg, #9333EA -29.55%, #A78BFA 75.22%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

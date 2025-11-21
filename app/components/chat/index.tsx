@@ -171,7 +171,7 @@ const Chat: FC<IChatProps> = ({
       {
         !isHideSendInput && (
           <div className='fixed z-10 bottom-0 left-1/2 transform -translate-x-1/2 pc:ml-[122px] tablet:ml-[96px] mobile:ml-0 pc:w-[794px] tablet:w-[794px] max-w-full mobile:w-full px-3.5'>
-            <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
+            <div className='relative group p-2 max-h-[180px] bg-white/95 border border-gray-200 rounded-2xl shadow-sm overflow-y-auto transition-all duration-150 ease-out focus-within:border-primary-600 focus-within:shadow-md hover:shadow-md'>
               {
                 visionConfig?.enabled && (
                   <>
@@ -207,10 +207,11 @@ const Chat: FC<IChatProps> = ({
                 )
               }
               <Textarea
-                className={`
-                  block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-base text-gray-700 outline-none appearance-none resize-none
-                  ${visionConfig?.enabled && 'pl-12'}
-                `}
+                className={cn(
+                  s.textArea,
+                  'block w-full px-2 pr-[118px] text-base leading-5 max-h-none text-gray-700 outline-none appearance-none resize-none bg-transparent',
+                  visionConfig?.enabled && 'pl-12',
+                )}
                 value={query}
                 onChange={handleContentChange}
                 onKeyUp={handleKeyUp}

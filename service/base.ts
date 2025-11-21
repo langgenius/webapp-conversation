@@ -382,6 +382,7 @@ export const ssePost = (
 
   globalThis.fetch(urlWithPrefix, options)
     .then((res: any) => {
+      console.log('res', res)
       if (!/^(2|3)\d{2}$/.test(res.status)) {
         // eslint-disable-next-line no-new
         new Promise(() => {

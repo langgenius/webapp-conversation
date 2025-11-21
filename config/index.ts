@@ -4,7 +4,7 @@ export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const APP_INFO: AppInfo = {
   title: '货当当-AI客服',
-  description: '',
+  description: '货当当司机端智能客服，解答司机日常问题',
   copyright: '',
   privacy_policy: '',
   default_language: 'zh-Hans',

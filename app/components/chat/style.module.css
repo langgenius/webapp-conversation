@@ -57,16 +57,16 @@
   padding-right: 90px;
   border-radius: 12px;
   line-height: 20px;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .textArea:hover {
-  background-color: #fff;
+  background-color: transparent;
 }
 
-/* .textArea:focus {
-  box-shadow: 0px 3px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
-} */
+.textArea:focus {
+  outline: none;
+}
 
 .count {
   /* display: none; */
@@ -79,7 +79,7 @@
 
 .sendBtn:hover {
   background-image: url(./icons/send-active.svg);
-  background-color: #EBF5FF;
+  background-color: #EDE9FE;
 }
 
 .textArea:focus+div .count {
@@ -88,4 +88,5 @@
 
 .textArea:focus+div .sendBtn {
   background-image: url(./icons/send-active.svg);
+  background-color: #EDE9FE;
 }
