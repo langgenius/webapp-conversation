@@ -95,6 +95,7 @@ const Chat: FC<IChatProps> = ({
   } = useImageFiles()
 
   const [attachmentFiles, setAttachmentFiles] = React.useState<FileEntity[]>([])
+  const [showAttachmentPanel, setShowAttachmentPanel] = React.useState(false)
 
   const handleSend = () => {
     if (!valid() || (checkCanSend && !checkCanSend())) { return }
@@ -141,6 +142,12 @@ const Chat: FC<IChatProps> = ({
     handleSend()
   }
 
+  useEffect(() => {
+    if ((visionConfig?.enabled && files.length > 0) || (fileConfig?.enabled && attachmentFiles.length > 0)) {
+      setShowAttachmentPanel(true)
+    }
+  }, [files.length, attachmentFiles.length, visionConfig?.enabled, fileConfig?.enabled])
+
   return (
     <div className={cn(!feedbackDisabled && 'px-3.5', 'h-full')}>
       {/* Chat List */}
@@ -173,7 +180,7 @@ const Chat: FC<IChatProps> = ({
           <div className='fixed z-10 bottom-0 left-1/2 transform -translate-x-1/2 pc:ml-[122px] tablet:ml-[96px] mobile:ml-0 pc:w-[794px] tablet:w-[794px] max-w-full mobile:w-full px-3.5'>
             <div className='relative group p-2 max-h-[180px] bg-white/95 border border-gray-200 rounded-2xl shadow-sm overflow-y-auto transition-all duration-150 ease-out focus-within:border-primary-600 focus-within:shadow-md hover:shadow-md'>
               {
-                visionConfig?.enabled && (
+                showAttachmentPanel && visionConfig?.enabled && (
                   <>
                     <div className='absolute bottom-2 left-2 flex items-center'>
                       <ChatImageUploader
@@ -196,7 +203,7 @@ const Chat: FC<IChatProps> = ({
                 )
               }
               {
-                fileConfig?.enabled && (
+                showAttachmentPanel && fileConfig?.enabled && (
                   <div className={`${visionConfig?.enabled ? 'pl-[52px]' : ''} mb-1`}>
                     <FileUploaderInAttachmentWrapper
                       fileConfig={fileConfig}
@@ -206,31 +213,53 @@ const Chat: FC<IChatProps> = ({
                   </div>
                 )
               }
-              <Textarea
-                className={cn(
-                  s.textArea,
-                  'block w-full px-2 pr-[118px] text-base leading-5 max-h-none text-gray-700 outline-none appearance-none resize-none bg-transparent',
-                  visionConfig?.enabled && 'pl-12',
-                )}
-                value={query}
-                onChange={handleContentChange}
-                onKeyUp={handleKeyUp}
-                onKeyDown={handleKeyDown}
-                autoSize
-              />
-              <div className="absolute bottom-2 right-6 flex items-center h-8">
-                <div className={`${s.count} mr-3 h-5 leading-5 text-sm bg-gray-50 text-gray-500 px-2 rounded`}>{query.trim().length}</div>
-                <Tooltip
-                  selector='send-tip'
-                  htmlContent={
-                    <div>
-                      <div>{t('common.operation.send')} Enter</div>
-                      <div>{t('common.operation.lineBreak')} Shift Enter</div>
-                    </div>
-                  }
-                >
-                  <div className={`${s.sendBtn} w-8 h-8 cursor-pointer rounded-md`} onClick={handleSend}></div>
-                </Tooltip>
+              <div className="relative">
+                <Textarea
+                  className={cn(
+                    s.textArea,
+                    'block w-full px-3 pr-20 text-base leading-5 text-gray-800 outline-none appearance-none resize-none bg-transparent',
+                    visionConfig?.enabled && 'pl-12',
+                  )}
+                  value={query}
+                  onChange={handleContentChange}
+                  onKeyUp={handleKeyUp}
+                  onKeyDown={handleKeyDown}
+                  autoSize
+                />
+                <div className="absolute top-1/2 right-3 -translate-y-1/2 flex items-center space-x-2">
+                  {(visionConfig?.enabled || fileConfig?.enabled) && (
+                    <button
+                      type='button'
+                      aria-pressed={showAttachmentPanel}
+                      onClick={() => setShowAttachmentPanel(prev => !prev)}
+                      className={cn(
+                        s.attachBtn,
+                        'w-9 h-9 flex items-center justify-center rounded-full border-0 text-white text-lg font-semibold transition-all duration-150 shadow-sm',
+                        showAttachmentPanel
+                          ? 'bg-[#6D28D9]'
+                          : 'bg-[#A78BFA] hover:bg-[#8B5CF6] active:bg-[#7C3AED]',
+                      )}
+                    >
+                      +
+                    </button>
+                  )}
+                  <Tooltip
+                    selector='send-tip'
+                    htmlContent={
+                      <div>
+                        <div>{t('common.operation.send')} Enter</div>
+                        <div>{t('common.operation.lineBreak')} Shift Enter</div>
+                      </div>
+                    }
+                  >
+                    <div
+                      className={`${s.sendBtn} w-10 h-10 cursor-pointer rounded-full transition-transform duration-150`}
+                      onClick={handleSend}
+                      role='button'
+                      aria-label={t('common.operation.send')}
+                    />
+                  </Tooltip>
+                </div>
               </div>
             </div>
           </div>

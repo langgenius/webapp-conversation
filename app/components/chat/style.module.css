@@ -52,41 +52,53 @@
 }
 
 .textArea {
-  padding-top: 13px;
-  padding-bottom: 13px;
-  padding-right: 90px;
-  border-radius: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-right: 84px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 58, 237, 0.15);
   line-height: 20px;
-  background-color: transparent;
+  background-color: rgba(250, 245, 255, 0.9);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
 .textArea:hover {
-  background-color: transparent;
+  border-color: rgba(124, 58, 237, 0.4);
 }
 
 .textArea:focus {
   outline: none;
-}
-
-.count {
-  /* display: none; */
-  padding: 0 2px;
+  border-color: rgba(124, 58, 237, 0.75);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+  background-color: #FFFFFF;
 }
 
 .sendBtn {
   background: url(./icons/send.svg) center center no-repeat;
+  background-color: #7C3AED;
+  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.25);
 }
 
 .sendBtn:hover {
   background-image: url(./icons/send-active.svg);
-  background-color: #EDE9FE;
+  background-color: #6D28D9;
 }
 
-.textArea:focus+div .count {
-  display: block;
+.sendBtn:active {
+  transform: scale(0.96);
+  background-color: #5B21B6;
 }
 
 .textArea:focus+div .sendBtn {
   background-image: url(./icons/send-active.svg);
-  background-color: #EDE9FE;
+  background-color: #6D28D9;
+}
+
+.attachBtn {
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+}
+
+.attachBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.35);
 }
