@@ -12,7 +12,7 @@ export const APP_INFO: AppInfo = {
 }
 
 export const isShowPrompt = true
-export const promptTemplate = 'I want you to act as a javascript console.'
+export const promptTemplate = '请输入您的手机号码'
 
 export const API_PREFIX = '/api'
 
