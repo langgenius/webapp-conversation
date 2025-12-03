@@ -8,7 +8,7 @@ const translation = {
     newChat: 'Cuộc trò chuyện mới',
     newChatDefaultName: 'Cuộc trò chuyện mới',
     openingStatementTitle: 'Lời mở đầu',
-    powerBy: 'Được hỗ trợ bởi',
+    // powerBy: 'Được hỗ trợ bởi',
     prompt: 'Nhắc nhở',
     privatePromptConfigTitle: 'Cài đặt cuộc trò chuyện',
     publicPromptConfigTitle: 'Nhắc nhở ban đầu',
