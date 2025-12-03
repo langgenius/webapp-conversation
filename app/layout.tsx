@@ -3,6 +3,8 @@ import { getLocaleOnServer } from '@/i18n/server'
 import './styles/globals.css'
 import './styles/markdown.scss'
 
+export const runtime = 'edge'; // Cloudflare用
+
 const LocaleLayout = async ({
   children,
 }: {
