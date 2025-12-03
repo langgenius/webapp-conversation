@@ -128,3 +128,14 @@ a {
   background-clip: text;
   text-fill-color: transparent;
 }
+
+.bg-whitech-gradient {
+  background: linear-gradient(135deg, #4422FF 0%, #23FFB5 100%);
+}
+
+.text-whitech-gradient {
+  background: linear-gradient(135deg, #4422FF 0%, #23FFB5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
