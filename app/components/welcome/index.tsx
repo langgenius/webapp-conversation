@@ -79,20 +79,14 @@ const Welcome: FC<IWelcomeProps> = ({
     notify({ type: 'error', message, duration: 3000 })
   }
 
-  const renderHeader = () => {
-    return (
-      <div className='absolute top-0 left-0 right-0 flex items-center justify-between border-b border-gray-100 mobile:h-12 tablet:h-16 px-8 bg-white'>
-        <div className='text-gray-900'>{conversationName}</div>
-      </div>
-    )
-  }
+
 
   const renderInputs = () => {
     return (
-      <div className='space-y-3'>
+      <div className='space-y-4'>
         {promptConfig.prompt_variables.map(item => (
-          <div className='tablet:flex items-start mobile:space-y-2 tablet:space-y-0 mobile:text-xs tablet:text-sm' key={item.key}>
-            <label className={`flex-shrink-0 flex items-center tablet:leading-9 mobile:text-gray-700 tablet:text-gray-900 mobile:font-medium pc:font-normal ${s.formLabel}`}>{item.name}</label>
+          <div className='tablet:flex items-start mobile:space-y-2 tablet:space-y-0 mobile:text-sm tablet:text-base' key={item.key}>
+            <label className={`flex-shrink-0 flex items-center tablet:leading-10 mobile:text-gray-700 tablet:text-gray-800 mobile:font-medium tablet:font-medium ${s.formLabel}`}>{item.name}</label>
             {item.type === 'select'
               && (
                 <Select
@@ -109,13 +103,13 @@ const Welcome: FC<IWelcomeProps> = ({
                 placeholder={`${item.name}${!item.required ? `(${t('app.variableTable.optional')})` : ''}`}
                 value={inputs?.[item.key] || ''}
                 onChange={(e) => { setInputs({ ...inputs, [item.key]: e.target.value }) }}
-                className={'w-full flex-grow py-2 pl-3 pr-3 box-border rounded-lg bg-gray-50'}
+                className={'w-full flex-grow py-3 px-4 box-border rounded-2xl bg-white border border-gray-200 focus:border-accent-purple focus:ring-2 focus:ring-accent-purple/20 transition-all outline-none'}
                 maxLength={item.max_length || DEFAULT_VALUE_MAX_LEN}
               />
             )}
             {item.type === 'paragraph' && (
               <textarea
-                className="w-full h-[104px] flex-grow py-2 pl-3 pr-3 box-border rounded-lg bg-gray-50"
+                className="w-full h-[120px] flex-grow py-3 px-4 box-border rounded-2xl bg-white border border-gray-200 focus:border-accent-purple focus:ring-2 focus:ring-accent-purple/20 transition-all outline-none resize-none"
                 placeholder={`${item.name}${!item.required ? `(${t('app.variableTable.optional')})` : ''}`}
                 value={inputs?.[item.key] || ''}
                 onChange={(e) => { setInputs({ ...inputs, [item.key]: e.target.value }) }}
@@ -124,7 +118,7 @@ const Welcome: FC<IWelcomeProps> = ({
             {item.type === 'number' && (
               <input
                 type="number"
-                className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                className="block w-full py-3 px-4 text-gray-900 border border-gray-200 rounded-2xl bg-white focus:border-accent-purple focus:ring-2 focus:ring-accent-purple/20 transition-all outline-none"
                 placeholder={`${item.name}${!item.required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
                 value={inputs[item.key]}
                 onChange={(e) => { onInputsChange({ ...inputs, [item.key]: e.target.value }) }}
@@ -236,7 +230,7 @@ const Welcome: FC<IWelcomeProps> = ({
       >
         {renderInputs()}
         <ChatBtn
-          className='mt-3 mobile:ml-0 tablet:ml-[128px]'
+          className='mt-6 mobile:ml-0 tablet:ml-[128px]'
           onClick={handleChat}
         />
       </TemplateVarPanel>
@@ -330,21 +324,18 @@ const Welcome: FC<IWelcomeProps> = ({
     if ((!isPublicVersion && !canEditInputs) || !hasVar) { return null }
 
     return (
-      <div
-        className='pt-[88px] mb-5'
-      >
+      <div className='pt-6 mb-5'>
         {isPublicVersion ? renderHasSetInputsPublic() : renderHasSetInputsPrivate()}
       </div>)
   }
 
   return (
-    <div className='relative mobile:min-h-[48px] tablet:min-h-[64px]'>
-      {hasSetInputs && renderHeader()}
-      <div className='mx-auto pc:w-[794px] max-w-full mobile:w-full px-3.5'>
+    <div className='relative mobile:min-h-[48px] tablet:min-h-[64px] bg-white'>
+      <div className='mx-auto pc:w-[900px] max-w-full mobile:w-full px-6'>
         {/*  Has't set inputs  */}
         {
           !hasSetInputs && (
-            <div className='mobile:pt-[72px] tablet:pt-[128px] pc:pt-[200px]'>
+            <div className='mobile:pt-[80px] tablet:pt-[140px] pc:pt-[200px]'>
               {hasVar
                 ? (
                   renderVarPanel()
@@ -361,12 +352,12 @@ const Welcome: FC<IWelcomeProps> = ({
 
         {/* foot */}
         {!hasSetInputs && (
-          <div className='mt-4 flex justify-between items-center h-8 text-xs text-gray-400'>
+          <div className='mt-3 pb-8 flex justify-between items-center text-sm text-gray-500'>
 
             {siteInfo.privacy_policy
-              ? <div>{t('app.chat.privacyPolicyLeft')}
+              ? <div className='hover:text-gray-700 transition-colors'>{t('app.chat.privacyPolicyLeft')}
                 <a
-                  className='text-gray-500'
+                  className='text-gray-700 underline hover:text-gray-900'
                   href={siteInfo.privacy_policy}
                   target='_blank'
                 >{t('app.chat.privacyPolicyMiddle')}</a>
@@ -375,7 +366,7 @@ const Welcome: FC<IWelcomeProps> = ({
               : <div>
               </div>}
             <div className='flex items-center pr-3'>
-              <img src="/logo.png" alt="Company Logo" className='h-8' />
+              <img src="/logo.png" alt="Company Logo" className='h-6 opacity-50 hover:opacity-75 transition-opacity' />
             </div>
           </div>
         )}

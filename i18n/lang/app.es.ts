@@ -1,6 +1,7 @@
 const translation = {
   common: {
-    welcome: 'Bienvenido a usar',
+    welcome: 'Hola, soy',
+    welcomeSuffix: '',
     appUnavailable: 'App es inaccesible',
     appUnkonwError: 'App es inaccesible',
   },
@@ -27,6 +28,9 @@ const translation = {
     valueOfVarRequired: 'El valor de las variables no puede estar vacío',
     waitForResponse:
       'Por favor espere a que la respuesta al mensaje anterior se complete.',
+  },
+  variableTable: {
+    optional: 'Opcional',
   },
 }
 

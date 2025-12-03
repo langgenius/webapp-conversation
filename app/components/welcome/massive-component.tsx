@@ -13,9 +13,16 @@ import Button from '@/app/components/base/button'
 export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
   const { t } = useTranslation()
   return (
-    <div>
-      <div className='flex items-center py-2 text-xl font-medium text-gray-700 rounded-md'>👏 {t('app.common.welcome')} {siteInfo.title}</div>
-      <p className='text-sm text-gray-500'>{siteInfo.description}</p>
+    <div className='space-y-1'>
+      <div className='flex items-center space-x-2 text-xl font-light text-gray-800'>
+        <span>{t('app.common.welcome')}</span>
+        <span className='font-bold text-gray-900'>{siteInfo.title}</span>
+        <span>{t('app.common.welcomeSuffix')}</span>
+        <span className='text-4xl'>👋</span>
+      </div>
+      {siteInfo.description && (
+        <p className='text-base text-gray-600 max-w-2xl leading-relaxed'>{siteInfo.description}</p>
+      )}
     </div>
   )
 }
@@ -43,16 +50,21 @@ export const ChatBtn: FC<{ onClick: () => void, className?: string }> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Button
-      type='primary'
-      className={cn(className, `space-x-2 flex items-center ${s.customBtn}`)}
+    <button
+      className={cn(
+        className,
+        'group px-8 py-4 bg-gradient-to-r from-[#E4DFFF] to-[#E1FFF5]',
+        'text-gray-900 font-medium text-base rounded-full',
+        'hover:shadow-lg hover:scale-105 transition-all duration-200',
+        'flex items-center space-x-3'
+      )}
       onClick={onClick}
     >
-      <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fillRule="evenodd" clipRule="evenodd" d="M18 10.5C18 14.366 14.418 17.5 10 17.5C8.58005 17.506 7.17955 17.1698 5.917 16.52L2 17.5L3.338 14.377C2.493 13.267 2 11.934 2 10.5C2 6.634 5.582 3.5 10 3.5C14.418 3.5 18 6.634 18 10.5ZM7 9.5H5V11.5H7V9.5ZM15 9.5H13V11.5H15V9.5ZM9 9.5H11V11.5H9V9.5Z" fill="white" />
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fillRule="evenodd" clipRule="evenodd" d="M18 10C18 13.866 14.418 17 10 17C8.58005 17.006 7.17955 16.6698 5.917 16.02L2 17L3.338 13.877C2.493 12.767 2 11.434 2 10C2 6.134 5.582 3 10 3C14.418 3 18 6.134 18 10ZM7 9H5V11H7V9ZM15 9H13V11H15V9ZM9 9H11V11H9V9Z" fill="currentColor" />
       </svg>
-      {t('app.chat.startChat')}
-    </Button>
+      <span>{t('app.chat.startChat')}</span>
+    </button>
   )
 }
 
@@ -60,13 +72,19 @@ export const EditBtn = ({ className, onClick }: { className?: string, onClick: (
   const { t } = useTranslation()
 
   return (
-    <div
-      className={cn('px-2 flex space-x-1 items-center rounded-md  cursor-pointer', className)}
+    <button
+      className={cn(
+        'px-4 py-2 flex space-x-2 items-center rounded-full',
+        'text-gray-700 text-sm font-medium',
+        'hover:bg-gray-100 transition-colors duration-200',
+        'cursor-pointer',
+        className
+      )}
       onClick={onClick}
     >
-      <PencilIcon className='w-3 h-3' />
+      <PencilIcon className='w-4 h-4' />
       <span>{t('common.operation.edit')}</span>
-    </div>
+    </button>
   )
 }
 

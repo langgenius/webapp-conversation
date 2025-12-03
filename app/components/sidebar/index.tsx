@@ -39,8 +39,7 @@ const Sidebar: FC<ISidebarProps> = ({
         <div className="flex flex-shrink-0 p-4 !pb-0">
           <Button
             onClick={() => { onCurrentIdChange('-1') }}
-            // WhiTech:グラデーション背景＋白文字＋少し影をつけて浮かせる
-            className="group block w-full flex-shrink-0 !justify-start !h-9 bg-whitech-gradient text-white shadow-md hover:shadow-lg transition-all duration-200 items-center text-sm border-none font-medium"
+            className="group block w-full flex-shrink-0 !justify-start !h-10 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 items-center text-sm font-medium !rounded-xl"
           >
             <PencilSquareIcon className="mr-2 h-4 w-4" /> {t('app.chat.newChat')}
           </Button>
@@ -82,7 +81,7 @@ const Sidebar: FC<ISidebarProps> = ({
 
       <div className="flex flex-shrink-0 pr-4 pb-4 pl-4">
         {/* コピーライトをグレーで控えめに表示 */}
-        <div className="text-gray-300 font-normal text-xs">© {copyRight} {(new Date()).getFullYear()}</div>
+        <div className="text-gray-300 font-normal text-xs">© {(new Date()).getFullYear()} {copyRight}</div>
       </div>
     </div>
   )

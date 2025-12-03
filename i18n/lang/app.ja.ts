@@ -1,6 +1,7 @@
 const translation = {
   common: {
-    welcome: 'ご利用いただきありがとうございます',
+    welcome: 'こんにちは',
+    welcomeSuffix: 'です',
     appUnavailable: 'アプリは利用できません',
     appUnkonwError: 'アプリは利用できません',
   },

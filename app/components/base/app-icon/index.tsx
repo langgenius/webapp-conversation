@@ -16,21 +16,7 @@ const AppIcon: FC<AppIconProps> = ({
   background,
   className,
 }) => {
-  return (
-    <span
-      className={classNames(
-        style.appIcon,
-        size !== 'medium' && style[size],
-        rounded && style.rounded,
-        className ?? '',
-      )}
-      style={{
-        background,
-      }}
-    >
-      🤖
-    </span>
-  )
+  return null
 }
 
 export default AppIcon
