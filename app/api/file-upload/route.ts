@@ -1,6 +1,8 @@
 import type { NextRequest } from 'next/server'
 import { client, getInfo } from '@/app/api/utils/common'
 
+export const runtime = 'edge'; // Cloudflare用
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
