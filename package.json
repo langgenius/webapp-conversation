@@ -42,7 +42,7 @@
     "lodash-es": "^4.17.21",
     "mime": "^4.0.7",
     "negotiator": "^0.6.3",
-    "next": "^15.5.7",
+    "next": "^15.5.9",
     "rc-textarea": "^1.5.3",
     "react": "~19.1.4",
     "react-dom": "~19.1.4",
