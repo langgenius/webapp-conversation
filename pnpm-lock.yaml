@@ -10,28 +10,28 @@ importers:
     dependencies:
       '@floating-ui/react':
         specifier: ^0.26.25
-        version: 0.26.28(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 0.26.28(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@formatjs/intl-localematcher':
         specifier: ^0.5.6
         version: 0.5.10
       '@headlessui/react':
         specifier: 2.2.1
-        version: 2.2.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 2.2.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@heroicons/react':
         specifier: ^2.0.16
-        version: 2.2.0(react@19.1.2)
+        version: 2.2.0(react@19.1.4)
       '@mdx-js/loader':
         specifier: ^3.1.0
         version: 3.1.1
       '@mdx-js/react':
         specifier: ^3.1.0
-        version: 3.1.1(@types/react@18.3.24)(react@19.1.2)
+        version: 3.1.1(@types/react@18.3.24)(react@19.1.4)
       '@monaco-editor/react':
         specifier: ^4.6.0
-        version: 4.7.0(monaco-editor@0.53.0)(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 4.7.0(monaco-editor@0.53.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@remixicon/react':
         specifier: ^4.6.0
-        version: 4.6.0(react@19.1.2)
+        version: 4.6.0(react@19.1.4)
       '@types/node':
         specifier: ~18.19.0
         version: 18.19.124
@@ -46,7 +46,7 @@ importers:
         version: 15.5.13
       ahooks:
         specifier: ^3.8.4
-        version: 3.9.5(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 3.9.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       axios:
         specifier: ^1.3.5
         version: 1.11.0
@@ -97,34 +97,34 @@ importers:
         version: 0.6.4
       next:
         specifier: ^15.5.7
-        version: 15.5.7(react-dom@19.1.2(react@19.1.2))(react@19.1.2)(sass@1.92.1)
+        version: 15.5.7(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(sass@1.92.1)
       rc-textarea:
         specifier: ^1.5.3
-        version: 1.10.2(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 1.10.2(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       react:
-        specifier: ~19.1.2
-        version: 19.1.2
+        specifier: ~19.1.4
+        version: 19.1.4
       react-dom:
-        specifier: ~19.1.2
-        version: 19.1.2(react@19.1.2)
+        specifier: ~19.1.4
+        version: 19.1.4(react@19.1.4)
       react-error-boundary:
         specifier: ^4.0.2
-        version: 4.1.2(react@19.1.2)
+        version: 4.1.2(react@19.1.4)
       react-headless-pagination:
         specifier: ^1.1.4
-        version: 1.1.6(react@19.1.2)
+        version: 1.1.6(react@19.1.4)
       react-i18next:
         specifier: ^12.2.0
-        version: 12.3.1(i18next@23.16.8)(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 12.3.1(i18next@23.16.8)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       react-markdown:
         specifier: ^8.0.6
-        version: 8.0.7(@types/react@18.3.24)(react@19.1.2)
+        version: 8.0.7(@types/react@18.3.24)(react@19.1.4)
       react-syntax-highlighter:
         specifier: ^15.5.0
-        version: 15.6.6(react@19.1.2)
+        version: 15.6.6(react@19.1.4)
       react-tooltip:
         specifier: ~5.29.1
-        version: 5.29.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+        version: 5.29.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       rehype-katex:
         specifier: ^7.0.1
         version: 7.0.1
@@ -148,22 +148,22 @@ importers:
         version: 0.0.1
       streamdown:
         specifier: ^1.2.0
-        version: 1.2.0(@types/react@18.3.24)(react@19.1.2)
+        version: 1.2.0(@types/react@18.3.24)(react@19.1.4)
       swr:
         specifier: ^2.3.0
-        version: 2.3.6(react@19.1.2)
+        version: 2.3.6(react@19.1.4)
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.3.1
       use-context-selector:
         specifier: ^2.0.0
-        version: 2.0.0(react@19.1.2)(scheduler@0.23.2)
+        version: 2.0.0(react@19.1.4)(scheduler@0.23.2)
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
       zustand:
         specifier: ^4.5.2
-        version: 4.5.7(@types/react@18.3.24)(immer@9.0.21)(react@19.1.2)
+        version: 4.5.7(@types/react@18.3.24)(immer@9.0.21)(react@19.1.4)
     devDependencies:
       '@antfu/eslint-config':
         specifier: ~5.2.2
@@ -3750,10 +3750,10 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
-  react-dom@19.1.2:
-    resolution: {integrity: sha512-dEoydsCp50i7kS1xHOmPXq4zQYoGWedUsvqv9H6zdif2r7yLHygyfP9qou71TulRN0d6ng9EbRVsQhSqfUc19g==}
+  react-dom@19.1.4:
+    resolution: {integrity: sha512-s2868ab/xo2SI6H4106A7aFI8Mrqa4xC6HZT/pBzYyQ3cBLqa88hu47xYD8xf+uECleN698Awn7RCWlkTiKnqQ==}
     peerDependencies:
-      react: ^19.1.2
+      react: ^19.1.4
 
   react-error-boundary@4.1.2:
     resolution: {integrity: sha512-GQDxZ5Jd+Aq/qUxbCm1UtzmL/s++V7zKgE8yMktJiCQXCCFZnMZh9ng+6/Ne6PjNSXH0L9CjeOEREfRnq6Duag==}
@@ -3811,8 +3811,8 @@ packages:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
 
-  react@19.1.2:
-    resolution: {integrity: sha512-MdWVitvLbQULD+4DP8GYjZUrepGW7d+GQkNVqJEzNxE+e9WIa4egVFE/RDfVb1u9u/Jw7dNMmPB4IqxzbFYJ0w==}
+  react@19.1.4:
+    resolution: {integrity: sha512-DHINL3PAmPUiK1uszfbKiXqfE03eszdt5BpVSuEAHb5nfmNPwnsy7g39h2t8aXFc/Bv99GH81s+j8dobtD+jOw==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -4859,18 +4859,18 @@ snapshots:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/react-dom@2.1.6(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@floating-ui/react-dom@2.1.6(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
       '@floating-ui/dom': 1.7.4
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  '@floating-ui/react@0.26.28(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@floating-ui/react@0.26.28(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@floating-ui/utils': 0.2.10
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
       tabbable: 6.2.0
 
   '@floating-ui/utils@0.2.10': {}
@@ -4879,18 +4879,18 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@headlessui/react@2.2.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@headlessui/react@2.2.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
-      '@floating-ui/react': 0.26.28(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      '@react-aria/focus': 3.21.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      '@react-aria/interactions': 3.25.5(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      '@tanstack/react-virtual': 3.13.12(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      '@floating-ui/react': 0.26.28(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@react-aria/focus': 3.21.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@react-aria/interactions': 3.25.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@tanstack/react-virtual': 3.13.12(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  '@heroicons/react@2.2.0(react@19.1.2)':
+  '@heroicons/react@2.2.0(react@19.1.4)':
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
 
   '@humanfs/core@0.19.1': {}
 
@@ -5064,11 +5064,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mdx-js/react@3.1.1(@types/react@18.3.24)(react@19.1.2)':
+  '@mdx-js/react@3.1.1(@types/react@18.3.24)(react@19.1.4)':
     dependencies:
       '@types/mdx': 2.0.13
       '@types/react': 18.3.24
-      react: 19.1.2
+      react: 19.1.4
 
   '@mermaid-js/parser@0.6.2':
     dependencies:
@@ -5078,12 +5078,12 @@ snapshots:
     dependencies:
       state-local: 1.0.7
 
-  '@monaco-editor/react@4.7.0(monaco-editor@0.53.0)(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@monaco-editor/react@4.7.0(monaco-editor@0.53.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
       '@monaco-editor/loader': 1.5.0
       monaco-editor: 0.53.0
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
@@ -5204,58 +5204,58 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@react-aria/focus@3.21.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@react-aria/focus@3.21.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
-      '@react-aria/interactions': 3.25.5(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      '@react-aria/utils': 3.30.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      '@react-types/shared': 3.32.0(react@19.1.2)
+      '@react-aria/interactions': 3.25.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@react-aria/utils': 3.30.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@react-types/shared': 3.32.0(react@19.1.4)
       '@swc/helpers': 0.5.17
       clsx: 2.1.1
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  '@react-aria/interactions@3.25.5(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@react-aria/interactions@3.25.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.1.2)
-      '@react-aria/utils': 3.30.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+      '@react-aria/ssr': 3.9.10(react@19.1.4)
+      '@react-aria/utils': 3.30.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@react-stately/flags': 3.1.2
-      '@react-types/shared': 3.32.0(react@19.1.2)
+      '@react-types/shared': 3.32.0(react@19.1.4)
       '@swc/helpers': 0.5.17
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  '@react-aria/ssr@3.9.10(react@19.1.2)':
+  '@react-aria/ssr@3.9.10(react@19.1.4)':
     dependencies:
       '@swc/helpers': 0.5.17
-      react: 19.1.2
+      react: 19.1.4
 
-  '@react-aria/utils@3.30.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@react-aria/utils@3.30.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.1.2)
+      '@react-aria/ssr': 3.9.10(react@19.1.4)
       '@react-stately/flags': 3.1.2
-      '@react-stately/utils': 3.10.8(react@19.1.2)
-      '@react-types/shared': 3.32.0(react@19.1.2)
+      '@react-stately/utils': 3.10.8(react@19.1.4)
+      '@react-types/shared': 3.32.0(react@19.1.4)
       '@swc/helpers': 0.5.17
       clsx: 2.1.1
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
   '@react-stately/flags@3.1.2':
     dependencies:
       '@swc/helpers': 0.5.17
 
-  '@react-stately/utils@3.10.8(react@19.1.2)':
+  '@react-stately/utils@3.10.8(react@19.1.4)':
     dependencies:
       '@swc/helpers': 0.5.17
-      react: 19.1.2
+      react: 19.1.4
 
-  '@react-types/shared@3.32.0(react@19.1.2)':
+  '@react-types/shared@3.32.0(react@19.1.4)':
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
 
-  '@remixicon/react@4.6.0(react@19.1.2)':
+  '@remixicon/react@4.6.0(react@19.1.4)':
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
 
   '@rtsao/scc@1.1.0': {}
 
@@ -5320,11 +5320,11 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.17
 
-  '@tanstack/react-virtual@3.13.12(react-dom@19.1.2(react@19.1.2))(react@19.1.2)':
+  '@tanstack/react-virtual@3.13.12(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
       '@tanstack/virtual-core': 3.13.12
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
   '@tanstack/virtual-core@3.13.12': {}
 
@@ -5728,7 +5728,7 @@ snapshots:
 
   acorn@8.15.0: {}
 
-  ahooks@3.9.5(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  ahooks@3.9.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       '@types/js-cookie': 3.0.6
@@ -5736,8 +5736,8 @@ snapshots:
       intersection-observer: 0.12.2
       js-cookie: 3.0.5
       lodash: 4.17.21
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
       react-fast-compare: 3.2.2
       resize-observer-polyfill: 1.5.1
       screenfull: 5.2.0
@@ -7292,10 +7292,10 @@ snapshots:
 
   hachure-fill@0.5.2: {}
 
-  harden-react-markdown@1.0.5(react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.2))(react@19.1.2):
+  harden-react-markdown@1.0.5(react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.4))(react@19.1.4):
     dependencies:
-      react: 19.1.2
-      react-markdown: 10.1.0(@types/react@18.3.24)(react@19.1.2)
+      react: 19.1.4
+      react-markdown: 10.1.0(@types/react@18.3.24)(react@19.1.4)
 
   has-bigints@1.1.0: {}
 
@@ -7848,9 +7848,9 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lucide-react@0.542.0(react@19.1.2):
+  lucide-react@0.542.0(react@19.1.4):
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
 
   magic-string@0.30.19:
     dependencies:
@@ -8600,15 +8600,15 @@ snapshots:
 
   negotiator@0.6.4: {}
 
-  next@15.5.7(react-dom@19.1.2(react@19.1.2))(react@19.1.2)(sass@1.92.1):
+  next@15.5.7(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(sass@1.92.1):
     dependencies:
       '@next/env': 15.5.7
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001741
       postcss: 8.4.31
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
-      styled-jsx: 5.1.6(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
+      styled-jsx: 5.1.6(react@19.1.4)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.5.7
       '@next/swc-darwin-x64': 15.5.7
@@ -8901,71 +8901,71 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  rc-input@1.8.0(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  rc-input@1.8.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       classnames: 2.5.1
-      rc-util: 5.44.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      rc-util: 5.44.4(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  rc-resize-observer@1.4.3(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  rc-resize-observer@1.4.3(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       classnames: 2.5.1
-      rc-util: 5.44.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      rc-util: 5.44.4(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
       resize-observer-polyfill: 1.5.1
 
-  rc-textarea@1.10.2(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  rc-textarea@1.10.2(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       classnames: 2.5.1
-      rc-input: 1.8.0(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      rc-resize-observer: 1.4.3(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      rc-util: 5.44.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      rc-input: 1.8.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      rc-resize-observer: 1.4.3(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      rc-util: 5.44.4(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  rc-util@5.44.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  rc-util@5.44.4(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
       react-is: 18.3.1
 
-  react-dom@19.1.2(react@19.1.2):
+  react-dom@19.1.4(react@19.1.4):
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
       scheduler: 0.26.0
 
-  react-error-boundary@4.1.2(react@19.1.2):
+  react-error-boundary@4.1.2(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
-      react: 19.1.2
+      react: 19.1.4
 
   react-fast-compare@3.2.2: {}
 
-  react-headless-pagination@1.1.6(react@19.1.2):
+  react-headless-pagination@1.1.6(react@19.1.4):
     dependencies:
       clsx: 2.1.1
-      react: 19.1.2
+      react: 19.1.4
 
-  react-i18next@12.3.1(i18next@23.16.8)(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  react-i18next@12.3.1(i18next@23.16.8)(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       html-parse-stringify: 3.0.1
       i18next: 23.16.8
-      react: 19.1.2
+      react: 19.1.4
     optionalDependencies:
-      react-dom: 19.1.2(react@19.1.2)
+      react-dom: 19.1.4(react@19.1.4)
 
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
 
-  react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.2):
+  react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.4):
     dependencies:
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.4
@@ -8974,7 +8974,7 @@ snapshots:
       hast-util-to-jsx-runtime: 2.3.6
       html-url-attributes: 3.0.1
       mdast-util-to-hast: 13.2.0
-      react: 19.1.2
+      react: 19.1.4
       remark-parse: 11.0.0
       remark-rehype: 11.1.2
       unified: 11.0.5
@@ -8983,7 +8983,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-markdown@8.0.7(@types/react@18.3.24)(react@19.1.2):
+  react-markdown@8.0.7(@types/react@18.3.24)(react@19.1.4):
     dependencies:
       '@types/hast': 2.3.10
       '@types/prop-types': 15.7.15
@@ -8993,7 +8993,7 @@ snapshots:
       hast-util-whitespace: 2.0.1
       prop-types: 15.8.1
       property-information: 6.5.0
-      react: 19.1.2
+      react: 19.1.4
       react-is: 18.3.1
       remark-parse: 10.0.2
       remark-rehype: 10.1.0
@@ -9005,24 +9005,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-syntax-highlighter@15.6.6(react@19.1.2):
+  react-syntax-highlighter@15.6.6(react@19.1.4):
     dependencies:
       '@babel/runtime': 7.28.4
       highlight.js: 10.7.3
       highlightjs-vue: 1.0.0
       lowlight: 1.20.0
       prismjs: 1.30.0
-      react: 19.1.2
+      react: 19.1.4
       refractor: 3.6.0
 
-  react-tooltip@5.29.1(react-dom@19.1.2(react@19.1.2))(react@19.1.2):
+  react-tooltip@5.29.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
       '@floating-ui/dom': 1.7.4
       classnames: 2.5.1
-      react: 19.1.2
-      react-dom: 19.1.2(react@19.1.2)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
 
-  react@19.1.2: {}
+  react@19.1.4: {}
 
   read-cache@1.0.0:
     dependencies:
@@ -9440,16 +9440,16 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
-  streamdown@1.2.0(@types/react@18.3.24)(react@19.1.2):
+  streamdown@1.2.0(@types/react@18.3.24)(react@19.1.4):
     dependencies:
       clsx: 2.1.1
-      harden-react-markdown: 1.0.5(react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.2))(react@19.1.2)
+      harden-react-markdown: 1.0.5(react-markdown@10.1.0(@types/react@18.3.24)(react@19.1.4))(react@19.1.4)
       katex: 0.16.22
-      lucide-react: 0.542.0(react@19.1.2)
+      lucide-react: 0.542.0(react@19.1.4)
       marked: 16.2.1
       mermaid: 11.11.0
-      react: 19.1.2
-      react-markdown: 10.1.0(@types/react@18.3.24)(react@19.1.2)
+      react: 19.1.4
+      react-markdown: 10.1.0(@types/react@18.3.24)(react@19.1.4)
       rehype-katex: 7.0.1
       remark-gfm: 4.0.1
       remark-math: 6.0.0
@@ -9566,10 +9566,10 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.4
 
-  styled-jsx@5.1.6(react@19.1.2):
+  styled-jsx@5.1.6(react@19.1.4):
     dependencies:
       client-only: 0.0.1
-      react: 19.1.2
+      react: 19.1.4
 
   stylis@4.3.6: {}
 
@@ -9589,11 +9589,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swr@2.3.6(react@19.1.2):
+  swr@2.3.6(react@19.1.4):
     dependencies:
       dequal: 2.0.3
-      react: 19.1.2
-      use-sync-external-store: 1.5.0(react@19.1.2)
+      react: 19.1.4
+      use-sync-external-store: 1.5.0(react@19.1.4)
 
   synckit@0.11.11:
     dependencies:
@@ -9856,14 +9856,14 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-context-selector@2.0.0(react@19.1.2)(scheduler@0.23.2):
+  use-context-selector@2.0.0(react@19.1.4)(scheduler@0.23.2):
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
       scheduler: 0.23.2
 
-  use-sync-external-store@1.5.0(react@19.1.2):
+  use-sync-external-store@1.5.0(react@19.1.4):
     dependencies:
-      react: 19.1.2
+      react: 19.1.4
 
   util-deprecate@1.0.2: {}
 
@@ -10018,12 +10018,12 @@ snapshots:
 
   zod@4.1.5: {}
 
-  zustand@4.5.7(@types/react@18.3.24)(immer@9.0.21)(react@19.1.2):
+  zustand@4.5.7(@types/react@18.3.24)(immer@9.0.21)(react@19.1.4):
     dependencies:
-      use-sync-external-store: 1.5.0(react@19.1.2)
+      use-sync-external-store: 1.5.0(react@19.1.4)
     optionalDependencies:
       '@types/react': 18.3.24
       immer: 9.0.21
-      react: 19.1.2
+      react: 19.1.4
 
   zwitch@2.0.4: {}
