@@ -1,4 +1,4 @@
-import { combine, javascript, typescript, stylistic } from '@antfu/eslint-config'
+import { combine, javascript, stylistic, typescript } from '@antfu/eslint-config'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 
@@ -18,7 +18,7 @@ export default combine(
     semi: false,
     quotes: 'single',
     overrides: {
-      'style/indent': ['error', 2],
+      'style/indent': 'off',
       'style/quotes': ['error', 'single'],
       'style/max-statements-per-line': 'off',
     },
