@@ -51,7 +51,7 @@ const Main: FC<IMainProps> = () => {
   const [fileConfig, setFileConfig] = useState<FileUpload | undefined>()
 
   useEffect(() => {
-    if (APP_INFO?.title) { document.title = `${APP_INFO.title} - Powered by Dify` }
+    if (APP_INFO?.title) { document.title = `${APP_INFO.title}` }
   }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
@@ -472,7 +472,6 @@ const Main: FC<IMainProps> = () => {
         resetNewConversationInputs()
         setChatNotStarted()
         setCurrConversationId(tempNewConversationId, APP_ID, true)
-        setRespondingFalse()
       },
       onFile(file) {
         const lastThought = responseItem.agent_thoughts?.[responseItem.agent_thoughts?.length - 1]
@@ -564,11 +563,13 @@ const Main: FC<IMainProps> = () => {
         ))
       },
       onError() {
-        setRespondingFalse()
         // role back placeholder answer
         setChatList(produce(getChatList(), (draft) => {
           draft.splice(draft.findIndex(item => item.id === placeholderAnswerId), 1)
         }))
+      },
+       onFinally() {
+        setRespondingFalse()
       },
       onWorkflowStarted: ({ workflow_run_id, task_id }) => {
         // taskIdRef.current = task_id

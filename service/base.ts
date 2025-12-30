@@ -109,6 +109,7 @@ export type IOnMessageReplace = (messageReplace: MessageReplace) => void
 export type IOnAnnotationReply = (messageReplace: AnnotationReply) => void
 export type IOnCompleted = (hasError?: boolean) => void
 export type IOnError = (msg: string, code?: string) => void
+export type IOnFinally = () => void
 export type IOnWorkflowStarted = (workflowStarted: WorkflowStartedResponse) => void
 export type IOnWorkflowFinished = (workflowFinished: WorkflowFinishedResponse) => void
 export type IOnNodeStarted = (nodeStarted: NodeStartedResponse) => void
@@ -126,6 +127,7 @@ interface IOtherOptions {
   onMessageReplace?: IOnMessageReplace
   onError?: IOnError
   onCompleted?: IOnCompleted // for stream
+  onFinally?: IOnFinally
   getAbortController?: (abortController: AbortController) => void
   onWorkflowStarted?: IOnWorkflowStarted
   onWorkflowFinished?: IOnWorkflowFinished
@@ -151,6 +153,7 @@ const handleStream = (
   onWorkflowFinished?: IOnWorkflowFinished,
   onNodeStarted?: IOnNodeStarted,
   onNodeFinished?: IOnNodeFinished,
+  onFinally?: IOnFinally,
 ) => {
   if (!response.ok) { throw new Error('Network response was not ok') }
 
@@ -163,7 +166,8 @@ const handleStream = (
     let hasError = false
     reader?.read().then((result: any) => {
       if (result.done) {
-        onCompleted && onCompleted()
+        onCompleted?.()
+        onFinally?.()
         return
       }
       buffer += decoder.decode(result.value, { stream: true })
@@ -191,6 +195,7 @@ const handleStream = (
               })
               hasError = true
               onCompleted?.(true)
+              onFinally?.()
               return
             }
             if (bufferObj.event === 'message' || bufferObj.event === 'agent_message') {
@@ -238,6 +243,7 @@ const handleStream = (
         })
         hasError = true
         onCompleted?.(true)
+        onFinally?.()
         return
       }
       if (!hasError) { read() }
@@ -368,6 +374,7 @@ export const ssePost = (
     onNodeStarted,
     onNodeFinished,
     onError,
+    onFinally,
   }: IOtherOptions,
 ) => {
   const options = Object.assign({}, baseOptions, {
@@ -390,6 +397,7 @@ export const ssePost = (
           })
         })
         onError?.('Server Error')
+        onFinally?.()
         return
       }
       return handleStream(res, (str: string, isFirstMessage: boolean, moreInfo: IOnDataMoreInfo) => {
@@ -398,13 +406,12 @@ export const ssePost = (
           return
         }
         onData?.(str, isFirstMessage, moreInfo)
-      }, () => {
-        onCompleted?.()
-      }, onThought, onMessageEnd, onMessageReplace, onFile, onWorkflowStarted, onWorkflowFinished, onNodeStarted, onNodeFinished)
+      }, onCompleted, onThought, onMessageEnd, onMessageReplace, onFile, onWorkflowStarted, onWorkflowFinished, onNodeStarted, onNodeFinished, onFinally)
     })
     .catch((e) => {
       Toast.notify({ type: 'error', message: e })
       onError?.(e)
+      onFinally?.()
     })
 }
 

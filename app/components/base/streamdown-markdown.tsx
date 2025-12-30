@@ -1,6 +1,7 @@
 'use client'
 import { Streamdown } from 'streamdown'
 import 'katex/dist/katex.min.css'
+import rehypeRaw from 'rehype-raw'
 
 interface StreamdownMarkdownProps {
   content: string
@@ -10,7 +11,7 @@ interface StreamdownMarkdownProps {
 export function StreamdownMarkdown({ content, className = '' }: StreamdownMarkdownProps) {
   return (
     <div className={`streamdown-markdown ${className}`}>
-      <Streamdown>{content}</Streamdown>
+      <Streamdown rehypePlugins={[rehypeRaw]}>{content}</Streamdown>
     </div>
   )
 }
