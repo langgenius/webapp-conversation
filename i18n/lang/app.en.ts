@@ -24,9 +24,9 @@ const translation = {
       ' provided by the app developer.',
   },
   errorMessage: {
-    valueOfVarRequired: 'Variables value can not be empty',
+    valueOfVarRequired: 'من فضلك ضع سؤالاً',
     waitForResponse:
-      'Please wait for the response to the previous message to complete.',
+      'الرجاء الانتظار حتى اكتمال الرد الحالي',
   },
   variableTable: {
     optional: 'Optional',

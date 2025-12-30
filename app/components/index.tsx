@@ -472,7 +472,6 @@ const Main: FC<IMainProps> = () => {
         resetNewConversationInputs()
         setChatNotStarted()
         setCurrConversationId(tempNewConversationId, APP_ID, true)
-        setRespondingFalse()
       },
       onFile(file) {
         const lastThought = responseItem.agent_thoughts?.[responseItem.agent_thoughts?.length - 1]
@@ -564,11 +563,13 @@ const Main: FC<IMainProps> = () => {
         ))
       },
       onError() {
-        setRespondingFalse()
         // role back placeholder answer
         setChatList(produce(getChatList(), (draft) => {
           draft.splice(draft.findIndex(item => item.id === placeholderAnswerId), 1)
         }))
+      },
+       onFinally() {
+        setRespondingFalse()
       },
       onWorkflowStarted: ({ workflow_run_id, task_id }) => {
         // taskIdRef.current = task_id
