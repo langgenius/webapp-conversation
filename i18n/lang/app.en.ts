@@ -1,12 +1,12 @@
 const translation = {
   common: {
-    welcome: 'Welcome to use',
+    welcome: 'اهلاً بك في',
     appUnavailable: 'App is unavailable',
     appUnkonwError: 'App is unavailable',
   },
   chat: {
-    newChat: 'New chat',
-    newChatDefaultName: 'New conversation',
+    newChat: 'محادثة جديدة',
+    newChatDefaultName: 'محادثة جديدة',
     openingStatementTitle: 'Opening statement',
     powerBy: 'Powered by',
     prompt: 'Prompt',
@@ -15,7 +15,7 @@ const translation = {
     configStatusDes: 'Before start, you can modify conversation settings',
     configDisabled:
       'Previous session settings have been used for this session.',
-    startChat: 'Start Chat',
+    startChat: 'بدء محادثة',
     privacyPolicyLeft:
       'Please read the ',
     privacyPolicyMiddle:
@@ -24,9 +24,9 @@ const translation = {
       ' provided by the app developer.',
   },
   errorMessage: {
-    valueOfVarRequired: 'Variables value can not be empty',
+    valueOfVarRequired: 'من فضلك ضع سؤالاً',
     waitForResponse:
-      'Please wait for the response to the previous message to complete.',
+      'الرجاء الانتظار حتى اكتمال الرد الحالي',
   },
   variableTable: {
     optional: 'Optional',
