@@ -18,6 +18,12 @@ import toolsZh from './lang/tools.zh'
 import toolsVi from './lang/tools.vi'
 import toolsJa from './lang/tools.ja'
 import toolsFr from './lang/tools.fr'
+import authEn from './lang/auth.en'
+import authEs from './lang/auth.es'
+import authZh from './lang/auth.zh'
+import authVi from './lang/auth.vi'
+import authJa from './lang/auth.ja'
+import authFr from './lang/auth.fr'
 
 import type { Locale } from '.'
 
@@ -26,46 +32,47 @@ const resources = {
     translation: {
       common: commonEn,
       app: appEn,
-      // tools
       tools: toolsEn,
+      auth: authEn,
     },
   },
   'es': {
     translation: {
       common: commonEs,
       app: appEs,
+      auth: authEs,
     },
   },
   'zh-Hans': {
     translation: {
       common: commonZh,
       app: appZh,
-      // tools
       tools: toolsZh,
+      auth: authZh,
     },
   },
   'vi': {
     translation: {
       common: commonVi,
       app: appVi,
-      // tools
       tools: toolsVi,
+      auth: authVi,
     },
   },
   'ja': {
     translation: {
       common: commonJa,
       app: appJa,
-      // tools
       tools: toolsJa,
+      auth: authJa,
     },
   },
   'fr': {
     translation: {
       common: commonFr,
       app: appFr,
-      // tools
       tools: toolsFr,
+      auth: authFr,
     },
   },
 }

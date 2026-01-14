@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import produce, { setAutoFreeze } from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
 import useConversation from '@/hooks/use-conversation'
+import { useAuth } from '@/hooks/use-auth'
+import { isGitLabAuthEnabled } from '@/config/auth'
 import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
@@ -32,6 +34,7 @@ const Main: FC<IMainProps> = () => {
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
   const hasSetAppConfig = APP_ID && API_KEY
+  const { isAuthenticated, isLoading, login } = useAuth()
 
   /*
   * app info
@@ -649,6 +652,39 @@ const Main: FC<IMainProps> = () => {
   if (appUnavailable) { return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} /> }
 
   if (!APP_ID || !APP_INFO || !promptConfig) { return <Loading type='app' /> }
+
+  // 如果正在检查认证状态，显示加载界面
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('auth.authCheck.title')}</h2>
+          <p className="text-gray-600">{t('auth.authCheck.message')}</p>
+        </div>
+      </div>
+    )
+  }
+
+  // 认证保护：如果认证启用但用户未认证，显示提示信息
+  if (isGitLabAuthEnabled() && !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <Header
+          title={APP_INFO.title}
+          isMobile={isMobile}
+          onShowSideBar={showSidebar}
+          onCreateNewChat={() => handleConversationIdChange('-1')}
+        />
+        <div className="flex items-center justify-center h-[calc(100vh-3rem)]">
+          <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('auth.loginRequired.title')}</h2>
+            <p className="text-gray-600 mb-6">{t('auth.loginRequired.message')}</p>
+            <p className="text-sm text-gray-500">{t('auth.loginRequired.hint')}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='bg-gray-100'>
