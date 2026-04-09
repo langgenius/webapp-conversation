@@ -27,6 +27,8 @@ const translation = {
     valueOfVarRequired: 'El valor de las variables no puede estar vacío',
     waitForResponse:
       'Por favor espere a que la respuesta al mensaje anterior se complete.',
+    waitForFileUpload:
+      'Espere a que todos los archivos terminen de cargarse antes de enviar.',
   },
 }
 

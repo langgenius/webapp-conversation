@@ -98,6 +98,12 @@ const Chat: FC<IChatProps> = ({
 
   const handleSend = () => {
     if (!valid() || (checkCanSend && !checkCanSend())) { return }
+    const hasPendingImageUploads = files.some(file => file.progress !== -1 && file.progress < 100)
+    const hasPendingAttachmentUploads = attachmentFiles.some(file => file.progress !== -1 && file.progress < 100)
+    if (hasPendingImageUploads || hasPendingAttachmentUploads) {
+      logError(t('app.errorMessage.waitForFileUpload'))
+      return
+    }
     const imageFiles: VisionFile[] = files.filter(file => file.progress !== -1).map(fileItem => ({
       type: 'image',
       transfer_method: fileItem.type,

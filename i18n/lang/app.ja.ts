@@ -27,6 +27,8 @@ const translation = {
     valueOfVarRequired: '変数の値は空にできません',
     waitForResponse:
       '前のメッセージの応答が完了するまでお待ちください。',
+    waitForFileUpload:
+      'すべてのファイルのアップロードが完了してから送信してください。',
   },
   variableTable: {
     optional: '任意',
