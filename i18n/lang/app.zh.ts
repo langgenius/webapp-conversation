@@ -22,6 +22,7 @@ const translation = {
   errorMessage: {
     valueOfVarRequired: '变量值必填',
     waitForResponse: '请等待上条信息响应完成',
+    waitForFileUpload: '请等待所有文件上传完成后再发送',
   },
   variableTable: {
     optional: '可选',

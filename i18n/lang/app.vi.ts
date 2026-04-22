@@ -27,6 +27,8 @@ const translation = {
     valueOfVarRequired: 'Giá trị của biến không thể để trống',
     waitForResponse:
       'Vui lòng đợi phản hồi từ tin nhắn trước khi gửi tin nhắn mới.',
+    waitForFileUpload:
+      'Vui lòng đợi tất cả tệp tải lên xong trước khi gửi.',
   },
   variableTable: {
     optional: 'Tùy chọn',
