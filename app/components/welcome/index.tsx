@@ -172,21 +172,34 @@ const Welcome: FC<IWelcomeProps> = ({
   }
 
   const canChat = () => {
-    const inputLens = Object.values(inputs).length
-    const promptVariablesLens = promptConfig.prompt_variables.length
-    const emptyInput = inputLens < promptVariablesLens || Object.entries(inputs).filter(([k, v]) => {
-      const isRequired = promptConfig.prompt_variables.find(item => item.key === k)?.required ?? true
-      return isRequired && v === ''
-    }).length > 0
-    if (emptyInput) {
-      logError(t('app.errorMessage.valueOfVarRequired'))
-      return false
+    const vars = promptConfig?.prompt_variables ?? [];
+
+    const hasEmptyRequired = vars.some(v => {
+      const isRequired = v?.required ?? true;
+      if (!isRequired) return false;
+
+      const val = inputs?.[v.key];
+
+      if (typeof val === 'string') return val.trim() === '';
+
+      return val === undefined || val === null;
+    });
+
+    if (hasEmptyRequired) {
+      logError(t('app.errorMessage.valueOfVarRequired'));
+      return false;
     }
-    return true
-  }
+
+    return true;
+  };
 
   const handleChat = () => {
     if (!canChat()) { return }
+
+    Object.keys(inputs).forEach((key) => {
+      if (!inputs[key])
+        delete inputs[key]
+    })
 
     onStartChat(inputs)
   }
