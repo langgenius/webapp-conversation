@@ -13,37 +13,68 @@ export interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = ({ title, isMobile, onShowSideBar, onCreateNewChat }) => {
   return (
-    <div className="shrink-0 flex items-center justify-between h-14 px-3 pc:px-4 bg-transparent w-full relative z-50">
-      
-      {/* الجانب الأيسر: زر القائمة صغرنا مساحته بالموبايل */}
-      <div className="flex items-center justify-start w-12 pc:w-24 shrink-0">
+    <div className="shrink-0 flex items-center justify-between h-14 px-3 pc:px-5 w-full relative z-50"
+      style={{ backgroundColor: '#1C1C1C', borderBottom: '1px solid rgba(255,255,255,0.055)' }}
+    >
+      {/* Left: hamburger on mobile */}
+      <div className="flex items-center justify-start w-10 pc:w-28 shrink-0">
         {isMobile && (
-          <div className='flex items-center justify-center h-8 w-8 cursor-pointer' onClick={() => onShowSideBar?.()}>
-            <Bars3Icon className="h-6 w-6 text-gray-400 hover:text-white transition-colors" />
-          </div>
+          <button
+            className="flex items-center justify-center h-9 w-9 rounded-xl cursor-pointer transition-colors hover:bg-white/5"
+            onClick={() => onShowSideBar?.()}
+            aria-label="القائمة"
+          >
+            <Bars3Icon className="h-5 w-5" style={{ color: '#9A9A9A' }} />
+          </button>
+        )}
+        {/* Desktop: subtle brand mark */}
+        {!isMobile && (
+          <span className="text-[11px] font-medium tracking-widest uppercase"
+            style={{ color: '#C5A059', letterSpacing: '0.15em', opacity: 0.7 }}>
+            Wealthy Mind
+          </span>
         )}
       </div>
 
-      {/* المنتصف: العنوان أخذ مساحته وصار مرتب */}
-      <div className='flex items-center justify-center space-x-1.5 pc:space-x-2 flex-1 overflow-hidden'>
-        <AppIcon size="small" />
-        <div className="text-xs pc:text-sm text-[#ECECEC] font-bold truncate">{title}</div>
-        <span className="text-[9px] pc:text-[10px] font-bold text-orange-400 bg-orange-400/10 border border-orange-400/20 px-1.5 py-0.5 rounded-full shrink-0">
+      {/* Center: app icon + title + badge */}
+      <div className="flex items-center justify-center gap-2 flex-1 overflow-hidden">
+        <div className="shrink-0">
+          <AppIcon size="small" />
+        </div>
+        <span
+          className="text-sm pc:text-[15px] font-semibold truncate"
+          style={{ color: '#E8E8E8', letterSpacing: '0.01em' }}
+        >
+          {title}
+        </span>
+        <span
+          className="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+          style={{
+            color: '#C5A059',
+            backgroundColor: 'rgba(197,160,89,0.12)',
+            border: '1px solid rgba(197,160,89,0.25)',
+            letterSpacing: '0.06em',
+          }}
+        >
           BETA
         </span>
       </div>
 
-      {/* الجانب الأيمن: زر المحادثة الجديدة */}
-      <div className='flex items-center justify-end space-x-2 pc:space-x-3 w-auto pc:w-24 shrink-0'>
+      {/* Right: new chat (mobile) + auth */}
+      <div className="flex items-center justify-end gap-2 w-10 pc:w-28 shrink-0">
         {isMobile && (
-          <div className='flex items-center justify-center h-8 w-8 cursor-pointer' onClick={() => onCreateNewChat?.()} >
-            <PencilSquareIcon className="h-6 w-6 text-gray-400 hover:text-white transition-colors" />
-          </div>
+          <button
+            className="flex items-center justify-center h-9 w-9 rounded-xl cursor-pointer transition-colors hover:bg-white/5"
+            onClick={() => onCreateNewChat?.()}
+            aria-label="محادثة جديدة"
+          >
+            <PencilSquareIcon className="h-5 w-5" style={{ color: '#9A9A9A' }} />
+          </button>
         )}
-        
+
         <SignedOut>
           <SignInButton mode="modal">
-            <button className="login-btn text-sm transition-colors cursor-pointer">Log in</button>
+            <button className="login-btn cursor-pointer">دخول</button>
           </SignInButton>
         </SignedOut>
 
@@ -51,7 +82,6 @@ const Header: FC<IHeaderProps> = ({ title, isMobile, onShowSideBar, onCreateNewC
           <UserButton />
         </SignedIn>
       </div>
-
     </div>
   )
 }

@@ -2,87 +2,294 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 1. الخلفية الأساسية (نظيفة بدون تدمير الارتفاع) */
-html, body, #app-container, main { 
-    background-color: #212121 !important; 
-    color: #ECECEC !important; 
+/* ================================================
+   CSS Custom Properties — Wealthy Mind Brand
+   ================================================ */
+:root {
+  --gold:           #C5A059;
+  --gold-light:     #D4B574;
+  --gold-dark:      #A8843A;
+  --gold-10:        rgba(197, 160, 89, 0.10);
+  --gold-20:        rgba(197, 160, 89, 0.20);
+  --gold-30:        rgba(197, 160, 89, 0.30);
+  --bg-base:        #1C1C1C;
+  --bg-sidebar:     #161616;
+  --bg-surface:     #252525;
+  --bg-elevated:    #2E2E2E;
+  --bg-input:       #2A2A2A;
+  --text-primary:   #E8E8E8;
+  --text-secondary: #9A9A9A;
+  --text-muted:     #5A5A5A;
+  --border-subtle:  rgba(255, 255, 255, 0.055);
+  --border-medium:  rgba(255, 255, 255, 0.10);
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:      0 4px 16px rgba(0,0,0,0.35);
+  --shadow-gold:    0 0 0 2px rgba(197,160,89,0.25);
+  --radius-bubble:  18px;
+  --transition:     0.18s ease;
 }
 
-/* 2. إخفاء الخطوط المزعجة */
-[class*="border-gray-"] { border-color: transparent !important; }
-
-/* 3. الشريط الجانبي والهيدر */
-aside, .sidebar, div[class*="w-[240px]"] { 
-    background-color: #181818 !important; /* لون أغمق بشعرة عشان يبرز */
-    border-right: 1px solid rgba(255, 255, 255, 0.04) !important; /* خط شفاف جداً يفصل بينه وبين المحادثة */
+/* ================================================
+   Base Reset
+   ================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-/* باجي كود الهيدر خله نفس ما هو */
-header, div[class*="h-16"], div[class*="h-14"] { background-color: #212121 !important; }
-.bg-primary-50, div[class*="bg-primary-50"] { background-color: #2F2F2F !important; color: #ECECEC !important; border-radius: 8px !important; }
-.bg-white:not([class*="cl-"]), div[class*="bg-blue-100"]:not([class*="cl-"]) { background-color: transparent !important; }
+html, body, #app-container, main {
+  background-color: var(--bg-base) !important;
+  color: var(--text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* 4. صورتك الشخصية */
-header .app-icon, 
-header div[class*="shrink-0"]:has(svg):not([class*="cl-"]), 
+/* ================================================
+   Custom Scrollbar — Gold Accent
+   ================================================ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--gold-30);
+  border-radius: 4px;
+  transition: background var(--transition);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ================================================
+   Borders — Clean & Subtle
+   ================================================ */
+[class*="border-gray-200"],
+[class*="border-gray-100"] {
+  border-color: var(--border-subtle) !important;
+}
+
+/* ================================================
+   Header
+   ================================================ */
+header,
+div[class*="h-16"],
+div[class*="h-14"] {
+  background-color: var(--bg-base) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+/* ================================================
+   Sidebar
+   ================================================ */
+aside,
+.sidebar,
+div[class*="w-[244px]"],
+div[class*="w-[192px]"] {
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-subtle) !important;
+}
+
+/* ================================================
+   Conversation List Items
+   ================================================ */
+
+/* Active conversation item */
+.bg-primary-50,
+div[class*="bg-primary-50"] {
+  background-color: var(--gold-10) !important;
+  color: var(--gold) !important;
+  border-radius: 10px !important;
+  border-left: 2px solid var(--gold) !important;
+}
+
+/* Inactive item hover */
+.text-gray-700.hover\:bg-gray-100:hover,
+div[class*="hover:bg-gray-100"]:hover {
+  background-color: rgba(255,255,255,0.04) !important;
+  border-radius: 10px !important;
+}
+
+/* ================================================
+   Chat Bubbles
+   ================================================ */
+/* User bubble */
+div[class*="bg-blue-500"],
+.mr-2.py-3.px-4.bg-blue-500 {
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  border-radius: 18px 4px 18px 18px !important;
+}
+
+/* AI bubble container */
+.ml-2.py-3.px-4.bg-gray-100,
+div[class*="bg-gray-100"] {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+/* White backgrounds cleanup */
+.bg-white:not([class*="cl-"]),
+div[class*="bg-blue-100"]:not([class*="cl-"]) {
+  background-color: transparent !important;
+}
+
+/* Highlighted selected state inside panels */
+.bg-primary-50 {
+  background-color: var(--gold-10) !important;
+  color: var(--gold) !important;
+  border-radius: 10px !important;
+}
+
+/* ================================================
+   App Icon / AI Avatar
+   ================================================ */
+header .app-icon,
+header div[class*="shrink-0"]:has(svg):not([class*="cl-"]),
 div[class*="chat-answer"] .app-icon {
-    background-color: transparent !important;
-    border-radius: 50% !important;
-    background-image: url(https://assets.cdn.filesafe.space/rhWELETMkXWiHgXmcNv0/media/69984ecd63ae7520d51f9030.png) !important;
-    background-size: cover !important;
-    background-position: center !important;
+  background-color: transparent !important;
+  border-radius: 50% !important;
+  background-image: url(https://assets.cdn.filesafe.space/rhWELETMkXWiHgXmcNv0/media/69984ecd63ae7520d51f9030.png) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  box-shadow: 0 0 0 1px var(--gold-30) !important;
 }
-header .app-icon svg, 
-header div[class*="shrink-0"]:has(svg):not([class*="cl-"]) svg, 
-div[class*="chat-answer"] .app-icon svg { display: none !important; }
+header .app-icon svg,
+header div[class*="shrink-0"]:has(svg):not([class*="cl-"]) svg,
+div[class*="chat-answer"] .app-icon svg {
+  display: none !important;
+}
 
-/* 5. فقاعات المحادثة */
-.mr-2.py-3.px-4.bg-blue-500, div[class*="bg-blue-500"] { background-color: #2F2F2F !important; color: #ECECEC !important; border-radius: 20px !important; }
-.ml-2.py-3.px-4.bg-gray-100, div[class*="bg-gray-100"] { background-color: transparent !important; color: #ECECEC !important; }
+/* ================================================
+   Chat Input Wrapper
+   ================================================ */
+div[class*="absolute bottom-0"]:has(textarea),
+div[class*="p-4"]:has(textarea) {
+  background: transparent !important;
+  padding-bottom: 24px !important;
+  margin-bottom: env(safe-area-inset-bottom) !important;
+}
 
-/* 6. صندوق الكتابة */
-div[class*="absolute bottom-0"]:has(textarea), div[class*="p-4"]:has(textarea) {
-    background: transparent !important;
-    padding-bottom: 24px !important;
-    margin-bottom: env(safe-area-inset-bottom) !important;
+textarea {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  font-size: 15px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  line-height: 1.6 !important;
+  caret-color: var(--gold) !important;
 }
-div[class*="relative"]:has(> textarea), div[class*="flex"]:has(> textarea) {
-    background-color: #2F2F2F !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    border-radius: 26px !important;
-    padding: 12px 55px 12px 16px !important;
-    margin: 0 auto !important;
-    max-width: 768px !important;
-    width: 100% !important;
-    position: relative !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+textarea::placeholder {
+  color: var(--text-muted) !important;
+  font-size: 15px !important;
 }
-textarea { background: transparent !important; color: #ECECEC !important; font-size: 16px !important; margin: 0 !important; padding: 0 !important; border: none !important; box-shadow: none !important; line-height: 1.5 !important; }
 textarea:focus { outline: none !important; }
 
-/* 7. زر الإرسال */
-div[class*="relative"]:has(> textarea) button, div[class*="relative"]:has(> textarea) div[class*="bg-primary"] {
-    position: absolute !important; right: 8px !important; bottom: 8px !important; background-color: #ECECEC !important; background-image: none !important; border-radius: 50% !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 !important;
+/* ================================================
+   Feedback / Operation Buttons
+   ================================================ */
+.relative.box-border.flex.items-center.justify-center.h-7.w-7 {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
 }
-div[class*="relative"]:has(> textarea) svg { color: #212121 !important; width: 16px !important; height: 16px !important; display: block !important; }
-div[class*="relative"]:has(> textarea) > div[class*="absolute"] > div:not(:has(svg)):not(button),
-div[class*="relative"]:has(> textarea) > div[class*="absolute"] > span { display: none !important; opacity: 0 !important; visibility: hidden !important; }
-
-/* 8. إخفاء الحقوق */
-a[href*="dify.ai"], .powered-by, img[alt*="dify"] { display: none !important; }
-.text-gray-900:not([class*="cl-"]), .text-gray-800:not([class*="cl-"]), .text-gray-700:not([class*="cl-"]) { color: #ECECEC !important; }
-h1:not([class*="cl-"]), h2:not([class*="cl-"]), .font-bold:not([class*="cl-"]), .font-medium:not([class*="cl-"]) { color: #ECECEC !important; }
-button[class*="bg-primary"]:not([class*="cl-"]), .btn-primary:not([class*="cl-"]) { background-color: #2F2F2F !important; color: #ECECEC !important; }
-.login-btn { background-color: #ECECEC !important; color: #212121 !important; font-weight: 500 !important; padding: 6px 16px !important; border-radius: 9999px !important; }
-.login-btn:hover { background-color: #FFFFFF !important; }
-
-/* ========================================== */
-/* 9. إخفاء حقوق Clerk (بالطريقة الآمنة) */
-/* ========================================== */
-.cl-userButtonPopoverFooter, 
-.cl-watermark { 
-    display: none !important; 
+.relative.box-border.flex.items-center.justify-center.h-7.w-7:hover {
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
 }
 
-/* 10. المساحة السفلية */
-#scrollable-content, div[class*="overflow-y-auto"] { padding-bottom: 140px !important; }
+/* ================================================
+   Hide Dify Branding
+   ================================================ */
+a[href*="dify.ai"], .powered-by, img[alt*="dify"] {
+  display: none !important;
+}
+
+/* ================================================
+   Text Color Overrides
+   ================================================ */
+.text-gray-900:not([class*="cl-"]),
+.text-gray-800:not([class*="cl-"]),
+.text-gray-700:not([class*="cl-"]) {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-500:not([class*="cl-"]),
+.text-gray-400:not([class*="cl-"]) {
+  color: var(--text-secondary) !important;
+}
+
+h1:not([class*="cl-"]),
+h2:not([class*="cl-"]),
+.font-bold:not([class*="cl-"]),
+.font-medium:not([class*="cl-"]) {
+  color: var(--text-primary) !important;
+}
+
+/* ================================================
+   Primary Buttons
+   ================================================ */
+button[class*="bg-primary"]:not([class*="cl-"]),
+.btn-primary:not([class*="cl-"]) {
+  background-color: var(--gold) !important;
+  color: #1A1200 !important;
+  font-weight: 600 !important;
+  transition: background-color var(--transition) !important;
+}
+button[class*="bg-primary"]:not([class*="cl-"]):hover,
+.btn-primary:not([class*="cl-"]):hover {
+  background-color: var(--gold-light) !important;
+}
+
+/* Login / Auth Button */
+.login-btn {
+  background-color: var(--gold) !important;
+  color: #1A1200 !important;
+  font-weight: 600 !important;
+  padding: 6px 18px !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.02em !important;
+  transition: all var(--transition) !important;
+  border: none !important;
+}
+.login-btn:hover {
+  background-color: var(--gold-light) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(197,160,89,0.35) !important;
+}
+
+/* ================================================
+   Clerk Watermark — Hidden
+   ================================================ */
+.cl-userButtonPopoverFooter,
+.cl-watermark {
+  display: none !important;
+}
+
+/* ================================================
+   Scrollable Content Bottom Padding
+   ================================================ */
+#scrollable-content,
+div[class*="overflow-y-auto"] {
+  padding-bottom: 140px !important;
+}
+
+/* ================================================
+   Smooth Transitions on List Items
+   ================================================ */
+div[class*="group flex items-center rounded"] {
+  transition: background-color var(--transition), border-color var(--transition) !important;
+}
+
+/* ================================================
+   Input Fields (text, number) in Welcome/Config
+   ================================================ */
+input[class*="bg-gray-50"],
+textarea[class*="bg-gray-50"] {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border-medium) !important;
+  color: var(--text-primary) !important;
+  border-radius: 10px !important;
+}
+input[class*="bg-gray-50"]:focus,
+textarea[class*="bg-gray-50"]:focus {
+  border-color: var(--gold) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
